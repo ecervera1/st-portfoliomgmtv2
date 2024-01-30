@@ -127,8 +127,8 @@ def calculate_fcff_and_fcfe(ticker):
     #for i in range(2, -1, -1):
         column = income_statement.columns[i]
         year = extract_year_from_column(column)
-        if year is None:
-            continue
+        #if year is None:
+            #continue
 
         net_income = get_financial_value(income_statement, 'Net Income', i)
         depreciation = get_financial_value(cash_flow, 'Depreciation And Amortization', i)
