@@ -109,7 +109,7 @@ def get_financial_value(df, pattern, year_offset=0):
 # Function to extract the year from a DataFrame column
 def extract_year_from_column(column):
     try:
-        return int(column.split('-')[0])  # Extract the year part from the column name
+        return pd.to_datetime(column).year
     except Exception as e:
         print(f"Error in extracting year: {e}")
         return None
