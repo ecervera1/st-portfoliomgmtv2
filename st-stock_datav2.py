@@ -393,7 +393,8 @@ if st.sidebar.checkbox("Cash Flow"):
         st.write("Cash Flow data not available.")
 
 if st.sidebar.checkbox("Calculate FCFF and FCFE"):
+    st.subheader(f"FCFF & FCFE for {selected_stock}")
     fcff_fcfe_results = calculate_fcff_and_fcfe(selected_stock)
     #st.write(fcff_fcfe_results)
-    st.dataframe(fcff_fcfe_results, use_container_width=True)
+    st.table(fcff_fcfe_results, use_container_width=True)
 
