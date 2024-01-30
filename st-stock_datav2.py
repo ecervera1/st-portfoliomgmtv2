@@ -99,7 +99,8 @@ end_date = st.sidebar.date_input("End Date", default_end_date)
 
 def get_financial_value(df, pattern, year_offset=0):
     for label in df.index:
-        if re.search(pattern, label, re.IGNORECASE):
+        # Ensure the label is a string
+        if isinstance(label, str) and re.search(pattern, label, re.IGNORECASE):
             if 0 <= year_offset < len(df.columns):
                 return df.loc[label].iloc[-(year_offset + 1)]
             break
