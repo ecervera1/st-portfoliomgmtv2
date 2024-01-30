@@ -138,7 +138,7 @@ if st.button('Run'):
     figsize_width = 26
     figsize_height = num_subplots * 4  # Height of the entire figure
     
-    fig, axs = plt.subplots(num_subplots, 5, figsize=(figsize_width, figsize_height), gridspec_kw={'width_ratios': [1, 2, 1, 2, 2, 2], 'wspace': 0.5})
+    fig, axs = plt.subplots(num_subplots, 5, figsize=(figsize_width, figsize_height), gridspec_kw={'wspace': 0.5})
 
     
 
