@@ -123,7 +123,8 @@ def calculate_fcff_and_fcfe(ticker):
 
     results = pd.DataFrame()
 
-    for i in range(3):
+    #for i in range(3):
+    for i in range(2, -1, -1):
         column = income_statement.columns[i]
         year = extract_year_from_column(column)
         if year is None:
