@@ -21,12 +21,6 @@ custom_css = """
 st.markdown(custom_css, unsafe_allow_html=True)
 
 
-stock_data_type = {}
-for ticker in tickers:
-    stock_data_type[ticker] = scrape_stock_data(ticker)
-
-# Filter out only equities
-equity_tickers = [ticker for ticker, data in stock_data_type.items() if data.get('quoteType') == 'EQUITY']
 
 
 
@@ -192,6 +186,15 @@ def calculate_fcff_and_fcfe(ticker):
     #print(results)
 
 
+stock_data_type = {}
+for ticker in tickers:
+    stock_data_type[ticker] = scrape_stock_data(ticker)
+
+# Filter out only equities
+equity_tickers = [ticker for ticker, data in stock_data_type.items() if data.get('quoteType') == 'EQUITY']
+
+
+
 # Button to run the scraper and plot stock performance
 if st.sidebar.button('Run'):
     # Split the user input into a list of tickers
@@ -254,7 +257,7 @@ if st.sidebar.button('Run'):
 
 
     tickers = equity_tickers
-    tickers = [ticker.strip() for ticker in equity_tickers.split(',')]
+    #tickers = [ticker.strip() for ticker in equity_tickers.split(',')]
 
     
     # Creating Charts
