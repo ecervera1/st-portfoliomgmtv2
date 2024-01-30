@@ -142,7 +142,7 @@ def calculate_fcff_and_fcfe(ticker):
         current_liabilities = get_financial_value(balance_sheet, 'Total Current Liabilities', i)
         previous_current_liabilities = get_financial_value(balance_sheet, 'Total Current Liabilities', i+1)
         #change_in_nwc = (current_assets - previous_current_assets) - (current_liabilities - previous_current_liabilities)
-        change_in_nwc = (cash_flow,'Change In Working Capital', i)
+        change_in_nwc = get_financial_value(cash_flow,'Change In Working Capital', i)
 
         # Calculate FCFF and FCFE
         fcff = net_income + depreciation + (interest_expense * (1 - tax_rate)) - capex - change_in_nwc
