@@ -8,9 +8,7 @@ import re
 
 custom_css = """
 <style>
-    button[kind="header"] {
-        display: none;
-    }
+
 
     div[data-testid="stActionButtonIcon"] {
         display: none;
