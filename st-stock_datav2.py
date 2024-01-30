@@ -219,7 +219,7 @@ if st.sidebar.button('Run'):
     
     st.title('Stock Data')
 
-    # Create an empty list to store dictionaries of stock data    
+    # Create an empty list to store dictionaries of stock data
     stock_data_list = []
 
     # Loop through each ticker, scrape the data, and add it to the list
@@ -246,205 +246,181 @@ if st.sidebar.button('Run'):
     # Display the DataFrame as a table
     st.table(stock_data_transposed)
 
-    #-------------------- this is to filter out equities
-    def scrape_stock_data(ticker):
-        stock = yf.Ticker(ticker)
-        info = stock.info
-        return info
-    
-    stock_data = {}
-    stock_tickers = []  # List to hold stock tickers
-    
-    for ticker in tickers:
-        stock_data[ticker] = scrape_stock_data(ticker)
-    
-    # Filter out stocks and add them to the stock_tickers list
-    for ticker, data in stock_data.items():
-        quote_type = data.get('quoteType')
-        if quote_type == 'EQUITY':
-            #print(f"{ticker} is a stock.")
-            stock_tickers.append(ticker)
-
-            # Creating Charts
-            num_subplots = len(tickers) + 1
-            figsize_width =  28
-            figsize_height = num_subplots * 4  # Height of the entire figure
-        
-            # Create a figure with subplots: X columns (Ticker, Market Cap, Revenue, Financial Metrics...) for each ticker
-            fig, axs = plt.subplots(num_subplots, 5, figsize=(figsize_width, figsize_height), gridspec_kw={'wspace': 0.5})
-        
-            # Adding labels in the first row
-            labels = ["Ticker", "Market Cap", "Financial Metrics", "Revenue Comparison", "52-Week Range"]
-            for j in range(5):
-                axs[0, j].axis('off')
-                axs[0, j].text(0.5, 0.5, labels[j], ha='center', va='center', fontsize=25, fontweight='bold')
-        
-            for i, ticker in enumerate(tickers, start=1):
-        
-                # Function to scrape market cap data
-                def scrape_market_cap(ticker):
-                    stock = yf.Ticker(ticker)
-                    info = stock.info
-                    market_cap = info.get("marketCap")
-                    return market_cap
-            
-                # Get market cap data
-                market_caps = {ticker: scrape_market_cap(ticker) for ticker in tickers}
-                
-                # Find the largest market cap for scaling
-                max_market_cap = max(market_caps.values())
-                
-                #Scrape data for the ticker
-                stock_data = scrape_stock_data(ticker)
-                
-                # Extract Profit Margin, ROA, and ROE values and convert to percentage
-                profit_margin = stock_data["Profit Margin"] * 100
-                roa = stock_data["ROA"] * 100 if isinstance(stock_data["ROA"], (float, int)) and stock_data["ROA"] > 0 else 0
-                roe = stock_data["ROE"] * 100 if isinstance(stock_data["ROE"], (float, int)) and stock_data["ROE"] > 0 else 0
-        
-                # Ticker Labels (First Column)
-                axs[i, 0].axis('off')
-                axs[i, 0].text(0.5, 0.5, ticker, ha='center', va='center', fontsize=30)
-        
-                # Market Cap Visualization (Second Column)
-                ax1 = axs[i, 1]
-                market_cap = market_caps.get(ticker, 0)
-                relative_size = market_cap / max_market_cap if max_market_cap > 0 else 0
-                circle = plt.Circle((0.5, 0.5), relative_size * 0.5, color='lightblue')
-                ax1.add_artist(circle)
-                ax1.set_aspect('equal', adjustable='box')
-                text = ax1.text(0.5, 0.5, f"{market_cap / 1e9:.2f}B", ha='center', va='center', fontsize=20)
-                text.set_path_effects([path_effects.Stroke(linewidth=2, foreground='black'), path_effects.Normal()])
-                ax1.set_xlim(0, 1)
-                ax1.set_ylim(0, 1)
-                ax1.axis('off')
-                
-                # Adjust bar width for less padding
-                bar_width = 1
-                
-                # ROE ROA and PM      
-                # Financial Metrics (Third Column)
-                ax2 = axs[i, 2]
-                metrics = [profit_margin, roa, roe]
-                metric_names = ["Profit Margin", "ROA", "ROE"]
-                bars = ax2.barh(metric_names, metrics, color=['#A3C5A8', '#B8D4B0', '#C8DFBB'])
-                
-                for index, (label, value) in enumerate(zip(metric_names, metrics)):
-                    # Adjusting the position dynamically
-                    label_x_offset = max(-1, -0.1 * len(str(value)))
-                    ax2.text(label_x_offset, index, label, va='center', ha='right', fontsize=16)
-                
-                    # Add value label
-                    value_x_position = value + 1 if value >= 0 else value - 1
-                    ax2.text(value_x_position, index, f"{value:.2f}%", va='center', ha='left' if value >= 0 else 'right', fontsize=16)
-                
-                ax2.spines['top'].set_visible(False)
-                ax2.spines['right'].set_visible(False)
-                ax2.spines['bottom'].set_visible(False)
-                ax2.spines['left'].set_visible(False)
-                ax2.set_xticks([])
-                ax2.set_yticks([])
-        
-                # Revenue Comparison (Third Column)
-                ax3 = axs[i, 3]
-                financials = get_financials(ticker)
-                current_year_revenue = financials.loc["Total Revenue"][0]
-                previous_year_revenue = financials.loc["Total Revenue"][1]
-            
-                current_year_revenue_billion = current_year_revenue / 1e9
-                previous_year_revenue_billion = previous_year_revenue / 1e9
-                growth = ((current_year_revenue_billion - previous_year_revenue_billion) / previous_year_revenue_billion) * 100
-            
-                line_color = 'green' if growth > 0 else 'red'
-            
-                bars = ax3.bar(["2022", "2023"], [previous_year_revenue_billion, current_year_revenue_billion], color=['blue', 'orange'])
-            
-                # Adjust Y-axis limits to leave space above the bars
-                ax3.set_ylim(0, max(previous_year_revenue_billion, current_year_revenue_billion) * 1.2)
-            
-                # Adding value labels inside of the bars at the top in white
-                for bar in bars:
-                    yval = bar.get_height()
-                    ax3.text(bar.get_x() + bar.get_width()/2, yval * .95, round(yval, 2), ha='center', va='top', fontsize=18, fontweight='bold', color='white')
-            
-                # Adding year labels inside of the bars toward the bottom
-                for bar_idx, bar in enumerate(bars):
-                    ax3.text(bar.get_x() + bar.get_width()/2, -0.08, ["2022", "2023"][bar_idx], ha='center', va='bottom', fontsize=18, fontweight='bold', color='white')
-            
-                # Adding growth line with color based on direction
-                ax3.plot(["2022", "2023"], [previous_year_revenue_billion, current_year_revenue_billion], color=line_color, marker='o', linestyle='-', linewidth=2)
-                ax3.text(1, current_year_revenue_billion * 1.05, f"{round(growth, 2)}%", color=line_color, ha='center', va='bottom', fontsize=16)
-            
-                ax3.spines['top'].set_visible(False)
-                ax3.spines['right'].set_visible(False)
-                ax3.spines['bottom'].set_visible(False)
-                ax3.spines['left'].set_visible(False)
-                ax3.set_xticks([])
-                ax3.set_yticks([])
-        
-                # 52-Week Range (Fourth Column)
-                ax4 = axs[i, 4]
-                stock_data = scrape_stock_data(ticker)
-                current_price = stock_data["Current Price"]
-                week_low = stock_data["52W Low"]
-                week_high = stock_data["52W High"]
-            
-                # Calculate padding for visual clarity
-                padding = (week_high - week_low) * 0.05
-                ax4.set_xlim(week_low - padding, week_high + padding)
-            
-                # Draw a horizontal line for the 52-week range
-                ax4.axhline(y=0.5, xmin=0, xmax=1, color='black', linewidth=3)
-            
-                # Plot the Current Price as a red dot
-                ax4.scatter(current_price, 0.5, color='red', s=200)
-            
-                # Annotations and labels
-                ax4.annotate(f'${current_price:.2f}', xy=(current_price, 0.5), fontsize=16, color='red', ha='center', va='bottom', xytext=(0, 10), textcoords='offset points')
-                ax4.annotate(f'${week_low:.2f}', xy=(week_low, 0.5), fontsize=16, color='black', ha='left', va='top', xytext=(5, -20), textcoords='offset points')
-                ax4.annotate(f'${week_high:.2f}', xy=(week_high, 0.5), fontsize=16, color='black', ha='right', va='top', xytext=(-5, -20), textcoords='offset points')
-            
-                ax4.axis('off')
-        
-        
-            plt.tight_layout()
-            st.pyplot(fig, use_container_width=True)
-    
-    if st.sidebar.checkbox("Income Statement"):
-        st.subheader(f"Income Statement for {selected_stock}")
-        financial_statements = get_financial_statements(selected_stock)
-        if financial_statements and not financial_statements['income_statement'].empty:
-            st.dataframe(financial_statements['income_statement'])
-        else:
-            st.write("Income Statement data not available.")
-    
-    if st.sidebar.checkbox("Balance Sheet"):
-        st.subheader(f"Balance Sheet for {selected_stock}")
-        financial_statements = get_financial_statements(selected_stock)
-        if financial_statements and not financial_statements['balance_sheet'].empty:
-            st.dataframe(financial_statements['balance_sheet'])
-        else:
-            st.write("Balance Sheet data not available.")
-    
-    if st.sidebar.checkbox("Cash Flow"):
-        st.subheader(f"Cash Flow for {selected_stock}")
-        financial_statements = get_financial_statements(selected_stock)
-        if financial_statements and not financial_statements['cash_flow'].empty:
-            st.dataframe(financial_statements['cash_flow'])
-        else:
-            st.write("Cash Flow data not available.")
-    
-    if st.sidebar.checkbox("Calculate FCFF and FCFE"):
-        st.subheader(f"FCFF & FCFE for {selected_stock}")
-        fcff_fcfe_results = calculate_fcff_and_fcfe(selected_stock)
-        #st.write(fcff_fcfe_results)
-        st.table(fcff_fcfe_results)
-    
 
 
+
+    
+    # Creating Charts
+    num_subplots = len(tickers) + 1
+    figsize_width =  28
+    figsize_height = num_subplots * 4  # Height of the entire figure
+
+    # Create a figure with subplots: X columns (Ticker, Market Cap, Revenue, Financial Metrics...) for each ticker
+    fig, axs = plt.subplots(num_subplots, 5, figsize=(figsize_width, figsize_height), gridspec_kw={'wspace': 0.5})
+
+    # Adding labels in the first row
+    labels = ["Ticker", "Market Cap", "Financial Metrics", "Revenue Comparison", "52-Week Range"]
+    for j in range(5):
+        axs[0, j].axis('off')
+        axs[0, j].text(0.5, 0.5, labels[j], ha='center', va='center', fontsize=25, fontweight='bold')
+
+    for i, ticker in enumerate(tickers, start=1):
+
+        # Function to scrape market cap data
+        def scrape_market_cap(ticker):
+            stock = yf.Ticker(ticker)
+            info = stock.info
+            market_cap = info.get("marketCap")
+            return market_cap
+    
+        # Get market cap data
+        market_caps = {ticker: scrape_market_cap(ticker) for ticker in tickers}
         
+        # Find the largest market cap for scaling
+        max_market_cap = max(market_caps.values())
+        
+        #Scrape data for the ticker
+        stock_data = scrape_stock_data(ticker)
+        
+        # Extract Profit Margin, ROA, and ROE values and convert to percentage
+        profit_margin = stock_data["Profit Margin"] * 100
+        roa = stock_data["ROA"] * 100 if isinstance(stock_data["ROA"], (float, int)) and stock_data["ROA"] > 0 else 0
+        roe = stock_data["ROE"] * 100 if isinstance(stock_data["ROE"], (float, int)) and stock_data["ROE"] > 0 else 0
+
+        # Ticker Labels (First Column)
+        axs[i, 0].axis('off')
+        axs[i, 0].text(0.5, 0.5, ticker, ha='center', va='center', fontsize=30)
+
+        # Market Cap Visualization (Second Column)
+        ax1 = axs[i, 1]
+        market_cap = market_caps.get(ticker, 0)
+        relative_size = market_cap / max_market_cap if max_market_cap > 0 else 0
+        circle = plt.Circle((0.5, 0.5), relative_size * 0.5, color='lightblue')
+        ax1.add_artist(circle)
+        ax1.set_aspect('equal', adjustable='box')
+        text = ax1.text(0.5, 0.5, f"{market_cap / 1e9:.2f}B", ha='center', va='center', fontsize=20)
+        text.set_path_effects([path_effects.Stroke(linewidth=2, foreground='black'), path_effects.Normal()])
+        ax1.set_xlim(0, 1)
+        ax1.set_ylim(0, 1)
+        ax1.axis('off')
+        
+        # Adjust bar width for less padding
+        bar_width = 1
+        
+        # ROE ROA and PM      
+        # Financial Metrics (Third Column)
+        ax2 = axs[i, 2]
+        metrics = [profit_margin, roa, roe]
+        metric_names = ["Profit Margin", "ROA", "ROE"]
+        bars = ax2.barh(metric_names, metrics, color=['#A3C5A8', '#B8D4B0', '#C8DFBB'])
+        
+        for index, (label, value) in enumerate(zip(metric_names, metrics)):
+            # Adjusting the position dynamically
+            label_x_offset = max(-1, -0.1 * len(str(value)))
+            ax2.text(label_x_offset, index, label, va='center', ha='right', fontsize=16)
+        
+            # Add value label
+            value_x_position = value + 1 if value >= 0 else value - 1
+            ax2.text(value_x_position, index, f"{value:.2f}%", va='center', ha='left' if value >= 0 else 'right', fontsize=16)
+        
+        ax2.spines['top'].set_visible(False)
+        ax2.spines['right'].set_visible(False)
+        ax2.spines['bottom'].set_visible(False)
+        ax2.spines['left'].set_visible(False)
+        ax2.set_xticks([])
+        ax2.set_yticks([])
+
+        # Revenue Comparison (Third Column)
+        ax3 = axs[i, 3]
+        financials = get_financials(ticker)
+        current_year_revenue = financials.loc["Total Revenue"][0]
+        previous_year_revenue = financials.loc["Total Revenue"][1]
+    
+        current_year_revenue_billion = current_year_revenue / 1e9
+        previous_year_revenue_billion = previous_year_revenue / 1e9
+        growth = ((current_year_revenue_billion - previous_year_revenue_billion) / previous_year_revenue_billion) * 100
+    
+        line_color = 'green' if growth > 0 else 'red'
+    
+        bars = ax3.bar(["2022", "2023"], [previous_year_revenue_billion, current_year_revenue_billion], color=['blue', 'orange'])
+    
+        # Adjust Y-axis limits to leave space above the bars
+        ax3.set_ylim(0, max(previous_year_revenue_billion, current_year_revenue_billion) * 1.2)
+    
+        # Adding value labels inside of the bars at the top in white
+        for bar in bars:
+            yval = bar.get_height()
+            ax3.text(bar.get_x() + bar.get_width()/2, yval * .95, round(yval, 2), ha='center', va='top', fontsize=18, fontweight='bold', color='white')
+    
+        # Adding year labels inside of the bars toward the bottom
+        for bar_idx, bar in enumerate(bars):
+            ax3.text(bar.get_x() + bar.get_width()/2, -0.08, ["2022", "2023"][bar_idx], ha='center', va='bottom', fontsize=18, fontweight='bold', color='white')
+    
+        # Adding growth line with color based on direction
+        ax3.plot(["2022", "2023"], [previous_year_revenue_billion, current_year_revenue_billion], color=line_color, marker='o', linestyle='-', linewidth=2)
+        ax3.text(1, current_year_revenue_billion * 1.05, f"{round(growth, 2)}%", color=line_color, ha='center', va='bottom', fontsize=16)
+    
+        ax3.spines['top'].set_visible(False)
+        ax3.spines['right'].set_visible(False)
+        ax3.spines['bottom'].set_visible(False)
+        ax3.spines['left'].set_visible(False)
+        ax3.set_xticks([])
+        ax3.set_yticks([])
+
+        # 52-Week Range (Fourth Column)
+        ax4 = axs[i, 4]
+        stock_data = scrape_stock_data(ticker)
+        current_price = stock_data["Current Price"]
+        week_low = stock_data["52W Low"]
+        week_high = stock_data["52W High"]
+    
+        # Calculate padding for visual clarity
+        padding = (week_high - week_low) * 0.05
+        ax4.set_xlim(week_low - padding, week_high + padding)
+    
+        # Draw a horizontal line for the 52-week range
+        ax4.axhline(y=0.5, xmin=0, xmax=1, color='black', linewidth=3)
+    
+        # Plot the Current Price as a red dot
+        ax4.scatter(current_price, 0.5, color='red', s=200)
+    
+        # Annotations and labels
+        ax4.annotate(f'${current_price:.2f}', xy=(current_price, 0.5), fontsize=16, color='red', ha='center', va='bottom', xytext=(0, 10), textcoords='offset points')
+        ax4.annotate(f'${week_low:.2f}', xy=(week_low, 0.5), fontsize=16, color='black', ha='left', va='top', xytext=(5, -20), textcoords='offset points')
+        ax4.annotate(f'${week_high:.2f}', xy=(week_high, 0.5), fontsize=16, color='black', ha='right', va='top', xytext=(-5, -20), textcoords='offset points')
+    
+        ax4.axis('off')
+
+
+    plt.tight_layout()
+    st.pyplot(fig, use_container_width=True)
+
+if st.sidebar.checkbox("Income Statement"):
+    st.subheader(f"Income Statement for {selected_stock}")
+    financial_statements = get_financial_statements(selected_stock)
+    if financial_statements and not financial_statements['income_statement'].empty:
+        st.dataframe(financial_statements['income_statement'])
     else:
-        print(f"{ticker} is not a stock, it is a {quote_type}.")
-#tickers = stock_tickers
-    
-    
+        st.write("Income Statement data not available.")
+
+if st.sidebar.checkbox("Balance Sheet"):
+    st.subheader(f"Balance Sheet for {selected_stock}")
+    financial_statements = get_financial_statements(selected_stock)
+    if financial_statements and not financial_statements['balance_sheet'].empty:
+        st.dataframe(financial_statements['balance_sheet'])
+    else:
+        st.write("Balance Sheet data not available.")
+
+if st.sidebar.checkbox("Cash Flow"):
+    st.subheader(f"Cash Flow for {selected_stock}")
+    financial_statements = get_financial_statements(selected_stock)
+    if financial_statements and not financial_statements['cash_flow'].empty:
+        st.dataframe(financial_statements['cash_flow'])
+    else:
+        st.write("Cash Flow data not available.")
+
+if st.sidebar.checkbox("Calculate FCFF and FCFE"):
+    st.subheader(f"FCFF & FCFE for {selected_stock}")
+    fcff_fcfe_results = calculate_fcff_and_fcfe(selected_stock)
+    #st.write(fcff_fcfe_results)
+    st.table(fcff_fcfe_results)
