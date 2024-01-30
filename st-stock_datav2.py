@@ -72,15 +72,10 @@ def fetch_stock_performance(tickers, start_date, end_date):
     # Fetch the historical close prices and volumes for the tickers
     data = yf.download(tickers, start=start_date, end=end_date)
     return data
-def scrape_market_cap(ticker):
-    try:
-        stock = yf.Ticker(ticker)
-        info = stock.info
-        market_cap = info.get("marketCap")
-        return market_cap
-    except Exception as e:
-        print(f"Error retrieving market cap for {ticker}: {e}")
-        return None  # or an appropriate default value
+
+
+
+
 
     
 
@@ -144,15 +139,38 @@ if st.button('Run'):
     figsize_height = num_subplots * 4  # Height of the entire figure
     
     fig, axs = plt.subplots(num_subplots, 5, figsize=(figsize_width, figsize_height))
+
+    
+
     
     for i, ticker in enumerate(tickers):
+
+        # Function to scrape market cap data
+        def scrape_market_cap(ticker):
+            stock = yf.Ticker(ticker)
+            info = stock.info
+            market_cap = info.get("marketCap")
+            return market_cap
+        
+        # Get market cap data
         market_caps = {ticker: scrape_market_cap(ticker) for ticker in tickers}
+        
+        # Find the largest market cap for scaling
         max_market_cap = max(market_caps.values())
+        
+        #Scrape data for the ticker
+        stock_data = scrape_stock_data(ticker)
+        
+        # Extract Profit Margin, ROA, and ROE values and convert to percentage
+        profit_margin = stock_data["Profit Margin"] * 100
+        roa = stock_data["ROA"] * 100 if isinstance(stock_data["ROA"], (float, int)) and stock_data["ROA"] > 0 else 0
+        roe = stock_data["ROE"] * 100 if isinstance(stock_data["ROE"], (float, int)) and stock_data["ROE"] > 0 else 0
+    
+        #market_caps = {ticker: scrape_market_cap(ticker) for ticker in tickers}
+        #max_market_cap = max(market_caps.values())
     
         stock_data = scrape_stock_data(ticker)
         profit_margin = stock_data["Profit Margin"] * 100
-        roa = stock_data["ROA"] * 100
-        roe = stock_data["ROE"] * 100
     
         # Ticker Labels (First Column)
         axs[i, 0].axis('off')
