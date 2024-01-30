@@ -394,5 +394,6 @@ if st.sidebar.checkbox("Cash Flow"):
 
 if st.sidebar.checkbox("Calculate FCFF and FCFE"):
     fcff_fcfe_results = calculate_fcff_and_fcfe(selected_stock)
-    st.write(fcff_fcfe_results)
+    #st.write(fcff_fcfe_results)
+    st.dataframe(fcff_fcfe_results)
 
