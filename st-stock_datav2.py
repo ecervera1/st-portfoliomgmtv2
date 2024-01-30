@@ -108,8 +108,14 @@ def get_financial_value(df, pattern, year_offset=0):
 
 
 
+# Function to extract the year from a DataFrame column
+
 def extract_year_from_column(column):
-    return column.split('-')[0] if '-' in column else column
+    try:
+        return pd.to_datetime(column).year
+    except Exception as e:
+        print(f"Error in extracting year: {e}")
+        return None
 
 
 # Function to calculate FCFF and FCFE
@@ -121,13 +127,10 @@ def calculate_fcff_and_fcfe(ticker):
 
     results = pd.DataFrame()
 
-    for i in range(3):
-    #for i in range(2, -1, -1):
-        column = income_statement.columns[i]
-        year = extract_year_from_column(column)
-        if year is None:
-            continue
 
+    years_in_reverse = list(reversed(income_statement.columns))
+
+    for i, column in enumerate(years_in_reverse):
         net_income = get_financial_value(income_statement, 'Net Income', i)
         depreciation = get_financial_value(cash_flow, 'Depreciation And Amortization', i)
         interest_expense = get_financial_value(income_statement, 'Interest Expense', i)
