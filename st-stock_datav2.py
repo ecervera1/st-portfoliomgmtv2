@@ -155,7 +155,8 @@ def calculate_fcff_and_fcfe(ticker):
                                 'Income Before Tax': [income_before_tax], 'CapEx': [capex],
                                 'Net Borrowing': [net_borrowing], 'Change in NWC': [change_in_nwc],
                                 'Tax Rate': [tax_rate], 'FCFF': [fcff], 'FCFE': [fcfe]})
-        results = pd.concat([results, new_row], ignore_index=True)
+        #results = pd.concat([results, new_row], ignore_index=True)
+        results = results.iloc[::-1].reset_index(drop=True)
 
     return results
     #print(results)
