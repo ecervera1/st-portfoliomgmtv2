@@ -295,6 +295,9 @@ if st.sidebar.button('Run'):
     plt.tight_layout()
     st.pyplot(fig, use_container_width=True)
 
+    selected_stock = st.sidebar.selectbox("Select a Stock", tickers)
+
+    
     # Checkbox to display stock actions
     actions = st.sidebar.checkbox("Stock Actions")
     if actions:
