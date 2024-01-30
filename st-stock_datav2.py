@@ -151,7 +151,7 @@ def calculate_fcff_and_fcfe(ticker):
         fcfe = fcff - (interest_expense * (1 - tax_rate)) + net_borrowing
 
         # Append the calculations to the results DataFrame
-        new_row = pd.DataFrame({'Year': [year], 'Net Income': [net_income], 'Depreciation': [depreciation],
+        new_row = pd.DataFrame({'Year': [column], 'Net Income': [net_income], 'Depreciation': [depreciation],
                                 'Interest Expense': [interest_expense], 'Tax Expense': [tax_expense],
                                 'Income Before Tax': [income_before_tax], 'CapEx': [capex],
                                 'Net Borrowing': [net_borrowing], 'Change in NWC': [change_in_nwc],
