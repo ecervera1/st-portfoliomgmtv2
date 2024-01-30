@@ -68,12 +68,12 @@ def get_financials(ticker):
         st.error(f"Error fetching financials for {ticker}: {e}")
         return pd.DataFrame()
         
-def get_financial_statements(ticker_symbol):
-    stock = yf.Ticker(ticker_symbol)
+def get_financial_statements(ticker):
+    stock = yf.Ticker(ticker)
     financial_statements = {
-        'income_statement': stock.financials,
-        'balance_sheet': stock.balance_sheet,
-        'cash_flow': stock.cashflow
+        "income_statement": stock.financials,
+        "balance_sheet": stock.balance_sheet,
+        "cash_flow": stock.cashflow
     }
     return financial_statements
 
