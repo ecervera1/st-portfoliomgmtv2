@@ -6,16 +6,20 @@ import matplotlib.patheffects as path_effects
 from datetime import datetime
 import re
 
+
 custom_css = """
 <style>
+    .stActionButton button[kind="header"] {
+        visibility: hidden;
+    }
 
-
-    div[data-testid="stActionButtonIcon"] {
-        display: none;
+    .stActionButton div[data-testid="stActionButtonIcon"] {
+        visibility: hidden;
     }
 </style>
 """
 st.markdown(custom_css, unsafe_allow_html=True)
+
 
 
 
