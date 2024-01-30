@@ -67,6 +67,16 @@ def get_financials(ticker):
     except Exception as e:
         st.error(f"Error fetching financials for {ticker}: {e}")
         return pd.DataFrame()
+        
+def get_financial_statements(ticker_symbol):
+    stock = yf.Ticker(ticker_symbol)
+    financial_statements = {
+        'income_statement': stock.financials,
+        'balance_sheet': stock.balance_sheet,
+        'cash_flow': stock.cashflow
+    }
+    return financial_statements
+
 
 # Streamlit app layout
 st.title('Portfolio Management - Stock Comparative Analysis')
@@ -298,59 +308,19 @@ if st.sidebar.button('Run'):
     plt.tight_layout()
     st.pyplot(fig, use_container_width=True)
 
-if st.sidebar.checkbox("Stock Actions"):
-    st.subheader(f"Stock **actions** for {selected_stock}")
-    display_action = stock_data.actions
-    if display_action.empty:
-        st.write("No data available at the moment")
-    else:
-        st.table(display_action)
-
-if st.sidebar.checkbox("Quarterly Financials"):
-    st.subheader(f"**Quarterly financials** for {selected_stock}")
-    display_financials = stock_data.quarterly_financials
-    if display_financials.empty:
-        st.write("No data available at the moment")
-    else:
-        st.table(display_financials)
-
-if st.sidebar.checkbox("Institutional Shareholders"):
-    st.subheader(f"**Institutional investors** for {selected_stock}")
-    display_shareholders = stock_data.institutional_holders
-    if display_shareholders.empty:
-        st.write("No data available at the moment")
-    else:
-        st.table(display_shareholders)
-
-if st.sidebar.checkbox("Quarterly Balance Sheet"):
-    st.subheader(f"**Quarterly balance sheet** for {selected_stock}")
-    display_balancesheet = stock_data.quarterly_balance_sheet
-    if display_balancesheet.empty:
-        st.write("No data available at the moment")
-    else:
-        st.table(display_balancesheet)
-
-if st.sidebar.checkbox("Quarterly Cashflow"):
-    st.subheader(f"**Quarterly cashflow** for {selected_stock}")
-    display_cashflow = stock_data.quarterly_cashflow
-    if display_cashflow.empty:
-        st.write("No data available at the moment")
-    else:
-        st.table(display_cashflow)
-
-if st.sidebar.checkbox("Quarterly Earnings"):
-    st.subheader(f"**Quarterly earnings** for {selected_stock}")
-    display_earnings = stock_data.quarterly_earnings
-    if display_earnings.empty:
-        st.write("No data available at the moment")
-    else:
-        st.table(display_earnings)
-
-if st.sidebar.checkbox("Analysts Recommendation"):
-    st.subheader(f"**Analysts recommendation** for {selected_stock}")
-    display_analyst_rec = stock_data.recommendations
-    if display_analyst_rec.empty:
-        st.write("No data available at the moment")
-    else:
-        st.table(display_analyst_rec)
+    # Checkbox functionalities
+    if st.sidebar.checkbox("Income Statement"):
+        st.subheader(f"Income Statement for {selected_stock}")
+        financial_statements = get_financial_statements(selected_stock)
+        st.dataframe(financial_statements['income_statement'])
+    
+    if st.sidebar.checkbox("Balance Sheet"):
+        st.subheader(f"Balance Sheet for {selected_stock}")
+        financial_statements = get_financial_statements(selected_stock)
+        st.dataframe(financial_statements['balance_sheet'])
+    
+    if st.sidebar.checkbox("Cash Flow"):
+        st.subheader(f"Cash Flow for {selected_stock}")
+        financial_statements = get_financial_statements(selected_stock)
+        st.dataframe(financial_statements['cash_flow'])
 
