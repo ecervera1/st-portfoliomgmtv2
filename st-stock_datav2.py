@@ -254,11 +254,6 @@ if st.sidebar.button('Run'):
 
     # Display the DataFrame as a table
     st.table(stock_data_transposed)
-
-
-    tickers = equity_tickers
-    #tickers = [ticker.strip() for ticker in equity_tickers.split(',')]
-
     
     # Creating Charts
     num_subplots = len(tickers) + 1
