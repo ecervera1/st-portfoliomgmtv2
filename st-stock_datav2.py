@@ -198,7 +198,7 @@ if st.button('Run'):
             ax2.text(value, index, f" {value:.2f}%", va='center', ha='right' if value < 0 else 'left', fontsize=16)
         
             # Add bar label (metric name) to the left of the bar
-            ax2.text(-5, index, label, va='center', ha='right', fontsize=16)
+            ax2.text(-1, index, label, va='center', ha='right', fontsize=16)
         
         ax2.spines['top'].set_visible(False)
         ax2.spines['right'].set_visible(False)
