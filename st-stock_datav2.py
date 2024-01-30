@@ -308,27 +308,27 @@ if st.sidebar.button('Run'):
     plt.tight_layout()
     st.pyplot(fig, use_container_width=True)
 
-    if st.sidebar.checkbox("Income Statement"):
-        st.subheader(f"Income Statement for {selected_stock}")
-        financial_statements = get_financial_statements(selected_stock)
-        if financial_statements and not financial_statements['income_statement'].empty:
-            st.dataframe(financial_statements['income_statement'])
-        else:
-            st.write("Income Statement data not available.")
-    
-    if st.sidebar.checkbox("Balance Sheet"):
-        st.subheader(f"Balance Sheet for {selected_stock}")
-        financial_statements = get_financial_statements(selected_stock)
-        if financial_statements and not financial_statements['balance_sheet'].empty:
-            st.dataframe(financial_statements['balance_sheet'])
-        else:
-            st.write("Balance Sheet data not available.")
-    
-    if st.sidebar.checkbox("Cash Flow"):
-        st.subheader(f"Cash Flow for {selected_stock}")
-        financial_statements = get_financial_statements(selected_stock)
-        if financial_statements and not financial_statements['cash_flow'].empty:
-            st.dataframe(financial_statements['cash_flow'])
-        else:
-            st.write("Cash Flow data not available.")
+        if st.sidebar.checkbox("Income Statement"):
+            st.subheader(f"Income Statement for {selected_stock}")
+            financial_statements = get_financial_statements(selected_stock)
+            if financial_statements and not financial_statements['income_statement'].empty:
+                st.dataframe(financial_statements['income_statement'])
+            else:
+                st.write("Income Statement data not available.")
+        
+        if st.sidebar.checkbox("Balance Sheet"):
+            st.subheader(f"Balance Sheet for {selected_stock}")
+            financial_statements = get_financial_statements(selected_stock)
+            if financial_statements and not financial_statements['balance_sheet'].empty:
+                st.dataframe(financial_statements['balance_sheet'])
+            else:
+                st.write("Balance Sheet data not available.")
+        
+        if st.sidebar.checkbox("Cash Flow"):
+            st.subheader(f"Cash Flow for {selected_stock}")
+            financial_statements = get_financial_statements(selected_stock)
+            if financial_statements and not financial_statements['cash_flow'].empty:
+                st.dataframe(financial_statements['cash_flow'])
+            else:
+                st.write("Cash Flow data not available.")
 
