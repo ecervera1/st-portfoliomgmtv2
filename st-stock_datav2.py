@@ -110,7 +110,7 @@ tickers = [ticker.strip() for ticker in user_input.split(',')]
 selected_stock = st.sidebar.selectbox("Select a Stock", tickers)
 
 # Input for date range
-start_date = st.sidebar.date_input("Start Date", pd.to_datetime("2013-01-01"))
+start_date = st.sidebar.date_input("Start Date", pd.to_datetime("2021-01-01"))
 
 # Set the default "End Date" value to be today's date
 default_end_date = datetime.today().date()
