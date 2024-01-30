@@ -72,6 +72,16 @@ def fetch_stock_performance(tickers, start_date, end_date):
     # Fetch the historical close prices and volumes for the tickers
     data = yf.download(tickers, start=start_date, end=end_date)
     return data
+def scrape_market_cap(ticker):
+    try:
+        stock = yf.Ticker(ticker)
+        info = stock.info
+        market_cap = info.get("marketCap")
+        return market_cap
+    except Exception as e:
+        print(f"Error retrieving market cap for {ticker}: {e}")
+        return None  # or an appropriate default value
+
     
 
 
