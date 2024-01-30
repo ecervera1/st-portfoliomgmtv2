@@ -129,83 +129,83 @@ if st.button('Run'):
     st.table(stock_data_transposed)
 
     # Creating Charts
-num_subplots = len(tickers)
-figsize_width = 26
-figsize_height = num_subplots * 4  # Height of the entire figure
-
-fig, axs = plt.subplots(num_subplots, 5, figsize=(figsize_width, figsize_height))
-
-for i, ticker in enumerate(tickers):
-    market_caps = {ticker: scrape_market_cap(ticker) for ticker in tickers}
-    max_market_cap = max(market_caps.values())
-
-    stock_data = scrape_stock_data(ticker)
-    profit_margin = stock_data["Profit Margin"] * 100
-    roa = stock_data["ROA"] * 100
-    roe = stock_data["ROE"] * 100
-
-    # Ticker Labels (First Column)
-    axs[i, 0].axis('off')
-    axs[i, 0].text(0.5, 0.5, ticker, ha='center', va='center', fontsize=20)
-
-    # Market Cap Visualization (Second Column)
-    ax1 = axs[i, 1]
-    market_cap = market_caps.get(ticker, 0)
-    relative_size = market_cap / max_market_cap if max_market_cap > 0 else 0
-    ax1.bar(['Market Cap'], [market_cap], color='lightblue')
-    ax1.text(0, market_cap, f"{market_cap / 1e9:.2f}B\n({relative_size * 100:.2f}%)", 
-             ha='center', va='bottom', fontsize=16)
-    ax1.set_xticks([])
-    ax1.spines['top'].set_visible(False)
-    ax1.spines['right'].set_visible(False)
-    ax1.spines['left'].set_visible(False)
-
-    # Financial Metrics (Third Column)
-    ax2 = axs[i, 2]
-    metrics = [profit_margin, roa, roe]
-    metric_names = ["Profit Margin", "ROA", "ROE"]
-    ax2.barh(metric_names, metrics, color=['#A3C5A8', '#B8D4B0', '#C8DFBB'])
-    for index, value in enumerate(metrics):
-        ax2.text(value, index, f" {value:.2f}%", va='center', ha='right' if value < 0 else 'left', fontsize=16)
-    ax2.spines['top'].set_visible(False)
-    ax2.spines['right'].set_visible(False)
-    ax2.spines['bottom'].set_visible(False)
-    ax2.spines['left'].set_visible(False)
-    ax2.set_xticks([])
-    ax2.set_yticks([])
-
-    # Revenue Comparison (Fourth Column)
-    ax3 = axs[i, 3]
-    financials = get_financials(ticker)
-    current_year_revenue = financials.loc["Total Revenue"][0]
-    previous_year_revenue = financials.loc["Total Revenue"][1]
-    revenue_growth = ((current_year_revenue - previous_year_revenue) / previous_year_revenue) * 100
-    ax3.bar(["Previous", "Current"], [previous_year_revenue, current_year_revenue], color=['blue', 'orange'])
-    ax3.set_xticks([])
-    ax3.spines['top'].set_visible(False)
-    ax3.spines['right'].set_visible(False)
-    ax3.spines['bottom'].set_visible(False)
-    ax3.spines['left'].set_visible(False)
-    for bar in ax3.patches:
-        ax3.annotate(f'{bar.get_height() / 1e9:.2f}B', (bar.get_x() + bar.get_width() / 2, bar.get_height()),
-                     ha='center', va='center', color='white', fontsize=14, xytext=(0, 5), textcoords='offset points')
-    ax3.annotate(f"Growth: {revenue_growth:.2f}%", xy=(0.5, max(previous_year_revenue, current_year_revenue)), 
+    num_subplots = len(tickers)
+    figsize_width = 26
+    figsize_height = num_subplots * 4  # Height of the entire figure
+    
+    fig, axs = plt.subplots(num_subplots, 5, figsize=(figsize_width, figsize_height))
+    
+    for i, ticker in enumerate(tickers):
+        market_caps = {ticker: scrape_market_cap(ticker) for ticker in tickers}
+        max_market_cap = max(market_caps.values())
+    
+        stock_data = scrape_stock_data(ticker)
+        profit_margin = stock_data["Profit Margin"] * 100
+        roa = stock_data["ROA"] * 100
+        roe = stock_data["ROE"] * 100
+    
+        # Ticker Labels (First Column)
+        axs[i, 0].axis('off')
+        axs[i, 0].text(0.5, 0.5, ticker, ha='center', va='center', fontsize=20)
+    
+        # Market Cap Visualization (Second Column)
+        ax1 = axs[i, 1]
+        market_cap = market_caps.get(ticker, 0)
+        relative_size = market_cap / max_market_cap if max_market_cap > 0 else 0
+        ax1.bar(['Market Cap'], [market_cap], color='lightblue')
+        ax1.text(0, market_cap, f"{market_cap / 1e9:.2f}B\n({relative_size * 100:.2f}%)", 
                  ha='center', va='bottom', fontsize=16)
-
-    # 52-Week Range (Fifth Column)
-    ax4 = axs[i, 4]
-    week_low = stock_data["52W Low"]
-    week_high = stock_data["52W High"]
-    current_price = stock_data["Current Price"]
-    ax4.plot(["52W Low", "52W High"], [week_low, week_high], color='black', marker='o')
-    ax4.scatter(["Current Price"], [current_price], color='red')
-    ax4.annotate(f"${current_price:.2f}", xy=("Current Price", current_price), 
-                 xytext=(0, 10), textcoords='offset points', ha='center', va='bottom', fontsize=16)
-    ax4.set_yticks([])
-    ax4.spines['top'].set_visible(False)
-    ax4.spines['right'].set_visible(False)
-    ax4.spines['bottom'].set_visible(False)
-    ax4.spines['left'].set_visible(False)
-
-plt.tight_layout()
-st.pyplot(fig, use_container_width=True)
+        ax1.set_xticks([])
+        ax1.spines['top'].set_visible(False)
+        ax1.spines['right'].set_visible(False)
+        ax1.spines['left'].set_visible(False)
+    
+        # Financial Metrics (Third Column)
+        ax2 = axs[i, 2]
+        metrics = [profit_margin, roa, roe]
+        metric_names = ["Profit Margin", "ROA", "ROE"]
+        ax2.barh(metric_names, metrics, color=['#A3C5A8', '#B8D4B0', '#C8DFBB'])
+        for index, value in enumerate(metrics):
+            ax2.text(value, index, f" {value:.2f}%", va='center', ha='right' if value < 0 else 'left', fontsize=16)
+        ax2.spines['top'].set_visible(False)
+        ax2.spines['right'].set_visible(False)
+        ax2.spines['bottom'].set_visible(False)
+        ax2.spines['left'].set_visible(False)
+        ax2.set_xticks([])
+        ax2.set_yticks([])
+    
+        # Revenue Comparison (Fourth Column)
+        ax3 = axs[i, 3]
+        financials = get_financials(ticker)
+        current_year_revenue = financials.loc["Total Revenue"][0]
+        previous_year_revenue = financials.loc["Total Revenue"][1]
+        revenue_growth = ((current_year_revenue - previous_year_revenue) / previous_year_revenue) * 100
+        ax3.bar(["Previous", "Current"], [previous_year_revenue, current_year_revenue], color=['blue', 'orange'])
+        ax3.set_xticks([])
+        ax3.spines['top'].set_visible(False)
+        ax3.spines['right'].set_visible(False)
+        ax3.spines['bottom'].set_visible(False)
+        ax3.spines['left'].set_visible(False)
+        for bar in ax3.patches:
+            ax3.annotate(f'{bar.get_height() / 1e9:.2f}B', (bar.get_x() + bar.get_width() / 2, bar.get_height()),
+                         ha='center', va='center', color='white', fontsize=14, xytext=(0, 5), textcoords='offset points')
+        ax3.annotate(f"Growth: {revenue_growth:.2f}%", xy=(0.5, max(previous_year_revenue, current_year_revenue)), 
+                     ha='center', va='bottom', fontsize=16)
+    
+        # 52-Week Range (Fifth Column)
+        ax4 = axs[i, 4]
+        week_low = stock_data["52W Low"]
+        week_high = stock_data["52W High"]
+        current_price = stock_data["Current Price"]
+        ax4.plot(["52W Low", "52W High"], [week_low, week_high], color='black', marker='o')
+        ax4.scatter(["Current Price"], [current_price], color='red')
+        ax4.annotate(f"${current_price:.2f}", xy=("Current Price", current_price), 
+                     xytext=(0, 10), textcoords='offset points', ha='center', va='bottom', fontsize=16)
+        ax4.set_yticks([])
+        ax4.spines['top'].set_visible(False)
+        ax4.spines['right'].set_visible(False)
+        ax4.spines['bottom'].set_visible(False)
+        ax4.spines['left'].set_visible(False)
+    
+    plt.tight_layout()
+    st.pyplot(fig, use_container_width=True)
