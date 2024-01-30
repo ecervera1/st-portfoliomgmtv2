@@ -195,10 +195,13 @@ if st.button('Run'):
         bars = ax2.barh(metric_names, metrics, color=['#A3C5A8', '#B8D4B0', '#C8DFBB'])
         
         for index, (label, value) in enumerate(zip(metric_names, metrics)):
-            ax2.text(value, index, f" {value:.2f}%", va='center', ha='right' if value < 0 else 'left', fontsize=16)
+            # Adjusting the position dynamically
+            label_x_offset = max(-1, -0.1 * len(str(value)))
+            ax2.text(label_x_offset, index, label, va='center', ha='right', fontsize=16)
+
         
             # Add bar label (metric name) to the left of the bar
-            ax2.text(-1, index, label, va='center', ha='right', fontsize=16)
+            #ax2.text(-1, index, label, va='center', ha='right', fontsize=16)
         
         ax2.spines['top'].set_visible(False)
         ax2.spines['right'].set_visible(False)
