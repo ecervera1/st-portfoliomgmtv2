@@ -6,6 +6,22 @@ import matplotlib.patheffects as path_effects
 from datetime import datetime
 import re
 
+custom_css = """
+<style>
+    button[kind="header"] {
+        display: none;
+    }
+
+    div[data-testid="stActionButtonIcon"] {
+        display: none;
+    }
+</style>
+"""
+st.markdown(custom_css, unsafe_allow_html=True)
+
+
+
+
 # Function to scrape summary stock data
 def scrape_stock_data(ticker):
     stock = yf.Ticker(ticker)
