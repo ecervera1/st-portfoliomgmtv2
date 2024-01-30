@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 from datetime import datetime
+import re
 
 # Function to scrape summary stock data
 def scrape_stock_data(ticker):
@@ -99,8 +100,7 @@ end_date = st.sidebar.date_input("End Date", default_end_date)
 
 def get_financial_value(df, pattern, year_offset=0):
     for label in df.index:
-        # Ensure the label is a string
-        if isinstance(label, str) and re.search(pattern, label, re.IGNORECASE):
+        if re.search(pattern, label, re.IGNORECASE):
             if 0 <= year_offset < len(df.columns):
                 return df.loc[label].iloc[-(year_offset + 1)]
             break
@@ -156,6 +156,7 @@ def calculate_fcff_and_fcfe(ticker):
         results = pd.concat([results, new_row], ignore_index=True)
 
     return results
+    #print(results)
 
 
 # Button to run the scraper and plot stock performance
