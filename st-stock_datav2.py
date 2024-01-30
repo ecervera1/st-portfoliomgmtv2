@@ -106,13 +106,10 @@ def get_financial_value(df, pattern, year_offset=0):
             break
     return 0.0
 
-# Function to extract the year from a DataFrame column
+
+
 def extract_year_from_column(column):
-    try:
-        return pd.to_datetime(column).year
-    except Exception as e:
-        print(f"Error in extracting year: {e}")
-        return None
+    return column.split('-')[0] if '-' in column else column
 
 
 # Function to calculate FCFF and FCFE
