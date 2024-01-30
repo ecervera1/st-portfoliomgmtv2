@@ -84,66 +84,6 @@ start_date = st.sidebar.date_input("Start Date", pd.to_datetime("2013-01-01"))
 default_end_date = datetime.today().date()
 end_date = st.sidebar.date_input("End Date", default_end_date)
 
-# Button to run the scraper and plot stock performance
-if st.sidebar.button('Run'):
-    # Split the user input into a list of tickers
-    tickers = [ticker.strip() for ticker in user_input.split(',')]
-
-    # Plot stock performance
-    data = fetch_stock_performance(tickers, start_date, end_date)
-
-    st.title('Stock Performance Chart')
-    # Format the date range for the selected date range
-    formatted_start_date = start_date.strftime("%Y-%m-%d")
-    formatted_end_date = end_date.strftime("%Y-%m-%d")
-
-    st.markdown(f'({formatted_start_date} - {formatted_end_date})')
-    
-    # Plotting the interactive line chart
-    st.line_chart(data['Adj Close'])
-
-    last_10_years_end_date = end_date
-    last_10_years_start_date = last_10_years_end_date - pd.DateOffset(years=10)
-    data_last_10_years = fetch_stock_performance(tickers, last_10_years_start_date, last_10_years_end_date)
-
-    st.title('Stock Performance Chart (Last 10 Years)')
-    formatted_last_10_years_start_date = last_10_years_start_date.strftime("%b-%y")
-    formatted_last_10_years_end_date = last_10_years_end_date.strftime("%b-%y")
-
-    st.markdown(f'({formatted_last_10_years_start_date} - {formatted_last_10_years_end_date})')
-
-    # Plotting the interactive line chart for the last 10 years
-    st.line_chart(data_last_10_years['Adj Close'])
-    
-    st.title('Stock Data')
-
-    # Create an empty list to store dictionaries of stock data
-    stock_data_list = []
-
-    # Loop through each ticker, scrape the data, and add it to the list
-    for ticker in tickers:
-        try:
-            ticker_data = scrape_stock_data(ticker)
-            stock_data_list.append(ticker_data)
-        except Exception as e:
-            st.error(f"Error fetching data for {ticker}: {e}")
-
-    # Create a DataFrame from the list of dictionaries
-    stock_data_df = pd.DataFrame(stock_data_list, index=tickers)
-
-    # Transpose the DataFrame
-    stock_data_transposed = stock_data_df.transpose()
-
-    stock_data_transposed.fillna('-', inplace=True)
-
-    for col in stock_data_transposed.columns:
-        if col != "52W Range":  # Exclude the "52W Range" column
-            stock_data_transposed[col] = stock_data_transposed[col].apply(
-                lambda x: f'{x:.2f}' if isinstance(x, float) else x)
-
-    # Display the DataFrame as a table
-    st.table(stock_data_transposed)
-
     # Checkbox to display stock actions
     actions = st.sidebar.checkbox("Stock Actions")
     if actions:
@@ -213,6 +153,68 @@ if st.sidebar.button('Run'):
             st.write("No data available at the moment")
         else:
             st.write(display_analyst_rec)
+
+# Button to run the scraper and plot stock performance
+if st.sidebar.button('Run'):
+    # Split the user input into a list of tickers
+    tickers = [ticker.strip() for ticker in user_input.split(',')]
+
+    # Plot stock performance
+    data = fetch_stock_performance(tickers, start_date, end_date)
+
+    st.title('Stock Performance Chart')
+    # Format the date range for the selected date range
+    formatted_start_date = start_date.strftime("%Y-%m-%d")
+    formatted_end_date = end_date.strftime("%Y-%m-%d")
+
+    st.markdown(f'({formatted_start_date} - {formatted_end_date})')
+    
+    # Plotting the interactive line chart
+    st.line_chart(data['Adj Close'])
+
+    last_10_years_end_date = end_date
+    last_10_years_start_date = last_10_years_end_date - pd.DateOffset(years=10)
+    data_last_10_years = fetch_stock_performance(tickers, last_10_years_start_date, last_10_years_end_date)
+
+    st.title('Stock Performance Chart (Last 10 Years)')
+    formatted_last_10_years_start_date = last_10_years_start_date.strftime("%b-%y")
+    formatted_last_10_years_end_date = last_10_years_end_date.strftime("%b-%y")
+
+    st.markdown(f'({formatted_last_10_years_start_date} - {formatted_last_10_years_end_date})')
+
+    # Plotting the interactive line chart for the last 10 years
+    st.line_chart(data_last_10_years['Adj Close'])
+    
+    st.title('Stock Data')
+
+    # Create an empty list to store dictionaries of stock data
+    stock_data_list = []
+
+    # Loop through each ticker, scrape the data, and add it to the list
+    for ticker in tickers:
+        try:
+            ticker_data = scrape_stock_data(ticker)
+            stock_data_list.append(ticker_data)
+        except Exception as e:
+            st.error(f"Error fetching data for {ticker}: {e}")
+
+    # Create a DataFrame from the list of dictionaries
+    stock_data_df = pd.DataFrame(stock_data_list, index=tickers)
+
+    # Transpose the DataFrame
+    stock_data_transposed = stock_data_df.transpose()
+
+    stock_data_transposed.fillna('-', inplace=True)
+
+    for col in stock_data_transposed.columns:
+        if col != "52W Range":  # Exclude the "52W Range" column
+            stock_data_transposed[col] = stock_data_transposed[col].apply(
+                lambda x: f'{x:.2f}' if isinstance(x, float) else x)
+
+    # Display the DataFrame as a table
+    st.table(stock_data_transposed)
+
+
 
     # Creating Charts
     num_subplots = len(tickers) + 1
