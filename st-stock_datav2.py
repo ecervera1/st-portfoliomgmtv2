@@ -123,8 +123,8 @@ def calculate_fcff_and_fcfe(ticker):
 
     results = pd.DataFrame()
 
-    #for i in range(3):
-    for i in range(2, -1, -1):
+    for i in range(3):
+    #for i in range(2, -1, -1):
         column = income_statement.columns[i]
         year = extract_year_from_column(column)
         if year is None:
@@ -155,8 +155,8 @@ def calculate_fcff_and_fcfe(ticker):
                                 'Income Before Tax': [income_before_tax], 'CapEx': [capex],
                                 'Net Borrowing': [net_borrowing], 'Change in NWC': [change_in_nwc],
                                 'Tax Rate': [tax_rate], 'FCFF': [fcff], 'FCFE': [fcfe]})
-        #results = pd.concat([results, new_row], ignore_index=True)
-        results = results.iloc[::-1].reset_index(drop=True)
+        results = pd.concat([results, new_row], ignore_index=True)
+        
 
     return results
     #print(results)
