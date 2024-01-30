@@ -257,7 +257,7 @@ if st.sidebar.button('Run'):
 
 
     tickers = equity_tickers
-    #tickers = [ticker.strip() for ticker in equity_tickers.split(',')]
+    tickers = [ticker.strip() for ticker in equity_tickers.split(',')]
 
     
     # Creating Charts
