@@ -84,75 +84,7 @@ start_date = st.sidebar.date_input("Start Date", pd.to_datetime("2013-01-01"))
 default_end_date = datetime.today().date()
 end_date = st.sidebar.date_input("End Date", default_end_date)
 
-# Checkbox to display stock actions
-actions = st.sidebar.checkbox("Stock Actions")
-if actions:
-    st.subheader(f"Stock **actions** for {selected_stock}")
-    display_action = stock_data.actions
-    if display_action.empty:
-        st.write("No data available at the moment")
-    else:
-        st.write(display_action)
 
-# Checkbox to display quarterly financials
-financials = st.sidebar.checkbox("Quarterly Financials")
-if financials:
-    st.subheader(f"**Quarterly financials** for {selected_stock}")
-    display_financials = stock_data.quarterly_financials
-    if display_financials.empty:
-        st.write("No data available at the moment")
-    else:
-        st.write(display_financials)
-
-# Checkbox to display list of institutional shareholders
-major_shareholders = st.sidebar.checkbox("Institutional Shareholders")
-if major_shareholders:
-    st.subheader(f"**Institutional investors** for {selected_stock}")
-    display_shareholders = stock_data.institutional_holders
-    if display_shareholders.empty:
-        st.write("No data available at the moment")
-    else:
-        st.write(display_shareholders)
-
-# Checkbox to display quarterly balance sheet
-balance_sheet = st.sidebar.checkbox("Quarterly Balance Sheet")
-if balance_sheet:
-    st.subheader(f"**Quarterly balance sheet** for {selected_stock}")
-    display_balancesheet = stock_data.quarterly_balance_sheet
-    if display_balancesheet.empty:
-        st.write("No data available at the moment")
-    else:
-        st.write(display_balancesheet)
-
-# Checkbox to display quarterly cashflow
-cashflow = st.sidebar.checkbox("Quarterly Cashflow")
-if cashflow:
-    st.subheader(f"**Quarterly cashflow** for {selected_stock}")
-    display_cashflow = stock_data.quarterly_cashflow
-    if display_cashflow.empty:
-        st.write("No data available at the moment")
-    else:
-        st.write(display_cashflow)
-
-# Checkbox to display quarterly earnings
-earnings = st.sidebar.checkbox("Quarterly Earnings")
-if earnings:
-    st.subheader(f"**Quarterly earnings** for {selected_stock}")
-    display_earnings = stock_data.quarterly_earnings
-    if display_earnings.empty:
-        st.write("No data available at the moment")
-    else:
-        st.write(display_earnings)
-
-# Checkbox to display list of analysts' recommendations
-analyst_recommendation = st.sidebar.checkbox("Analysts Recommendation")
-if analyst_recommendation:
-    st.subheader(f"**Analysts recommendation** for {selected_stock}")
-    display_analyst_rec = stock_data.recommendations
-    if display_analyst_rec.empty:
-        st.write("No data available at the moment")
-    else:
-        st.write(display_analyst_rec)
 
 # Button to run the scraper and plot stock performance
 if st.sidebar.button('Run'):
@@ -214,6 +146,10 @@ if st.sidebar.button('Run'):
     # Display the DataFrame as a table
     st.table(stock_data_transposed)
 
+
+
+
+    
     # Creating Charts
     num_subplots = len(tickers) + 1
     figsize_width =  28
@@ -358,3 +294,73 @@ if st.sidebar.button('Run'):
 
     plt.tight_layout()
     st.pyplot(fig, use_container_width=True)
+
+    # Checkbox to display stock actions
+    actions = st.sidebar.checkbox("Stock Actions")
+    if actions:
+        st.subheader(f"Stock **actions** for {selected_stock}")
+        display_action = stock_data.actions
+        if display_action.empty:
+            st.write("No data available at the moment")
+        else:
+            st.write(display_action)
+
+    # Checkbox to display quarterly financials
+    financials = st.sidebar.checkbox("Quarterly Financials")
+    if financials:
+        st.subheader(f"**Quarterly financials** for {selected_stock}")
+        display_financials = stock_data.quarterly_financials
+        if display_financials.empty:
+            st.write("No data available at the moment")
+        else:
+            st.write(display_financials)
+    
+    # Checkbox to display list of institutional shareholders
+    major_shareholders = st.sidebar.checkbox("Institutional Shareholders")
+    if major_shareholders:
+        st.subheader(f"**Institutional investors** for {selected_stock}")
+        display_shareholders = stock_data.institutional_holders
+        if display_shareholders.empty:
+            st.write("No data available at the moment")
+        else:
+            st.write(display_shareholders)
+    
+    # Checkbox to display quarterly balance sheet
+    balance_sheet = st.sidebar.checkbox("Quarterly Balance Sheet")
+    if balance_sheet:
+        st.subheader(f"**Quarterly balance sheet** for {selected_stock}")
+        display_balancesheet = stock_data.quarterly_balance_sheet
+        if display_balancesheet.empty:
+            st.write("No data available at the moment")
+        else:
+            st.write(display_balancesheet)
+    
+    # Checkbox to display quarterly cashflow
+    cashflow = st.sidebar.checkbox("Quarterly Cashflow")
+    if cashflow:
+        st.subheader(f"**Quarterly cashflow** for {selected_stock}")
+        display_cashflow = stock_data.quarterly_cashflow
+        if display_cashflow.empty:
+            st.write("No data available at the moment")
+        else:
+            st.write(display_cashflow)
+    
+    # Checkbox to display quarterly earnings
+    earnings = st.sidebar.checkbox("Quarterly Earnings")
+    if earnings:
+        st.subheader(f"**Quarterly earnings** for {selected_stock}")
+        display_earnings = stock_data.quarterly_earnings
+        if display_earnings.empty:
+            st.write("No data available at the moment")
+        else:
+            st.write(display_earnings)
+    
+    # Checkbox to display list of analysts' recommendations
+    analyst_recommendation = st.sidebar.checkbox("Analysts Recommendation")
+    if analyst_recommendation:
+        st.subheader(f"**Analysts recommendation** for {selected_stock}")
+        display_analyst_rec = stock_data.recommendations
+        if display_analyst_rec.empty:
+            st.write("No data available at the moment")
+        else:
+            st.write(display_analyst_rec)
