@@ -97,6 +97,64 @@ start_date = st.sidebar.date_input("Start Date", pd.to_datetime("2013-01-01"))
 default_end_date = datetime.today().date()
 end_date = st.sidebar.date_input("End Date", default_end_date)
 
+def get_financial_value(df, pattern, year_offset=0):
+    for label in df.index:
+        if re.search(pattern, label, re.IGNORECASE):
+            if 0 <= year_offset < len(df.columns):
+                return df.loc[label].iloc[-(year_offset + 1)]
+            break
+    return 0.0
+
+# Function to extract the year from a DataFrame column
+def extract_year_from_column(column):
+    try:
+        return pd.to_datetime(column).year
+    except Exception as e:
+        print(f"Error in extracting year: {e}")
+        return None
+
+# Function to calculate FCFF and FCFE
+def calculate_fcff_and_fcfe(ticker):
+    tickerData = yf.Ticker(ticker)
+    income_statement = tickerData.financials
+    cash_flow = tickerData.cashflow
+    balance_sheet = tickerData.balance_sheet
+
+    results = pd.DataFrame()
+
+    for i in range(3):
+        column = income_statement.columns[i]
+        year = extract_year_from_column(column)
+        if year is None:
+            continue
+
+        net_income = get_financial_value(income_statement, 'Net Income', i)
+        depreciation = get_financial_value(cash_flow, 'Depreciation And Amortization', i)
+        interest_expense = get_financial_value(income_statement, 'Interest Expense', i)
+        tax_expense = get_financial_value(income_statement, 'Tax Provision', i)
+        income_before_tax = get_financial_value(income_statement, 'Pretax Income', i)
+        tax_rate = tax_expense / income_before_tax if income_before_tax != 0 else 0.21  # Fallback to a default tax rate
+        capex = get_financial_value(cash_flow, 'Capital Expenditure', i)
+        net_borrowing = get_financial_value(cash_flow, 'Issuance Of Debt', i) - get_financial_value(cash_flow, 'Repayment Of Debt', i)
+        current_assets = get_financial_value(balance_sheet, 'Total Current Assets', i)
+        previous_current_assets = get_financial_value(balance_sheet, 'Total Current Assets', i+1)
+        current_liabilities = get_financial_value(balance_sheet, 'Total Current Liabilities', i)
+        previous_current_liabilities = get_financial_value(balance_sheet, 'Total Current Liabilities', i+1)
+        change_in_nwc = (current_assets - previous_current_assets) - (current_liabilities - previous_current_liabilities)
+
+        # Calculate FCFF and FCFE
+        fcff = net_income + depreciation + (interest_expense * (1 - tax_rate)) - capex - change_in_nwc
+        fcfe = fcff - (interest_expense * (1 - tax_rate)) + net_borrowing
+
+        # Append the calculations to the results DataFrame
+        new_row = pd.DataFrame({'Year': [year], 'Net Income': [net_income], 'Depreciation': [depreciation],
+                                'Interest Expense': [interest_expense], 'Tax Expense': [tax_expense],
+                                'Income Before Tax': [income_before_tax], 'CapEx': [capex],
+                                'Net Borrowing': [net_borrowing], 'Change in NWC': [change_in_nwc],
+                                'Tax Rate': [tax_rate], 'FCFF': [fcff], 'FCFE': [fcfe]})
+        results = pd.concat([results, new_row], ignore_index=True)
+
+    return results
 
 
 # Button to run the scraper and plot stock performance
@@ -331,4 +389,8 @@ if st.sidebar.checkbox("Cash Flow"):
         st.dataframe(financial_statements['cash_flow'])
     else:
         st.write("Cash Flow data not available.")
+
+if st.sidebar.checkbox("Calculate FCFF and FCFE"):
+    fcff_fcfe_results = calculate_fcff_and_fcfe(selected_stock)
+    st.write(fcff_fcfe_results)
 
