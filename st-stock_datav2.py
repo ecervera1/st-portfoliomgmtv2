@@ -219,7 +219,7 @@ if st.sidebar.button('Run'):
     
     st.title('Stock Data')
 
-    # Create an empty list to store dictionaries of stock data
+    # Create an empty list to store dictionaries of stock data    
     stock_data_list = []
 
     # Loop through each ticker, scrape the data, and add it to the list
@@ -246,9 +246,27 @@ if st.sidebar.button('Run'):
     # Display the DataFrame as a table
     st.table(stock_data_transposed)
 
-
-
-
+    #-------------------- this is to filter out equities
+    def scrape_stock_data(ticker):
+        stock = yf.Ticker(ticker)
+        info = stock.info
+        return info
+    
+    stock_data = {}
+    stock_tickers = []  # List to hold stock tickers
+    
+    for ticker in tickers:
+        stock_data[ticker] = scrape_stock_data(ticker)
+    
+    # Filter out stocks and add them to the stock_tickers list
+    for ticker, data in stock_data.items():
+        quote_type = data.get('quoteType')
+        if quote_type == 'EQUITY':
+            print(f"{ticker} is a stock.")
+            stock_tickers.append(ticker)
+        else:
+            print(f"{ticker} is not a stock, it is a {quote_type}.")
+    tickers = stock_tickers
     
     # Creating Charts
     num_subplots = len(tickers) + 1
