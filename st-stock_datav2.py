@@ -192,9 +192,14 @@ if st.button('Run'):
         ax2 = axs[i, 2]
         metrics = [profit_margin, roa, roe]
         metric_names = ["Profit Margin", "ROA", "ROE"]
-        ax2.barh(metric_names, metrics, color=['#A3C5A8', '#B8D4B0', '#C8DFBB'])
-        for index, value in enumerate(metrics):
+        bars = ax2.barh(metric_names, metrics, color=['#A3C5A8', '#B8D4B0', '#C8DFBB'])
+        
+        for index, (label, value) in enumerate(zip(metric_names, metrics)):
             ax2.text(value, index, f" {value:.2f}%", va='center', ha='right' if value < 0 else 'left', fontsize=16)
+        
+            # Add bar label (metric name) to the left of the bar
+            ax2.text(-5, index, label, va='center', ha='right', fontsize=16)
+        
         ax2.spines['top'].set_visible(False)
         ax2.spines['right'].set_visible(False)
         ax2.spines['bottom'].set_visible(False)
