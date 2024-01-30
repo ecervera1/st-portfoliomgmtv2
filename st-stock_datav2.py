@@ -131,6 +131,11 @@ def calculate_fcff_and_fcfe(ticker):
     years_in_reverse = list(reversed(income_statement.columns))
 
     for i, column in enumerate(years_in_reverse):
+        column_date = pd.to_datetime(column)  # Convert the column to a datetime object
+        year = column_date.year  # Extract the year from the datetime object
+
+
+
         net_income = get_financial_value(income_statement, 'Net Income', i)
         depreciation = get_financial_value(cash_flow, 'Depreciation And Amortization', i)
         interest_expense = get_financial_value(income_statement, 'Interest Expense', i)
@@ -151,7 +156,7 @@ def calculate_fcff_and_fcfe(ticker):
         fcfe = fcff - (interest_expense * (1 - tax_rate)) + net_borrowing
 
         # Append the calculations to the results DataFrame
-        new_row = pd.DataFrame({'Year': [column], 'Net Income': [net_income], 'Depreciation': [depreciation],
+        new_row = pd.DataFrame({'Year': [year], 'Net Income': [net_income], 'Depreciation': [depreciation],
                                 'Interest Expense': [interest_expense], 'Tax Expense': [tax_expense],
                                 'Income Before Tax': [income_before_tax], 'CapEx': [capex],
                                 'Net Borrowing': [net_borrowing], 'Change in NWC': [change_in_nwc],
