@@ -433,13 +433,20 @@ if st.sidebar.checkbox("Calculate FCFF and FCFE"):
 if st.sidebar.checkbox("Latest News"):
     st.title(f"Latest News")
     #fcff_fcfe_results = calculate_fcff_and_fcfe(selected_stock)
-    st.write(
-        """
-Moderna (MRNA): Moderna's next earnings date is estimated to be February 22, 2024. Their last reported earnings on November 2, 2023, showed an earnings per share (EPS) of -$1.39, which was a positive surprise compared to the estimated -$2.01 by analysts. The firm earned $1.83 billion during that quarter​​.
+    news_text = """
+    ### Moderna (MRNA)
+    Moderna's next earnings date is estimated to be February 22, 2024. Their last reported earnings on November 2, 2023, showed an earnings per share (EPS) of -$1.39, which was a positive surprise compared to the estimated -$2.01 by analysts. The firm earned $1.83 billion during that quarter.
 
-Johnson & Johnson (JNJ): Johnson & Johnson released its earnings data on January 23, 2024. The company reported $2.29 EPS for the quarter, slightly exceeding the consensus estimate of $2.28. Their revenue for the quarter was $21.40 billion, compared to the forecasted $21.02 billion. The next estimated earnings date for Johnson & Johnson is April 16, 2024​​.
+    ### Johnson & Johnson (JNJ)
+    Johnson & Johnson released its earnings data on January 23, 2024. The company reported $2.29 EPS for the quarter, slightly exceeding the consensus estimate of $2.28. Their revenue for the quarter was $21.40 billion, compared to the forecasted $21.02 billion. The next estimated earnings date for Johnson & Johnson is April 16, 2024.
 
-Pfizer (PFE): On January 30, 2024, Pfizer reported its Q4 earnings. The company posted an EPS of $0.10, which was above the street estimate of -$0.18. However, Pfizer's Q4 revenue was $14.25 billion, falling short of the expected $14.40 billion. The company anticipates an EPS range of $2.05 - $2.25 for the fiscal year 2024​​.
-        """
-    )
+    ### Pfizer (PFE)
+    On January 30, 2024, Pfizer reported its Q4 earnings. The company posted an EPS of $0.10, which was above the street estimate of -$0.18. However, Pfizer's Q4 revenue was $14.25 billion, falling short of the expected $14.40 billion. The company anticipates an EPS range of $2.05 - $2.25 for the fiscal year 2024.
     
+    ### Johnson & Johnson (JNJ)
+    Johnson & Johnson released its earnings data on January 23, 2024. The company reported $2.29 EPS for the quarter, slightly exceeding the consensus estimate of $2.28. Their revenue for the quarter was $21.40 billion, compared to the forecasted $21.02 billion. The next estimated earnings date for Johnson & Johnson is April 16, 2024. JNJ reported strong Q4 and full-year 2023 results, with significant growth in their EPS for Q4 and the full year. The company has seen operational sales growth, particularly in its Innovative Medicine segment and MedTech segment. They've made regulatory advancements and strategic acquisitions, positioning themselves for future growth. They also settled some legal issues recently.
+
+    ### Pfizer (PFE)
+    On January 30, 2024, Pfizer reported its Q4 earnings. The company posted an EPS of $0.10, which was above the street estimate of -$0.18. However, Pfizer's Q4 revenue was $14.25 billion, falling short of the expected $14.40 billion. The company anticipates an EPS range of $2.05 - $2.25 for the fiscal year 2024. Pfizer beat earnings estimates, with a surprise quarterly profit reported. The company has seen better-than-expected demand for its COVID products and a decline in research costs. Despite some challenges, Pfizer reaffirmed its full-year 2024 guidance.
+    """
+    st.markdown(news_text)
