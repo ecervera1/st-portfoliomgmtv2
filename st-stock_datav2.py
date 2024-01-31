@@ -49,7 +49,12 @@ def scrape_stock_data(ticker):
         "Forward Annual Dividend Yield": info.get("dividendYield") or "-",
         "EPS per Year": info.get("trailingEps"),
         "Revenue Growth": info.get("revenueGrowth"),
-        "Earnings Growth": info.get("earningsGrowth")
+        "Earnings Growth": info.get("earningsGrowth"),
+        "Target Low": info.get("targetLowPrice"),
+        "Target Mean": info.get(targetMeanPrice"),
+        "Target Median": info.get(targetMedianPrice"),
+        "Recommendation Mean": info.get(recommendationMean"),
+        "Recommendation Key": info.get(recommendationKey")
     }
     return data
 
