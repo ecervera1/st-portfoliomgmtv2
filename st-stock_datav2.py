@@ -447,6 +447,10 @@ if st.sidebar.checkbox("Latest News"):
 
     ### Pfizer (PFE)
     On January 30, 2024, Pfizer reported its Q4 earnings. The company posted an EPS of $0.10, which was above the street estimate of -$0.18. However, Pfizer's Q4 revenue was $14.25 billion, falling short of the expected $14.40 billion. The company anticipates an EPS range of $2.05 - $2.25 for the fiscal year 2024. Pfizer beat earnings estimates, with a surprise quarterly profit reported. The company has seen better-than-expected demand for its COVID products and a decline in research costs. Despite some challenges, Pfizer reaffirmed its full-year 2024 guidance.
+    
+    ###Other notes:
+    JP Morgan forecasts that around 15 million obese patients will be on GLP-1s by the end of the decade and GLP-1 users in the U.S. may be at 30 million by 2030, or around 9% of the population.
+    
     """
     st.markdown(news_text)
     #st.text(news_text)
