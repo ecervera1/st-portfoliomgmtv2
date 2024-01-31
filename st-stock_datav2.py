@@ -458,6 +458,6 @@ if st.sidebar.checkbox("Latest News"):
     JP Morgan forecasts that around 15 million obese patients will be on GLP-1s by the end of the decade and GLP-1 users in the U.S. may be at 30 million by 2030, or around 9% of the population.
     
     """
-    st.markdown(news_text)
-    #st.text(news_text)
+    #st.markdown(news_text)
+    st.text(news_text)
     
