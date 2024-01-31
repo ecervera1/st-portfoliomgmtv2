@@ -51,10 +51,10 @@ def scrape_stock_data(ticker):
         "Revenue Growth": info.get("revenueGrowth"),
         "Earnings Growth": info.get("earningsGrowth"),
         "Target Low": info.get("targetLowPrice"),
-        "Target Mean": info.get(targetMeanPrice"),
-        "Target Median": info.get(targetMedianPrice"),
-        "Recommendation Mean": info.get(recommendationMean"),
-        "Recommendation Key": info.get(recommendationKey")
+        "Target Mean": info.get("targetMeanPrice"),
+        "Target Median": info.get("targetMedianPrice"),
+        "Recommendation Mean": info.get("recommendationMean"),
+        "Recommendation Key": info.get("recommendationKey")
     }
     return data
 
