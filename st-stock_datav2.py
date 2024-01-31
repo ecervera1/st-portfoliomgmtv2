@@ -434,7 +434,7 @@ if st.sidebar.checkbox("Latest News"):
     st.title(f"Latest News")
     news_text = """
     ### Moderna (MRNA)
-    Moderna's next earnings date is estimated to be February 22, 2024. Their last reported earnings on November 2, 2023, showed an earnings per share (EPS) of &#8722;$1.39, which was a positive surprise compared to the estimated -$2.01 by analysts. The firm earned $1.83 billion during that quarter.'
+    Moderna's next earnings date is estimated to be February 22, 2024. Their last reported earnings on November 2, 2023, showed an earnings per share (EPS) of -$1.39, which was a positive surprise compared to the estimated -$2.01 by analysts. The firm earned $1.83 billion during that quarter.'
 
     ### Johnson & Johnson (JNJ)
     Johnson & Johnson released its earnings data on January 23, 2024. The company reported $2.29 EPS for the quarter, slightly exceeding the consensus estimate of $2.28. Their revenue for the quarter was $21.40 billion, compared to the forecasted $21.02 billion. The next estimated earnings date for Johnson & Johnson is April 16, 2024.
