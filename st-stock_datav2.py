@@ -429,3 +429,17 @@ if st.sidebar.checkbox("Calculate FCFF and FCFE"):
     fcff_fcfe_results = calculate_fcff_and_fcfe(selected_stock)
     #st.write(fcff_fcfe_results)
     st.table(fcff_fcfe_results)
+    
+if st.sidebar.checkbox("Latest News"):
+    st.title(f"Latest News")
+    #fcff_fcfe_results = calculate_fcff_and_fcfe(selected_stock)
+    st.write(
+        """
+Moderna (MRNA): Moderna's next earnings date is estimated to be February 22, 2024. Their last reported earnings on November 2, 2023, showed an earnings per share (EPS) of -$1.39, which was a positive surprise compared to the estimated -$2.01 by analysts. The firm earned $1.83 billion during that quarter​​.
+
+Johnson & Johnson (JNJ): Johnson & Johnson released its earnings data on January 23, 2024. The company reported $2.29 EPS for the quarter, slightly exceeding the consensus estimate of $2.28. Their revenue for the quarter was $21.40 billion, compared to the forecasted $21.02 billion. The next estimated earnings date for Johnson & Johnson is April 16, 2024​​.
+
+Pfizer (PFE): On January 30, 2024, Pfizer reported its Q4 earnings. The company posted an EPS of $0.10, which was above the street estimate of -$0.18. However, Pfizer's Q4 revenue was $14.25 billion, falling short of the expected $14.40 billion. The company anticipates an EPS range of $2.05 - $2.25 for the fiscal year 2024​​.
+        """
+    )
+    
