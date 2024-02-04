@@ -218,6 +218,36 @@ if st.sidebar.button('Run'):
     # Plotting the interactive line chart
     st.line_chart(data['Adj Close'])
 
+
+    st.title('Stock Performance Chart')
+    
+    # Format the date range for the selected date range
+    formatted_start_date = start_date.strftime("%Y-%m-%d")
+    formatted_end_date = end_date.strftime("%Y-%m-%d")
+    
+    # Add a subtitle to display the date range on the chart
+    st.subheader(f"Date Range: {formatted_start_date} to {formatted_end_date}")
+    
+    # Plot the interactive line chart with Matplotlib
+    fig, ax = plt.subplots()
+    ax.plot(data['Adj Close'], label='Adj. Close', linewidth=2)  # Increase line thickness with 'linewidth'
+    
+    # Customize x-axis and y-axis labels' size
+    ax.set_xlabel("Date", fontsize=16)  # Set x-axis label font size
+    ax.set_ylabel("Price", fontsize=16)  # Set y-axis label font size
+    
+    # Customize x-axis and y-axis tick labels' size
+    ax.tick_params(axis='x', labelsize=14)  # Set x-axis tick labels font size
+    ax.tick_params(axis='y', labelsize=14)  # Set y-axis tick labels font size
+    
+    # Add a legend
+    ax.legend()
+    
+    # Use st.pyplot() to render the customized Matplotlib chart
+    st.pyplot(fig)
+
+    
+
     last_10_years_end_date = end_date
     last_10_years_start_date = last_10_years_end_date - pd.DateOffset(years=10)
     data_last_10_years = fetch_stock_performance(tickers, last_10_years_start_date, last_10_years_end_date)
