@@ -554,10 +554,25 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
     #selected_stock_prophet = st.sidebar.selectbox("Select a Stock for Predicted Forecast", tickers)
     selected_stock_prophet = selected_stock
 
-    num_runs = st.slider('Number of simulation runs:', 5000, 1000000, 10000, 1000)
+    num_runs = st.slider('Number of simulation runs: ', 5000, 1000000, 10000, 1000)
+    ###
+    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-    forecast_days = st.slider('Number of simulation runs:', 30, 504, 252, 3)
-    st.write("Number of runs: ", num_runs)
+    # Define the number to be formatted
+    num_runs_ = st.slider(
+        'Number of simulation runs:',
+        5000, 1000000, 10000, 1000
+    )
+    
+    # Format the number with commas
+    formatted_num_runs = locale.format_string("%d", num_runs_, grouping=True)
+    
+    # Display the formatted number
+    st.write(f'Formatted number: {formatted_num_runs}')
+    ###
+
+    forecast_days = st.slider('Days to forecast: ', 30, 504, 252, 3)
+    st.write("Forecast Days: ", num_runs)
     
     if selected_stock_prophet:
         st.title(f'Prophet Forecast for {selected_stock_prophet}')
