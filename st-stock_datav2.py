@@ -550,7 +550,7 @@ if st.sidebar.checkbox("News & Articles"):
         headline_text = article['title']
         st.subheader('News & Articles', divider='rainbow')
         #st.markdown(f"{selected_stock}: ")
-        st.subheader('Headlines for blue[{selected_stock}:] :chart:')
+        st.subheader('Headlines for blue[{selected_stock}:] :newspaper:')
         st.markdown(f"{index}. - [{headline_text}]({article_link})")
         index += 1
     else:
