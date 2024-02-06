@@ -548,7 +548,10 @@ if st.sidebar.checkbox("News & Articles"):
     for article in news:
         article_link = article['link']
         headline_text = article['title']
-        st.markdown(f"index. - [{headline_text}]({article_link})")
+        st.subheader('News & Articles', divider='rainbow')
+        #st.markdown(f"{selected_stock}: ")
+        st.subheader('Headlines for blue[{selected_stock}:] :sunglasses:')
+        st.markdown(f"{index}. - [{headline_text}]({article_link})")
     else:
         # Print an error message if the request fails
         st.markdown("Failed to retrieve data from Yahoo Finance.")
