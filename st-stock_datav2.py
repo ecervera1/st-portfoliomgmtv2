@@ -635,14 +635,14 @@ if st.sidebar.checkbox('Portflio', value=False):
     df = df.loc[condition, selected_columns]
 
     def split_current_value(value):
-    match = re.search(r'\$(.*?)\$(.*?) (\d+\.\d+)%', value)
-    if match:
-        middle_part = match.group(2)
-        dollar_amount = match.group(1)
-        percentage = float(match.group(3))
-        return middle_part, dollar_amount, percentage
-    else:
-        return None, None, None
+        match = re.search(r'\$(.*?)\$(.*?) (\d+\.\d+)%', value)
+        if match:
+            middle_part = match.group(2)
+            dollar_amount = match.group(1)
+            percentage = float(match.group(3))
+            return middle_part, dollar_amount, percentage
+        else:
+            return None, None, None
 
     # Apply the function to split the column into three columns
     df[['Middle Part', 'Dollar Amount', 'Percentage']] = df['Current Value % of Account'].apply(split_current_value).apply(pd.Series)
