@@ -414,7 +414,18 @@ if st.sidebar.button('Run'):
     st.pyplot(fig, use_container_width=True)
 
 
-
+    for ticker in tickers:
+    try:
+        ticker_data = scrape_stock_data(ticker)
+        stock_data_list.append(ticker_data)
+        
+        # Add the Prophet forecast plot for each stock
+        if st.sidebar.checkbox('Add Prophet Forecast', value=False):
+            st.title(f'Prophet Forecast for {ticker}')
+            st.pyplot(generate_prophet_forecast(ticker))  # Call the function to generate the Prophet forecast plot
+        
+    except Exception as e:
+        st.error(f"Error fetching data for {ticker}: {e}")
 
 if st.sidebar.checkbox("Income Statement"):
     st.subheader(f"Income Statement for {selected_stock}")
@@ -476,18 +487,7 @@ def generate_prophet_forecast(ticker):
     return fig  # Return the Prophet forecast plot as a Matplotlib figure
 
 
-for ticker in tickers:
-    try:
-        ticker_data = scrape_stock_data(ticker)
-        stock_data_list.append(ticker_data)
-        
-        # Add the Prophet forecast plot for each stock
-        if st.sidebar.checkbox('Add Prophet Forecast', value=False):
-            st.title(f'Prophet Forecast for {ticker}')
-            st.pyplot(generate_prophet_forecast(ticker))  # Call the function to generate the Prophet forecast plot
-        
-    except Exception as e:
-        st.error(f"Error fetching data for {ticker}: {e}")
+
 
 
 
