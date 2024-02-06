@@ -538,6 +538,9 @@ if st.sidebar.checkbox("News"):
 
 
 if st.sidebar.checkbox("News & Articles"):
+    st.subheader('News & Articles', divider='rainbow')
+    #st.markdown(f"{selected_stock}: ")
+    st.subheader('Headlines for blue[{selected_stock}:] :newspaper:')
     stock_symbol = selected_stock
 
     # Fetch news headlines using yfinance
@@ -548,9 +551,7 @@ if st.sidebar.checkbox("News & Articles"):
     for article in news:
         article_link = article['link']
         headline_text = article['title']
-        st.subheader('News & Articles', divider='rainbow')
-        #st.markdown(f"{selected_stock}: ")
-        st.subheader('Headlines for blue[{selected_stock}:] :newspaper:')
+        
         st.markdown(f"{index}. - [{headline_text}]({article_link})")
         index += 1
     else:
