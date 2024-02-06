@@ -537,7 +537,7 @@ if st.sidebar.checkbox("News"):
         st.markdown("Failed to retrieve data from Yahoo Finance.")
 
 
-if st.sidebar.checkbox("News"):
+if st.sidebar.checkbox("News & Articles"):
     stock_symbol = selected_stock
     news_url = f"https://finance.yahoo.com/quote/{stock_symbol}"
 
