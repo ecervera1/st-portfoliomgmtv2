@@ -474,11 +474,17 @@ if st.sidebar.checkbox("Cash Flow"):
 
 
     
+# Checkbox to add Prophet forecast plot
 if st.sidebar.checkbox('Add Prophet Forecast', value=False):
     selected_stock_prophet = st.sidebar.selectbox("Select a Stock for Prophet Forecast", tickers)
     if selected_stock_prophet:
         st.title(f'Prophet Forecast for {selected_stock_prophet}')
-        st.pyplot(generate_prophet_forecast(selected_stock_prophet))  # Generate and display the Prophet forecast plot
+        start_date_prophet = st.sidebar.date_input("Start Date for Forecast", pd.to_datetime("2022-01-01"))
+        end_date_prophet = st.sidebar.date_input("End Date for Forecast", default_end_date)
+        
+        # Call the function with the specified start_date and end_date
+        st.pyplot(generate_prophet_forecast(selected_stock_prophet, start_date_prophet, end_date_prophet))
+
 
 
 
