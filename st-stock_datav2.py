@@ -550,9 +550,15 @@ if st.sidebar.checkbox("News & Articles"):
 
     
 # Checkbox to add Prophet forecast plot
-if st.sidebar.checkbox('Add Prophet Forecast', value=False):
+if st.sidebar.checkbox('Add Pricing Forecast', value=False):
     #selected_stock_prophet = st.sidebar.selectbox("Select a Stock for Predicted Forecast", tickers)
     selected_stock_prophet = selected_stock
+
+    num_runs = st.slider(Number of simulation runs:', 5000, 1000000, 10000, 1000)
+
+    forecast_days = st.slider(Number of simulation runs:', 30, 504, 252, 3)
+    st.write("Number of runs: ", num_runs)
+    
     if selected_stock_prophet:
         st.title(f'Prophet Forecast for {selected_stock_prophet}')
         start_date_prophet = st.sidebar.date_input("Start Date for Forecast", pd.to_datetime("2019-01-01"))
@@ -575,7 +581,7 @@ if st.sidebar.checkbox('Add Prophet Forecast', value=False):
         st.write(f"Simulated Std Deviation of Final Price: {np.std(final_prices):.2f}")
 
         # Call the function with the specified data
-        final_prices = monte_carlo_simulation(data_mc, num_simulations=10000, forecast_days=252)
+        final_prices = monte_carlo_simulation(data_mc, num_simulations=num_runs, forecast_days=forecast_days)
         
         # Display the histogram plot
         st.pyplot()
