@@ -580,7 +580,7 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
         data_mc = fetch_data(selected_stock, start_date_prophet, end_date_prophet)
         
         # Perform Monte Carlo simulation
-        final_prices = monte_carlo_simulation(data_mc)
+        #final_prices = monte_carlo_simulation(data_mc)
         
         # Display Monte Carlo simulation results
         st.write(f"Simulated Mean Final Price: {np.mean(final_prices):.2f}")
@@ -593,7 +593,7 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
         final_prices = monte_carlo_simulation(data_mc, num_simulations=num_runs, forecast_days=forecast_days)
         
         # Display the histogram plot
-        st.pyplot()
+        #st.pyplot()
 
 
 
