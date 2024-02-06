@@ -564,7 +564,7 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
     num_runs = st.slider('Number of simulation runs: ', 5000, 1000000, 10000, 1000)
     
     forecast_days = st.slider('Days to forecast: ', 30, 504, 252, 7)
-    st.write("*Please note:  The slider is used for both charts. The first is based on calendar days (365 = 1yr) and the second on trading days (252 = 1yr)*.")
+    st.write("*Please note: <br> The slider is used for both charts. The first is based on calendar days (365 = 1yr) and the second on trading days (252 = 1yr)*.")
     st.write("Forecast Days: ", num_runs)
     
     if selected_stock_prophet:
