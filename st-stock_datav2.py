@@ -313,10 +313,10 @@ if st.sidebar.button('Run'):
     figsize_height = num_subplots * 4  # Height of the entire figure
 
     # Create a figure with subplots: X columns (Ticker, Market Cap, Revenue, Financial Metrics...) for each ticker
-    fig, axs = plt.subplots(num_subplots, 5, figsize=(figsize_width, figsize_height), gridspec_kw={'wspace': 0.5})
+    fig, axs = plt.subplots(num_subplots, 6, figsize=(figsize_width, figsize_height), gridspec_kw={'wspace': 0.5})
 
     # Adding labels in the first row
-    labels = ["Ticker", "Market Cap", "Financial Metrics", "Revenue Comparison", "52-Week Range"]
+    labels = ["Ticker", "Market Cap", "Financial Metrics", "Revenue Comparison", "52-Week Range", "Stock Price"]
     for j in range(5):
         axs[0, j].axis('off')
         axs[0, j].text(0.5, 0.5, labels[j], ha='center', va='center', fontsize=25, fontweight='bold')
@@ -448,7 +448,7 @@ if st.sidebar.button('Run'):
     
         ax4.axis('off')
 
-        ax5 = axs[i,5]:
+        ax5 = axs[i,5]
         ticker = ticker
         mcdata = fetch_data(ticker)
         final_prices = monte_carlo_simulation(mcdata, num_simulations=1000000, forecast_days=252)
