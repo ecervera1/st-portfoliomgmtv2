@@ -603,110 +603,126 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
         #st.pyplot()
 
 if st.sidebar.checkbox('Portflio', value=False):
-    def get_industry(symbol):
-        try:
-            stock_info = yf.Ticker(symbol).info
-            industry = stock_info.get("sector", "Treasury")
-            return industry
-        except Exception as e:
-            print(f"Error fetching industry for {symbol}: {str(e)}")
-            return "Error"
-
-    # Function to load the data and add industry information
-    def load_data():
-        # Load your data here
-        #df = pd.read_csv('Portfolio Positions_02022024_10.csv')
-        df = pd.read_csv('Portfolio Positions_02022024_10.csv', usecols=lambda col: col != 'Unnamed: 0')
+    # Password for access
+    correct_password = "ud"
+    # Create a checkbox to toggle password visibility
+    show_password = st.checkbox("Show Password")
+    # Create an input box for the password
+    password_input = st.text_input("Enter Password", type="password")
     
-        # Fetch the industry for each symbol and add it as a column
-        df['Industry'] = df['Symbol'].apply(get_industry)
-        return df
-    
-    # Streamlit script starts here
-    st.title('Portfolio')
-    
-    # Load data with industry information
-    df = load_data()
-    selected_columns = ['Symbol', 'Current Value % of Account', 'Quantity', 'Industry']
-    #df = df[selected_columns]
-    #df = df.iloc[1::2, :][selected_columns]
-
-    condition = df['Quantity'].notnull()
-    df = df.loc[condition, selected_columns]
-
-    def split_current_value(value):
-        match = re.search(r'\$(.*?)\$(.*?) (\d+\.\d+)%', value)
-        if match:
-            middle_part = match.group(2)
-            dollar_amount = match.group(1)
-            percentage = float(match.group(3))
-            return middle_part, dollar_amount, percentage
+    # Check if the password is correct
+    if password_input == correct_password:
+        if show_password:
+            st.success("Password correct. Here's the secret content.")
         else:
-            return None, None, None
-
-    # Apply the function to split the column into three columns
-    df[['Middle Part', 'Dollar Amount', 'Percentage']] = df['Current Value % of Account'].apply(split_current_value).apply(pd.Series)
-    new_column_names = {'Middle Part': 'Current Value', 'Dollar Amount': 'Cost', 'Percentage': 'Percentage of Portfolio'}
-    df.rename(columns=new_column_names, inplace=True)
+            st.success("Password correct. Checkbox to show content.")
+            def get_industry(symbol):
+            try:
+                stock_info = yf.Ticker(symbol).info
+                industry = stock_info.get("sector", "Treasury")
+                return industry
+            except Exception as e:
+                print(f"Error fetching industry for {symbol}: {str(e)}")
+                return "Error"
     
-    df=df.reset_index(drop=True)
-    df=df.iloc[:, [0,2,3,4,5,6]]
-    #df['Percentage of Portfolio'] = df['Percentage of Portfolio'].apply(lambda x: "{:.0%}".format(x))
-
-    st.dataframe(df)
-    
-    # Filter UI
-    #industries = df['Industry'].unique()
-    #selected_industry = st.selectbox('Select Industry', ['All'] + list(industries))  # Add 'All' as an option
-    
-    # Filtering data based on selection
-    #if selected_industry == 'All':
-        #filtered_data = df  # Show all data
-    #else:
-        #filtered_data = df[df['Industry'] == selected_industry]
-    
-    # Displaying filtered data
-    #st.dataframe(filtered_data)
-
-    industry_percentages = df['Percentage of Portfolio'].groupby(df['Industry']).sum() / df['Percentage of Portfolio'].sum()
-    symbol_percentages = df['Percentage of Portfolio'].groupby(df['Symbol']).sum() / df['Percentage of Portfolio'].sum()
-    
-    # Create a pie chart for industries
-    plt.figure(figsize=(8, 8))
-    plt.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
-    plt.title('Industries as % of Portfolio')
-    plt.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
-    
-    # Display the pie chart for industries
-    plt.show()
-    
-    # Create a pie chart for symbols
-    plt.figure(figsize=(8, 8))
-    #plt.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
-    plt.title('Symbols as % of Portfolio')
-    plt.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
-    
-    # Display the pie chart for symbols
-    plt.show()
-
-    #---------------
-    st.sidebar.title('Portfolio Analysis')
-    selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Ticker'])
-
-    # Display the selected chart
-    if selected_chart == 'Industries':
-        st.title('Industries as % of Portfolio')
-        fig, ax = plt.subplots(figsize=(8, 8))
-        ax.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
-        ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
-        st.pyplot(fig)
+        # Function to load the data and add industry information
+        def load_data():
+            # Load your data here
+            #df = pd.read_csv('Portfolio Positions_02022024_10.csv')
+            df = pd.read_csv('Portfolio Positions_02022024_10.csv', usecols=lambda col: col != 'Unnamed: 0')
         
+            # Fetch the industry for each symbol and add it as a column
+            df['Industry'] = df['Symbol'].apply(get_industry)
+            return df
+        
+        # Streamlit script starts here
+        st.title('Portfolio')
+        
+        # Load data with industry information
+        df = load_data()
+        selected_columns = ['Symbol', 'Current Value % of Account', 'Quantity', 'Industry']
+        #df = df[selected_columns]
+        #df = df.iloc[1::2, :][selected_columns]
+    
+        condition = df['Quantity'].notnull()
+        df = df.loc[condition, selected_columns]
+    
+        def split_current_value(value):
+            match = re.search(r'\$(.*?)\$(.*?) (\d+\.\d+)%', value)
+            if match:
+                middle_part = match.group(2)
+                dollar_amount = match.group(1)
+                percentage = float(match.group(3))
+                return middle_part, dollar_amount, percentage
+            else:
+                return None, None, None
+    
+        # Apply the function to split the column into three columns
+        df[['Middle Part', 'Dollar Amount', 'Percentage']] = df['Current Value % of Account'].apply(split_current_value).apply(pd.Series)
+        new_column_names = {'Middle Part': 'Current Value', 'Dollar Amount': 'Cost', 'Percentage': 'Percentage of Portfolio'}
+        df.rename(columns=new_column_names, inplace=True)
+        
+        df=df.reset_index(drop=True)
+        df=df.iloc[:, [0,2,3,4,5,6]]
+        #df['Percentage of Portfolio'] = df['Percentage of Portfolio'].apply(lambda x: "{:.0%}".format(x))
+    
+        st.dataframe(df)
+        
+        # Filter UI
+        #industries = df['Industry'].unique()
+        #selected_industry = st.selectbox('Select Industry', ['All'] + list(industries))  # Add 'All' as an option
+        
+        # Filtering data based on selection
+        #if selected_industry == 'All':
+            #filtered_data = df  # Show all data
+        #else:
+            #filtered_data = df[df['Industry'] == selected_industry]
+        
+        # Displaying filtered data
+        #st.dataframe(filtered_data)
+    
+        industry_percentages = df['Percentage of Portfolio'].groupby(df['Industry']).sum() / df['Percentage of Portfolio'].sum()
+        symbol_percentages = df['Percentage of Portfolio'].groupby(df['Symbol']).sum() / df['Percentage of Portfolio'].sum()
+        
+        # Create a pie chart for industries
+        plt.figure(figsize=(8, 8))
+        plt.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
+        plt.title('Industries as % of Portfolio')
+        plt.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
+        
+        # Display the pie chart for industries
+        plt.show()
+        
+        # Create a pie chart for symbols
+        plt.figure(figsize=(8, 8))
+        #plt.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
+        plt.title('Symbols as % of Portfolio')
+        plt.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
+        
+        # Display the pie chart for symbols
+        plt.show()
+    
+        #---------------
+        st.sidebar.title('Portfolio Analysis')
+        selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Ticker'])
+    
+        # Display the selected chart
+        if selected_chart == 'Industries':
+            st.title('Industries as % of Portfolio')
+            fig, ax = plt.subplots(figsize=(8, 8))
+            ax.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
+            ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
+            st.pyplot(fig)
+            
+        else:
+            st.title('Symbols as % of Portfolio')
+            fig, ax = plt.subplots(figsize=(8, 8))
+            ax.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
+            ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
+            st.pyplot(fig)
     else:
-        st.title('Symbols as % of Portfolio')
-        fig, ax = plt.subplots(figsize=(8, 8))
-        ax.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
-        ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
-        st.pyplot(fig)
+        st.error("Wrong password. Please try again.")
+    
         
     
 
