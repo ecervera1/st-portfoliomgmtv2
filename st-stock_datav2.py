@@ -651,6 +651,7 @@ if st.sidebar.checkbox('Portflio', value=False):
     
     df=df.reset_index(drop=True)
     df=df.iloc[:, [0,2,3,4,5,6]]
+    df['Percentage of Portfolio'] = df['Percentage of Portfolio'].apply(lambda x: "{:.0%}".format(x))
 
     st.dataframe(df)
     
