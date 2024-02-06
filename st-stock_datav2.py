@@ -667,7 +667,7 @@ if st.sidebar.checkbox('Portflio', value=False):
     #st.dataframe(filtered_data)
 
     industry_percentages = df['Percentage of Portfolio'].groupby(df['Industry']).sum() / df['Percentage of Portfolio'].sum()
-    symbol_percentages = df['Percentage of Portfolio'] / df['Percentage of Portfolio'].sum()
+    symbol_percentages = df['Percentage of Portfolio'].groupby(df['Symbol']).sum() / df['Percentage of Portfolio'].sum()
     
     # Create a pie chart for industries
     plt.figure(figsize=(8, 8))
@@ -689,7 +689,7 @@ if st.sidebar.checkbox('Portflio', value=False):
 
     #---------------
     st.sidebar.title('Portfolio Analysis')
-    selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Symbols'])
+    selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Ticker'])
 
     # Display the selected chart
     if selected_chart == 'Industries':
