@@ -648,8 +648,9 @@ if st.sidebar.checkbox('Portflio', value=False):
     df[['Middle Part', 'Dollar Amount', 'Percentage']] = df['Current Value % of Account'].apply(split_current_value).apply(pd.Series)
     new_column_names = {'Middle Part': 'Current Value', 'Dollar Amount': 'Cost', 'Percentage': 'Percentage of Portfolio'}
     df.rename(columns=new_column_names, inplace=True)
-    #df=df.iloc[:, [0,1, 3,4,5,6]]
+    
     df=df.reset_index(drop=True)
+    df=df.iloc[:, [0,1, 3,4,5,6]]
 
     st.dataframe(df)
     
@@ -698,14 +699,14 @@ if st.sidebar.checkbox('Portflio', value=False):
         ax.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
         ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
         st.pyplot(fig)
-        """
+        
     else:
         st.title('Symbols as % of Portfolio')
         fig, ax = plt.subplots(figsize=(8, 8))
         ax.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
         ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
         st.pyplot(fig)
-        """
+        
     
 
 
