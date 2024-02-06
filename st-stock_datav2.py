@@ -7,6 +7,8 @@ from datetime import datetime
 import re
 from prophet import Prophet
 import numpy as np
+import requests
+from bs4 import BeautifulSoup
 
 
 
