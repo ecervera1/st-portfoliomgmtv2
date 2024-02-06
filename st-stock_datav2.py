@@ -580,6 +580,8 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
         st.write(f"Simulated Median Final Price: {np.median(final_prices):.2f}")
         st.write(f"Simulated Std Deviation of Final Price: {np.std(final_prices):.2f}")
 
+        st.subheader('', divider = 'black')
+
         # Call the function with the specified data
         final_prices = monte_carlo_simulation(data_mc, num_simulations=num_runs, forecast_days=forecast_days)
         
