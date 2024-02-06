@@ -680,7 +680,7 @@ if st.sidebar.checkbox('Portflio', value=False):
     
     # Create a pie chart for symbols
     plt.figure(figsize=(8, 8))
-    plt.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
+    #plt.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
     plt.title('Symbols as % of Portfolio')
     plt.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
     
@@ -698,12 +698,14 @@ if st.sidebar.checkbox('Portflio', value=False):
         ax.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
         ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
         st.pyplot(fig)
+        """
     else:
         st.title('Symbols as % of Portfolio')
         fig, ax = plt.subplots(figsize=(8, 8))
         ax.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
         ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
         st.pyplot(fig)
+        """
     
 
 
