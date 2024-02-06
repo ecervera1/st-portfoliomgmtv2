@@ -627,6 +627,8 @@ if st.sidebar.checkbox('Portflio', value=False):
     
     # Load data with industry information
     df = load_data()
+    selected_columns = ['Symbol', 'Current Value % of Account', 'Quantity', 'Industry']
+    df = df[selected_columns]
     
     # Filter UI
     industries = df['Industry'].unique()
