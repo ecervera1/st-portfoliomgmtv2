@@ -205,17 +205,17 @@ equity_tickers = [ticker for ticker, data in stock_data_type.items() if data.get
 plt.rcParams.update({'font.size': 14})  # Adjust the font size as needed
 
 def fetch_data(ticker):
-    data = yf.download(ticker, start="2013-01-01", end="2024-02-02")
+    mdata = yf.download(ticker, start=start_date, end=end_date)
     return data['Adj Close']
 
-def calculate_parameters(data):
-    returns = data.pct_change()
+def calculate_parameters(mdata):
+    returns = mdata.pct_change()
     mean_return = returns.mean()
     sigma = returns.std()
     return mean_return, sigma
 
-def monte_carlo_simulation(data, num_simulations=1000000, forecast_days=252):
-    mean_return, sigma = calculate_parameters(data)
+def monte_carlo_simulation(mdata, num_simulations=1000000, forecast_days=252):
+    mean_return, sigma = calculate_parameters(mdata)
     final_prices = np.zeros(num_simulations)
     initial_price = data.iloc[-1]
 
