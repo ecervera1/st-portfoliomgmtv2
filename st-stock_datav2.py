@@ -620,7 +620,7 @@ if st.sidebar.checkbox('Portflio', value=False):
     
     # Fetch the industry for each symbol and add it as a column
     df['Industry'] = df['Symbol'].apply(get_industry)
-    return df
+        return df
     
     # Streamlit script starts here
     st.title('Portfolio Analysis by Industry')
