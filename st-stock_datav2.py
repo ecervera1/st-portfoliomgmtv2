@@ -40,7 +40,7 @@ def generate_prophet_forecast(ticker, start_date, end_date):
     model.fit(phdata)
 
     # Create a DataFrame for future dates
-    future = model.make_future_dataframe(periods=365)  # Predict for 1 year into the future
+    future = model.make_future_dataframe(periods=forecast_days)  # Predict for 1 year into the future
     forecast = model.predict(future)
 
     # Plot the historical data and forecasted prices
@@ -573,7 +573,9 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
         
         # Call the function with the specified start_date and end_date
         st.pyplot(generate_prophet_forecast(selected_stock_prophet, start_date_prophet, end_date_prophet))
-        
+
+        #st.subheader('', divider='rainbow')
+        st.markdown("")
         st.subheader('More Simulation Results')
         
         # Prepare data for Monte Carlo simulation
@@ -587,7 +589,7 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
         st.write(f"Simulated Median Final Price: {np.median(final_prices):.2f}")
         st.write(f"Simulated Std Deviation of Final Price: {np.std(final_prices):.2f}")
 
-        st.subheader('', divider='rainbow')
+        
 
         # Call the function with the specified data
         #final_prices = monte_carlo_simulation(data_mc, num_simulations=num_runs, forecast_days=forecast_days)
