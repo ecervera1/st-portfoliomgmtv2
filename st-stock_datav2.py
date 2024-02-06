@@ -648,21 +648,62 @@ if st.sidebar.checkbox('Portflio', value=False):
     df[['Middle Part', 'Dollar Amount', 'Percentage']] = df['Current Value % of Account'].apply(split_current_value).apply(pd.Series)
     new_column_names = {'Middle Part': 'Current Value', 'Dollar Amount': 'Cost', 'Percentage': 'Percentage of Portfolio'}
     df.rename(columns=new_column_names, inplace=True)
-    df=df.iloc[:, [1, 3,4,5,6]]
+    df=df.iloc[:, [0,1, 3,4,5,6]]
     df=df.reset_index(drop=True)
+
+    st.dataframe(df)
     
     # Filter UI
-    industries = df['Industry'].unique()
-    selected_industry = st.selectbox('Select Industry', ['All'] + list(industries))  # Add 'All' as an option
+    #industries = df['Industry'].unique()
+    #selected_industry = st.selectbox('Select Industry', ['All'] + list(industries))  # Add 'All' as an option
     
     # Filtering data based on selection
-    if selected_industry == 'All':
-        filtered_data = df  # Show all data
-    else:
-        filtered_data = df[df['Industry'] == selected_industry]
+    #if selected_industry == 'All':
+        #filtered_data = df  # Show all data
+    #else:
+        #filtered_data = df[df['Industry'] == selected_industry]
     
     # Displaying filtered data
-    st.dataframe(filtered_data)
+    #st.dataframe(filtered_data)
+
+    industry_percentages = df['Percentage of Portfolio'].groupby(df['Industry']).sum() / df['Percentage of Portfolio'].sum()
+    symbol_percentages = df['Percentage of Portfolio'] / df['Percentage of Portfolio'].sum()
+    
+    # Create a pie chart for industries
+    plt.figure(figsize=(8, 8))
+    plt.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
+    plt.title('Industries as % of Portfolio')
+    plt.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
+    
+    # Display the pie chart for industries
+    plt.show()
+    
+    # Create a pie chart for symbols
+    plt.figure(figsize=(8, 8))
+    plt.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
+    plt.title('Symbols as % of Portfolio')
+    plt.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
+    
+    # Display the pie chart for symbols
+    plt.show()
+
+    #---------------
+    st.sidebar.title('Portfolio Analysis')
+    selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Symbols'])
+
+    # Display the selected chart
+    if selected_chart == 'Industries':
+        st.title('Industries as % of Portfolio')
+        fig, ax = plt.subplots(figsize=(8, 8))
+        ax.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
+        ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
+        st.pyplot(fig)
+    else:
+        st.title('Symbols as % of Portfolio')
+        fig, ax = plt.subplots(figsize=(8, 8))
+        ax.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
+        ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
+        st.pyplot(fig)
     
 
 
