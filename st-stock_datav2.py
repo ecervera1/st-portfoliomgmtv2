@@ -101,29 +101,6 @@ def get_financial_statements(ticker):
     }
     return financial_statements
 
-def create_news_dataframe(tickers, news_headlines):
-    news_data = []
-
-    for ticker in tickers:
-        headlines = news_headlines.get(ticker, [])
-        for headline in headlines:
-            news_data.append({"Ticker": ticker, "News Headline": headline})
-
-    news_df = pd.DataFrame(news_data)
-    return news_df
-news_headlines = {}
-
-# Loop through each ticker and scrape news headlines
-for ticker in tickers:
-    headlines = scrape_news_headlines(ticker)
-    news_headlines[ticker] = headlines
-
-# Display the news headlines for the selected stock
-selected_stock_headlines = news_headlines.get(selected_stock, [])
-
-# Create a DataFrame from the news headlines
-news_df = create_news_dataframe(tickers, news_headlines)
-
 
 # Streamlit app layout
 st.title('Portfolio Management - Stock Comparative Analysis')
@@ -221,8 +198,6 @@ for ticker in tickers:
 # Filter out only equities
 equity_tickers = [ticker for ticker, data in stock_data_type.items() if data.get('quoteType') == 'EQUITY']
 
-
-news_headlines = {}
 
 
 # Button to run the scraper and plot stock performance
@@ -432,7 +407,6 @@ if st.sidebar.button('Run'):
         ax4.axis('off')
 
 
-
     plt.tight_layout()
     st.pyplot(fig, use_container_width=True)
 
@@ -465,14 +439,6 @@ if st.sidebar.checkbox("Calculate FCFF and FCFE"):
     fcff_fcfe_results = calculate_fcff_and_fcfe(selected_stock)
     #st.write(fcff_fcfe_results)
     st.table(fcff_fcfe_results)
-
-# Checkbox to show/hide news headlines table
-show_news_table = st.sidebar.checkbox("Show News Table")
-
-# Display the news headlines table if the checkbox is selected
-if show_news_table:
-    st.subheader("News Headlines")
-    st.table(news_df)
     
 
     
