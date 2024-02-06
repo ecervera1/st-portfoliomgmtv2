@@ -539,35 +539,6 @@ if st.sidebar.checkbox("News"):
 
 if st.sidebar.checkbox("News & Articles"):
     stock_symbol = selected_stock
-    news_url = f"https://finance.yahoo.com/quote/{stock_symbol}"
-
-    # Send a GET request to the news URL
-    response = requests.get(news_url)
-    
-    if response.status_code == 200:
-        # Parse the HTML content of the page
-        soup = BeautifulSoup(response.text, 'html.parser')
-
-        # Extract and display the news headlines
-        headline_elements = soup.find_all("h3", class_="Mb(5px)")
-
-        # Display the news headlines with hyperlinks
-        for index, headline_element in enumerate(headline_elements, start=1):
-            headline_text = headline_element.get_text()
-            # Create a hyperlink for each headline
-            article_link_html = f'<a href="{news_url}" target="_blank">link here</a>'
-            # Display the formatted headline with hyperlink
-            st.markdown(f"{selected_stock}: {index}. {headline_text} -- {article_link_html}", unsafe_allow_html=True)
-    else:
-        # Print an error message if the request fails
-        st.markdown("Failed to retrieve data from Yahoo Finance.")
-
-if st.sidebar.checkbox("News2.0"):
-    # Select a stock from the sidebar
-    #selected_stock = st.sidebar.selectbox("Select a Stock", tickers)
-
-    # Get the stock symbol
-    stock_symbol = selected_stock
 
     # Fetch news headlines using yfinance
     ticker_data = yf.Ticker(stock_symbol)
@@ -577,7 +548,10 @@ if st.sidebar.checkbox("News2.0"):
     for article in news:
         article_link = article['link']
         headline_text = article['title']
-        st.markdown(f"Link: [{headline_text}]({article_link})")
+        st.markdown(f"index. - [{headline_text}]({article_link})")
+    else:
+        # Print an error message if the request fails
+        st.markdown("Failed to retrieve data from Yahoo Finance.")
 
 
 #Adding prophet 2/5/2024
