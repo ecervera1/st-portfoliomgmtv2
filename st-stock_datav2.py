@@ -558,10 +558,12 @@ if st.sidebar.checkbox("News & Articles"):
     
 # Checkbox to add Prophet forecast plot
 if st.sidebar.checkbox('Add Pricing Forecast', value=False):
-    st.title(f'Forecast for {selected_stock_prophet}')
+    
     #selected_stock_prophet = st.sidebar.selectbox("Select a Stock for Predicted Forecast", tickers)
     selected_stock_prophet = selected_stock
-
+    st.title(f'Forecast for {selected_stock_prophet}')
+    
+    #sliders:
     num_runs = st.slider('Number of simulation runs: ', 5000, 1000000, 10000, 1000)
     
     forecast_days = st.slider('Days to forecast: ', 30, 504, 252, 7)
