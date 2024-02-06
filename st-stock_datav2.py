@@ -530,7 +530,7 @@ if st.sidebar.checkbox("News"):
         for index, headline_element in enumerate(headline_elements, start=1):
             headline_text = headline_element.get_text()
             #print(f"{ticker}: {index}. {headline_text}")
-            st.markdown(f"selected_stock}:")
+            st.markdown(f"selected_stock}: ")
             st.markdown(f"{index}. {headline_text}")
     else:
         #print("Failed to retrieve data from Yahoo Finance.")
