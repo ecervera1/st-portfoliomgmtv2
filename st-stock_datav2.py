@@ -512,35 +512,11 @@ if st.sidebar.checkbox("Cash Flow"):
 
 #Adding news 2/5/2024
 
-if st.sidebar.checkbox("News"):
-    stock_symbol = selected_stock
-    news_url = f"https://finance.yahoo.com/quote/{stock_symbol}"
-
-    # Send a GET request to the news URL
-    response = requests.get(news_url)
-    
-    # Check if the request was successful (status code 200)
-    if response.status_code == 200:
-        # Parse the HTML content of the page
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Extract and print the news headlines
-        headline_elements = soup.find_all("h3", class_="Mb(5px)")
-        
-        for index, headline_element in enumerate(headline_elements, start=1):
-            headline_text = headline_element.get_text()
-            #print(f"{ticker}: {index}. {headline_text}")
-            st.markdown(f"{selected_stock}: ")
-            st.markdown(f"{index}. {headline_text}")
-    else:
-        #print("Failed to retrieve data from Yahoo Finance.")
-        st.markdown("Failed to retrieve data from Yahoo Finance.")
-
-
 if st.sidebar.checkbox("News & Articles"):
     st.subheader('News & Articles', divider='rainbow')
     #st.markdown(f"{selected_stock}: ")
-    st.subheader(f"Headlines for blue[{selected_stock}:] :newspaper:")
+    #st.subheader(f"Headlines for blue[{selected_stock}:] :newspaper:")
+    st.subheader(f"Headlines for **{selected_stock}** :newspaper:")
     stock_symbol = selected_stock
     news_url = f"https://finance.yahoo.com/quote/{stock_symbol}"
 
