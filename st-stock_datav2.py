@@ -569,7 +569,7 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
     forecast_days = st.slider('Days to forecast: ', 30, 504, 252, 7)
     st.write("*Please note*:")
     st.write("*The slider is used for both charts. The first is based on calendar days (365 = 1yr) and the second on trading days (252 = 1yr)*.")
-    st.write("Forecast Days: ", num_runs)
+    #st.write("Forecast Days: ", num_runs)
     
     if selected_stock_prophet:
         st.subheader(f'Prophet Forecast for {selected_stock_prophet}')
