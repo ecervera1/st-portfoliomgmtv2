@@ -648,7 +648,7 @@ if st.sidebar.checkbox('Portflio', value=False):
     df[['Middle Part', 'Dollar Amount', 'Percentage']] = df['Current Value % of Account'].apply(split_current_value).apply(pd.Series)
     new_column_names = {'Middle Part': 'Current Value', 'Dollar Amount': 'Cost', 'Percentage': 'Percentage of Portfolio'}
     df.rename(columns=new_column_names, inplace=True)
-    df=df.iloc[:, [0,1, 3,4,5,6]]
+    #df=df.iloc[:, [0,1, 3,4,5,6]]
     df=df.reset_index(drop=True)
 
     st.dataframe(df)
