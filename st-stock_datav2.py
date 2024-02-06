@@ -612,18 +612,14 @@ if st.sidebar.checkbox('Portflio', value=False):
     
     # Check if the password is correct
     if password_input == correct_password:
-        if show_password:
-            st.success("Password correct. Here's the secret content.")
-        else:
-            st.success("Password correct. Checkbox to show content.")
-            def get_industry(symbol):
-            try:
-                stock_info = yf.Ticker(symbol).info
-                industry = stock_info.get("sector", "Treasury")
-                return industry
-            except Exception as e:
-                print(f"Error fetching industry for {symbol}: {str(e)}")
-                return "Error"
+        def get_industry(symbol):
+        try:
+            stock_info = yf.Ticker(symbol).info
+            industry = stock_info.get("sector", "Treasury")
+            return industry
+        except Exception as e:
+            print(f"Error fetching industry for {symbol}: {str(e)}")
+            return "Error"
     
         # Function to load the data and add industry information
         def load_data():
