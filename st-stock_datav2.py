@@ -510,7 +510,7 @@ if st.sidebar.checkbox("Cash Flow"):
 
 #Adding news 2/5/2024
 
-if st.sidebar.checkbox('News')
+if st.sidebar.checkbox("News"):
     stock_symbol = selected_stock
     news_url = f"https://finance.yahoo.com/quote/{stock_symbol}"
 
