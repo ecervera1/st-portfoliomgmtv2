@@ -508,6 +508,29 @@ if st.sidebar.checkbox("Cash Flow"):
     #st.write(fcff_fcfe_results)
     #st.table(fcff_fcfe_results)
 
+#Adding news 2/5/2024
+
+if st.sidebar.checkbox('News')
+    stock_symbol = selected_stock
+    news_url = f"https://finance.yahoo.com/quote/{stock_symbol}"
+
+    # Send a GET request to the news URL
+    response = requests.get(news_url)
+    
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse the HTML content of the page
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Extract and print the news headlines
+        headline_elements = soup.find_all("h3", class_="Mb(5px)")
+        
+        for index, headline_element in enumerate(headline_elements, start=1):
+            headline_text = headline_element.get_text()
+            print(f"{ticker}: {index}. {headline_text}")
+    else:
+        print("Failed to retrieve data from Yahoo Finance.")
+
 
 #Adding prophet 2/5/2024
 
@@ -515,10 +538,11 @@ if st.sidebar.checkbox("Cash Flow"):
     
 # Checkbox to add Prophet forecast plot
 if st.sidebar.checkbox('Add Prophet Forecast', value=False):
-    selected_stock_prophet = st.sidebar.selectbox("Select a Stock for Predicted Forecast", tickers)
+    #selected_stock_prophet = st.sidebar.selectbox("Select a Stock for Predicted Forecast", tickers)
+    selected_stock_prophet = selected_stock
     if selected_stock_prophet:
         st.title(f'Prophet Forecast for {selected_stock_prophet}')
-        start_date_prophet = st.sidebar.date_input("Start Date for Forecast", pd.to_datetime("2022-01-01"))
+        start_date_prophet = st.sidebar.date_input("Start Date for Forecast", pd.to_datetime("2019-01-01"))
         end_date_prophet = st.sidebar.date_input("End Date for Forecast", default_end_date)
         
         # Call the function with the specified start_date and end_date
