@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 from datetime import datetime
 import re
+import numpy as np
 
 
 custom_css = """
@@ -199,6 +200,47 @@ for ticker in tickers:
 equity_tickers = [ticker for ticker, data in stock_data_type.items() if data.get('quoteType') == 'EQUITY']
 
 
+
+# Set global font size parameters
+plt.rcParams.update({'font.size': 14})  # Adjust the font size as needed
+
+def fetch_data(ticker):
+    data = yf.download(ticker, start="2013-01-01", end="2024-02-02")
+    return data['Adj Close']
+
+def calculate_parameters(data):
+    returns = data.pct_change()
+    mean_return = returns.mean()
+    sigma = returns.std()
+    return mean_return, sigma
+
+def monte_carlo_simulation(data, num_simulations=1000000, forecast_days=252):
+    mean_return, sigma = calculate_parameters(data)
+    final_prices = np.zeros(num_simulations)
+    initial_price = data.iloc[-1]
+
+    for i in range(num_simulations):
+        random_shocks = np.random.normal(loc=mean_return, scale=sigma, size=forecast_days)
+        price_series = [initial_price * (1 + random_shock) for random_shock in random_shocks]
+        final_prices[i] = price_series[-1]
+
+    plt.hist(final_prices, bins=50)
+    plt.xlabel('Price')
+    plt.ylabel('Frequency')
+    plt.title('Final Price Distribution after Monte Carlo Simulation')
+    #plt.show()
+
+    # Add text under the plot
+    text_x = plt.xlim()[0] + (plt.xlim()[1] - plt.xlim()[0]) * 0.02  # Adjust x-position
+    text_y = plt.ylim()[0] - (plt.ylim()[1] - plt.ylim()[0]) * 0.3  # Adjust y-position
+    plt.text(text_x, text_y, f"Simulated Mean Final Price: {np.mean(final_prices)}", fontsize=14)
+    text_y -= (plt.ylim()[1] - plt.ylim()[0]) * 0.1  # Adjust y-position
+    plt.text(text_x, text_y, f"Simulated Median Final Price: {np.median(final_prices)}", fontsize=14)
+    text_y -= (plt.ylim()[1] - plt.ylim()[0]) * 0.1  # Adjust y-position
+    plt.text(text_x, text_y, f"Simulated Std Deviation of Final Price: {np.std(final_prices)}", fontsize=14)
+
+    plt.show()
+    return final_prices
 
 # Button to run the scraper and plot stock performance
 if st.sidebar.button('Run'):
@@ -405,6 +447,11 @@ if st.sidebar.button('Run'):
         ax4.annotate(f'${week_high:.2f}', xy=(week_high, 0.5), fontsize=16, color='black', ha='right', va='top', xytext=(-5, -20), textcoords='offset points')
     
         ax4.axis('off')
+
+        ax5 = axs[i,5]:
+        ticker = ticker
+        mcdata = fetch_data(ticker)
+        final_prices = monte_carlo_simulation(mcdata, num_simulations=1000000, forecast_days=252)
 
 
     plt.tight_layout()
