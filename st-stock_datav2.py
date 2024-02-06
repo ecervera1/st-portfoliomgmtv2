@@ -514,7 +514,7 @@ if st.sidebar.checkbox("Cash Flow"):
 
 if st.sidebar.checkbox("News & Articles"):
     st.subheader('News & Articles', divider='rainbow')
-    st.subheader(f"Headlines for **{selected_stock}** :newspaper:")
+    st.subheader(f":newspaper: Headlines for **{selected_stock}** ")
     stock_symbol = selected_stock
     news_url = f"https://finance.yahoo.com/quote/{stock_symbol}"
 
