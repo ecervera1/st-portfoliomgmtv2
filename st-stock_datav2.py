@@ -610,7 +610,7 @@ if st.sidebar.checkbox('Portflio', value=False):
     # Function to load the data and add industry information
     def load_data():
         # Load your data here
-        # For example: df = pd.read_csv('path_to_your_csv.csv')
+        df = pd.read_csv('Portfolio Positions_02022024_10.csv')
         df = pd.DataFrame(data)  # Replace this with loading your CSV
     
         # Fetch the industry for each symbol and add it as a column
