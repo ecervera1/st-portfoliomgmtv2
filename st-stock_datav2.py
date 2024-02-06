@@ -554,9 +554,9 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
     #selected_stock_prophet = st.sidebar.selectbox("Select a Stock for Predicted Forecast", tickers)
     selected_stock_prophet = selected_stock
 
-    num_runs = st.slider(Number of simulation runs:', 5000, 1000000, 10000, 1000)
+    num_runs = st.slider('Number of simulation runs:', 5000, 1000000, 10000, 1000)
 
-    forecast_days = st.slider(Number of simulation runs:', 30, 504, 252, 3)
+    forecast_days = st.slider('Number of simulation runs:', 30, 504, 252, 3)
     st.write("Number of runs: ", num_runs)
     
     if selected_stock_prophet:
