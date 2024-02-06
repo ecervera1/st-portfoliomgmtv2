@@ -526,15 +526,16 @@ if st.sidebar.checkbox('Add Prophet Forecast', value=False):
         st.subheader('More Simulation Results')
         
         # Prepare data for Monte Carlo simulation
-        data, _ = pdata(ticker, start_date, end_date)
+        data_mc = fetch_data(ticker, start_date, end_date)
         
         # Perform Monte Carlo simulation
-        final_prices = monte_carlo_simulation(data)
+        final_prices = monte_carlo_simulation(data_mc)
         
         # Display Monte Carlo simulation results
         st.write(f"Simulated Mean Final Price: {np.mean(final_prices):.2f}")
         st.write(f"Simulated Median Final Price: {np.median(final_prices):.2f}")
         st.write(f"Simulated Std Deviation of Final Price: {np.std(final_prices):.2f}")
+
 
 
 
