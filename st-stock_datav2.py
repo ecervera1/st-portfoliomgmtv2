@@ -630,10 +630,13 @@ if st.sidebar.checkbox('Portflio', value=False):
     
     # Filter UI
     industries = df['Industry'].unique()
-    selected_industry = st.selectbox('Select Industry', industries)
+    selected_industry = st.selectbox('Select Industry', ['All'] + list(industries))  # Add 'All' as an option
     
     # Filtering data based on selection
-    filtered_data = df[df['Industry'] == selected_industry]
+    if selected_industry == 'All':
+        filtered_data = df  # Show all data
+    else:
+        filtered_data = df[df['Industry'] == selected_industry]
     
     # Displaying filtered data
     st.dataframe(filtered_data)
