@@ -602,7 +602,37 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
         # Display the histogram plot
         #st.pyplot()
 
+if st.sidebar.checkbox('Portflio', value=False):
+    def get_industry(symbol):
+    stock_info = yf.Ticker(symbol).info
+    return stock_info.get('industry', 'N/A')
 
+    # Function to load the data and add industry information
+    def load_data():
+        # Load your data here
+        # For example: df = pd.read_csv('path_to_your_csv.csv')
+        df = pd.DataFrame(data)  # Replace this with loading your CSV
+    
+        # Fetch the industry for each symbol and add it as a column
+        df['Industry'] = df['Symbol'].apply(get_industry)
+        return df
+    
+    # Streamlit script starts here
+    st.title('Portfolio Analysis by Industry')
+    
+    # Load data with industry information
+    df = load_data()
+    
+    # Filter UI
+    industries = df['Industry'].unique()
+    selected_industry = st.selectbox('Select Industry', industries)
+    
+    # Filtering data based on selection
+    filtered_data = df[df['Industry'] == selected_industry]
+    
+    # Displaying filtered data
+    st.dataframe(filtered_data)
+    
 
 
 
