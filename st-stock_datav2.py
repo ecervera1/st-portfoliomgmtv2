@@ -551,7 +551,7 @@ if st.sidebar.checkbox('Add Prophet Forecast', value=False):
         st.subheader('More Simulation Results')
         
         # Prepare data for Monte Carlo simulation
-        data_mc = fetch_data(ticker, start_date, end_date)
+        data_mc = fetch_data(selected_stock, start_date_prophet, end_date_prophet)
         
         # Perform Monte Carlo simulation
         final_prices = monte_carlo_simulation(data_mc)
