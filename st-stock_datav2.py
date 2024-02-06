@@ -40,7 +40,7 @@ def generate_prophet_forecast(ticker, start_date, end_date):
     model.fit(phdata)
 
     # Create a DataFrame for future dates
-    future = model.make_future_dataframe(periods=forecast_days)  # Predict for 1 year into the future
+    future = model.make_future_dataframe(periods=forecast_days)  # 365 Predict for 1 year into the future
     forecast = model.predict(future)
 
     # Plot the historical data and forecasted prices
@@ -563,8 +563,8 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
 
     num_runs = st.slider('Number of simulation runs: ', 5000, 1000000, 10000, 1000)
 
-    forecast_days = st.slider('Days to forecast: ', 30, 504, 252, 3)
-    st.write("Forecast Days: ", num_runs)
+    forecast_days = st.slider('Days to forecast: ', 30, 504, 252, 7)
+    st.write("Forecast Days (252 = 1yr): ", num_runs)
     
     if selected_stock_prophet:
         st.title(f'Prophet Forecast for {selected_stock_prophet}')
