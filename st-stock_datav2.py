@@ -623,7 +623,7 @@ if st.sidebar.checkbox('Portflio', value=False):
         return df
     
     # Streamlit script starts here
-    st.title('Portfolio Analysis by Industry')
+    st.title('Portfolio')
     
     # Load data with industry information
     df = load_data()
