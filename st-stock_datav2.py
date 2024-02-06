@@ -46,6 +46,44 @@ def generate_prophet_forecast(ticker, start_date, end_date):
 
     return fig  # Return the Prophet forecast plot as a Matplotlib figure
 
+def fetch_data(ticker, start_date, end_date):
+    data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+    return data['Adj Close']
+    
+def calculate_parameters(data):
+    returns = data.pct_change()
+    mean_return = returns.mean()
+    sigma = returns.std()
+    return mean_return, sigma
+
+# Function for Monte Carlo simulation
+def monte_carlo_simulation(data, num_simulations=1000000, forecast_days=252):
+    mean_return, sigma = calculate_parameters(data)
+    final_prices = np.zeros(num_simulations)
+    initial_price = data.iloc[-1]
+
+    for i in range(num_simulations):
+        random_shocks = np.random.normal(loc=mean_return, scale=sigma, size=forecast_days)
+        price_series = [initial_price * (1 + random_shock) for random_shock in random_shocks]
+        final_prices[i] = price_series[-1]
+
+    plt.hist(final_prices, bins=50)
+    plt.xlabel('Price')
+    plt.ylabel('Frequency')
+    plt.title('Final Price Distribution after Monte Carlo Simulation')
+
+    # Add text under the plot
+    text_x = plt.xlim()[0] + (plt.xlim()[1] - plt.xlim()[0]) * 0.02  # Adjust x-position
+    text_y = plt.ylim()[0] - (plt.ylim()[1] - plt.ylim()[0]) * 0.3  # Adjust y-position
+    plt.text(text_x, text_y, f"Simulated Mean Final Price: {np.mean(final_prices):.2f}", fontsize=14)
+    text_y -= (plt.ylim()[1] - plt.ylim()[0]) * 0.1  # Adjust y-position
+    plt.text(text_x, text_y, f"Simulated Median Final Price: {np.median(final_prices):.2f}", fontsize=14)
+    text_y -= (plt.ylim()[1] - plt.ylim()[0]) * 0.1  # Adjust y-position
+    plt.text(text_x, text_y, f"Simulated Std Deviation of Final Price: {np.std(final_prices):.2f}", fontsize=14)
+
+    return final_prices
+
+
 
 
 
@@ -476,7 +514,7 @@ if st.sidebar.checkbox("Cash Flow"):
     
 # Checkbox to add Prophet forecast plot
 if st.sidebar.checkbox('Add Prophet Forecast', value=False):
-    selected_stock_prophet = st.sidebar.selectbox("Select a Stock for Prophet Forecast", tickers)
+    selected_stock_prophet = st.sidebar.selectbox("Select a Stock for Predicted Forecast", tickers)
     if selected_stock_prophet:
         st.title(f'Prophet Forecast for {selected_stock_prophet}')
         start_date_prophet = st.sidebar.date_input("Start Date for Forecast", pd.to_datetime("2022-01-01"))
@@ -484,8 +522,19 @@ if st.sidebar.checkbox('Add Prophet Forecast', value=False):
         
         # Call the function with the specified start_date and end_date
         st.pyplot(generate_prophet_forecast(selected_stock_prophet, start_date_prophet, end_date_prophet))
-
-
+        
+        st.subheader('More Simulation Results')
+        
+        # Prepare data for Monte Carlo simulation
+        data, _ = pdata(ticker, start_date, end_date)
+        
+        # Perform Monte Carlo simulation
+        final_prices = monte_carlo_simulation(data)
+        
+        # Display Monte Carlo simulation results
+        st.write(f"Simulated Mean Final Price: {np.mean(final_prices):.2f}")
+        st.write(f"Simulated Median Final Price: {np.median(final_prices):.2f}")
+        st.write(f"Simulated Std Deviation of Final Price: {np.std(final_prices):.2f}")
 
 
 
