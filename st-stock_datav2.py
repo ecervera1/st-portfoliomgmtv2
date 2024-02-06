@@ -604,8 +604,13 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
 
 if st.sidebar.checkbox('Portflio', value=False):
     def get_industry(symbol):
-        stock_info = yf.Ticker(symbol).info
-        return stock_info.get('industry', 'N/A')
+        try:
+            stock_info = yf.Ticker(symbol).info
+            industry = stock_info.get("industry", "N/A")
+            return industry
+        except Exception as e:
+            print(f"Error fetching industry for {symbol}: {str(e)}")
+            return "Error"
 
     # Function to load the data and add industry information
     def load_data():
