@@ -514,8 +514,6 @@ if st.sidebar.checkbox("Cash Flow"):
 
 if st.sidebar.checkbox("News & Articles"):
     st.subheader('News & Articles', divider='rainbow')
-    #st.markdown(f"{selected_stock}: ")
-    #st.subheader(f"Headlines for blue[{selected_stock}:] :newspaper:")
     st.subheader(f"Headlines for **{selected_stock}** :newspaper:")
     stock_symbol = selected_stock
     news_url = f"https://finance.yahoo.com/quote/{stock_symbol}"
@@ -537,7 +535,6 @@ if st.sidebar.checkbox("News & Articles"):
             full_article_link = f"https://finance.yahoo.com{article_link}"
             
             # Display the headline with a hyperlink
-            st.markdown(f"{selected_stock}: ")
             st.markdown(f"{index}. - [{headline_text}]({full_article_link})")
     else:
         # Print an error message if the request fails
