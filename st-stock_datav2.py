@@ -614,13 +614,12 @@ if st.sidebar.checkbox('Portflio', value=False):
 
     # Function to load the data and add industry information
     def load_data():
-        # Load your data here and exclude the first column
+        # Load your data here
+        #df = pd.read_csv('Portfolio Positions_02022024_10.csv')
         df = pd.read_csv('Portfolio Positions_02022024_10.csv', usecols=lambda col: col != 'Unnamed: 0')
-        return df
     
     # Fetch the industry for each symbol and add it as a column
     df['Industry'] = df['Symbol'].apply(get_industry)
-        return df
     
     # Streamlit script starts here
     st.title('Portfolio Analysis by Industry')
