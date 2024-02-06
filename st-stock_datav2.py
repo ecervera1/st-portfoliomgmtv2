@@ -70,19 +70,26 @@ def monte_carlo_simulation(data, num_simulations=1000000, forecast_days=252):
         price_series = [initial_price * (1 + random_shock) for random_shock in random_shocks]
         final_prices[i] = price_series[-1]
 
-    plt.hist(final_prices, bins=50)
-    plt.xlabel('Price')
-    plt.ylabel('Frequency')
-    plt.title('Final Price Distribution after Monte Carlo Simulation')
+    # Create a Matplotlib figure
+    fig, ax = plt.subplots()
+    
+    # Plot the histogram
+    ax.hist(final_prices, bins=50)
+    ax.set_xlabel('Price')
+    ax.set_ylabel('Frequency')
+    ax.set_title('Final Price Distribution after Monte Carlo Simulation')
 
     # Add text under the plot
     text_x = plt.xlim()[0] + (plt.xlim()[1] - plt.xlim()[0]) * 0.02  # Adjust x-position
     text_y = plt.ylim()[0] - (plt.ylim()[1] - plt.ylim()[0]) * 0.3  # Adjust y-position
-    plt.text(text_x, text_y, f"Simulated Mean Final Price: {np.mean(final_prices):.2f}", fontsize=14)
+    ax.text(text_x, text_y, f"Simulated Mean Final Price: {np.mean(final_prices):.2f}", fontsize=14)
     text_y -= (plt.ylim()[1] - plt.ylim()[0]) * 0.1  # Adjust y-position
-    plt.text(text_x, text_y, f"Simulated Median Final Price: {np.median(final_prices):.2f}", fontsize=14)
+    ax.text(text_x, text_y, f"Simulated Median Final Price: {np.median(final_prices):.2f}", fontsize=14)
     text_y -= (plt.ylim()[1] - plt.ylim()[0]) * 0.1  # Adjust y-position
-    plt.text(text_x, text_y, f"Simulated Std Deviation of Final Price: {np.std(final_prices):.2f}", fontsize=14)
+    ax.text(text_x, text_y, f"Simulated Std Deviation of Final Price: {np.std(final_prices):.2f}", fontsize=14)
+
+    # Display the Matplotlib figure using st.pyplot()
+    st.pyplot(fig)
 
     return final_prices
 
@@ -580,7 +587,7 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
         st.write(f"Simulated Median Final Price: {np.median(final_prices):.2f}")
         st.write(f"Simulated Std Deviation of Final Price: {np.std(final_prices):.2f}")
 
-        st.subheader('', divider = 'black')
+        st.subheader('', divider='rainbow')
 
         # Call the function with the specified data
         final_prices = monte_carlo_simulation(data_mc, num_simulations=num_runs, forecast_days=forecast_days)
