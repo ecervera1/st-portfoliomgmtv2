@@ -406,9 +406,13 @@ if st.sidebar.button('Run'):
     
         ax4.axis('off')
 
+        
 
     plt.tight_layout()
     st.pyplot(fig, use_container_width=True)
+
+
+
 
 if st.sidebar.checkbox("Income Statement"):
     st.subheader(f"Income Statement for {selected_stock}")
@@ -434,11 +438,57 @@ if st.sidebar.checkbox("Cash Flow"):
     else:
         st.write("Cash Flow data not available.")
 
-if st.sidebar.checkbox("Calculate FCFF and FCFE"):
-    st.subheader(f"FCFF & FCFE for {selected_stock}")
-    fcff_fcfe_results = calculate_fcff_and_fcfe(selected_stock)
+#if st.sidebar.checkbox("Calculate FCFF and FCFE"):
+    #st.subheader(f"FCFF & FCFE for {selected_stock}")
+    #fcff_fcfe_results = calculate_fcff_and_fcfe(selected_stock)
     #st.write(fcff_fcfe_results)
-    st.table(fcff_fcfe_results)
+    #st.table(fcff_fcfe_results)
+
+
+#Adding prophet 2/5/2024
+
+# Function to generate Prophet forecast plot for a given stock ticker
+def generate_prophet_forecast(ticker):
+    # Load historical stock data
+    start_date = '2020-01-01'
+    end_date = '2021-12-31'
+    data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+
+    # Prepare data for Prophet
+    phdata = data.reset_index()
+    phdata = phdata[['Date', 'Close']]
+    phdata = phdata.rename(columns={'Date': 'ds', 'Close': 'y'})
+
+    # Initialize and fit the Prophet model
+    model = Prophet()
+    model.fit(phdata)
+
+    # Create a DataFrame for future dates
+    future = model.make_future_dataframe(periods=365)  # Predict for 1 year into the future
+    forecast = model.predict(future)
+
+    # Plot the historical data and forecasted prices
+    fig = model.plot(forecast, xlabel='Date', ylabel='Stock Price')
+    plt.title(f'Historical and Forecasted Stock Prices for {ticker}')
+
+    return fig  # Return the Prophet forecast plot as a Matplotlib figure
+
+
+for ticker in tickers:
+try:
+    ticker_data = scrape_stock_data(ticker)
+    stock_data_list.append(ticker_data)
     
+    # Add the Prophet forecast plot for each stock
+    if st.sidebar.checkbox('Add Prophet Forecast', value=False):
+        st.title(f'Prophet Forecast for {ticker}')
+        st.pyplot(generate_prophet_forecast(ticker))  # Call the function to generate the Prophet forecast plot
+    
+except Exception as e:
+    st.error(f"Error fetching data for {ticker}: {e}")
+
+
+
+
 
     
