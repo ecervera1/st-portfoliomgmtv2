@@ -414,18 +414,7 @@ if st.sidebar.button('Run'):
     st.pyplot(fig, use_container_width=True)
 
 
-    for ticker in tickers:
-        try:
-            ticker_data = scrape_stock_data(ticker)
-            stock_data_list.append(ticker_data)
-            
-            # Add the Prophet forecast plot for each stock
-            if st.sidebar.checkbox('Add Prophet Forecast', value=False):
-                st.title(f'Prophet Forecast for {ticker}')
-                st.pyplot(generate_prophet_forecast(ticker))  # Call the function to generate the Prophet forecast plot
-            
-        except Exception as e:
-            st.error(f"Error fetching data for {ticker}: {e}")
+
 
 if st.sidebar.checkbox("Income Statement"):
     st.subheader(f"Income Statement for {selected_stock}")
@@ -463,9 +452,9 @@ if st.sidebar.checkbox("Cash Flow"):
 # Function to generate Prophet forecast plot for a given stock ticker
 def generate_prophet_forecast(ticker):
     # Load historical stock data
-    start_date = '2020-01-01'
-    end_date = '2021-12-31'
-    data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+    start_date = start_date
+    end_date = end_date
+    pdata = yf.download(ticker, start=start_date, end=end_date, progress=False)
 
     # Prepare data for Prophet
     phdata = data.reset_index()
@@ -485,6 +474,11 @@ def generate_prophet_forecast(ticker):
     plt.title(f'Historical and Forecasted Stock Prices for {ticker}')
 
     return fig  # Return the Prophet forecast plot as a Matplotlib figure
+    
+# Add the Prophet forecast plot for each stock
+if st.sidebar.checkbox('Add Prophet Forecast', value=False):
+    st.title(f'Prophet Forecast for {ticker}')
+    st.pyplot(generate_prophet_forecast(ticker))  # Call the function to generate the Prophet forecast plot
 
 
 
