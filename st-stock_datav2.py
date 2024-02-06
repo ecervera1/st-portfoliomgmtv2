@@ -22,6 +22,29 @@ custom_css = """
 """
 st.markdown(custom_css, unsafe_allow_html=True)
 
+# Function to generate Prophet forecast plot for a given stock ticker
+def generate_prophet_forecast(ticker, start_date, end_date):
+    # Load historical stock data
+    pdata = yf.download(ticker, start=start_date, end=end_date, progress=False)
+
+    # Prepare data for Prophet
+    phdata = pdata.reset_index()
+    phdata = phdata[['Date', 'Close']]
+    phdata = phdata.rename(columns={'Date': 'ds', 'Close': 'y'})
+
+    # Initialize and fit the Prophet model
+    model = Prophet()
+    model.fit(phdata)
+
+    # Create a DataFrame for future dates
+    future = model.make_future_dataframe(periods=365)  # Predict for 1 year into the future
+    forecast = model.predict(future)
+
+    # Plot the historical data and forecasted prices
+    fig = model.plot(forecast, xlabel='Date', ylabel='Stock Price')
+    plt.title(f'Historical and Forecasted Stock Prices for {ticker}')
+
+    return fig  # Return the Prophet forecast plot as a Matplotlib figure
 
 
 
@@ -449,36 +472,13 @@ if st.sidebar.checkbox("Cash Flow"):
 
 #Adding prophet 2/5/2024
 
-# Function to generate Prophet forecast plot for a given stock ticker
-def generate_prophet_forecast(ticker):
-    # Load historical stock data
-    start_date = start_date
-    end_date = end_date
-    pdata = yf.download(ticker, start=start_date, end=end_date, progress=False)
 
-    # Prepare data for Prophet
-    phdata = data.reset_index()
-    phdata = phdata[['Date', 'Close']]
-    phdata = phdata.rename(columns={'Date': 'ds', 'Close': 'y'})
-
-    # Initialize and fit the Prophet model
-    model = Prophet()
-    model.fit(phdata)
-
-    # Create a DataFrame for future dates
-    future = model.make_future_dataframe(periods=365)  # Predict for 1 year into the future
-    forecast = model.predict(future)
-
-    # Plot the historical data and forecasted prices
-    fig = model.plot(forecast, xlabel='Date', ylabel='Stock Price')
-    plt.title(f'Historical and Forecasted Stock Prices for {ticker}')
-
-    return fig  # Return the Prophet forecast plot as a Matplotlib figure
     
-# Add the Prophet forecast plot for each stock
 if st.sidebar.checkbox('Add Prophet Forecast', value=False):
-    st.title(f'Prophet Forecast for {ticker}')
-    st.pyplot(generate_prophet_forecast(ticker))  # Call the function to generate the Prophet forecast plot
+    selected_stock_prophet = st.sidebar.selectbox("Select a Stock for Prophet Forecast", tickers)
+    if selected_stock_prophet:
+        st.title(f'Prophet Forecast for {selected_stock_prophet}')
+        st.pyplot(generate_prophet_forecast(selected_stock_prophet))  # Generate and display the Prophet forecast plot
 
 
 
