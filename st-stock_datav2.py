@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 from datetime import datetime
 import re
+from prophet import Prophet
+
 
 
 custom_css = """
@@ -475,17 +477,17 @@ def generate_prophet_forecast(ticker):
 
 
 for ticker in tickers:
-try:
-    ticker_data = scrape_stock_data(ticker)
-    stock_data_list.append(ticker_data)
-    
-    # Add the Prophet forecast plot for each stock
-    if st.sidebar.checkbox('Add Prophet Forecast', value=False):
-        st.title(f'Prophet Forecast for {ticker}')
-        st.pyplot(generate_prophet_forecast(ticker))  # Call the function to generate the Prophet forecast plot
-    
-except Exception as e:
-    st.error(f"Error fetching data for {ticker}: {e}")
+    try:
+        ticker_data = scrape_stock_data(ticker)
+        stock_data_list.append(ticker_data)
+        
+        # Add the Prophet forecast plot for each stock
+        if st.sidebar.checkbox('Add Prophet Forecast', value=False):
+            st.title(f'Prophet Forecast for {ticker}')
+            st.pyplot(generate_prophet_forecast(ticker))  # Call the function to generate the Prophet forecast plot
+        
+    except Exception as e:
+        st.error(f"Error fetching data for {ticker}: {e}")
 
 
 
