@@ -606,7 +606,7 @@ if st.sidebar.checkbox('Portflio', value=False):
     def get_industry(symbol):
         try:
             stock_info = yf.Ticker(symbol).info
-            industry = stock_info.get("sector", "N/A")
+            industry = stock_info.get("sector", "Treasury")
             return industry
         except Exception as e:
             print(f"Error fetching industry for {symbol}: {str(e)}")
