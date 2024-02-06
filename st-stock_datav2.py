@@ -530,10 +530,43 @@ if st.sidebar.checkbox("News"):
         for index, headline_element in enumerate(headline_elements, start=1):
             headline_text = headline_element.get_text()
             #print(f"{ticker}: {index}. {headline_text}")
-            st.markdown(f"###{selected_stock}:")
+            st.markdown(f"##{selected_stock}:")
             st.markdown(f"{selected_stock}: {index}. {headline_text}")
     else:
         #print("Failed to retrieve data from Yahoo Finance.")
+        st.markdown("Failed to retrieve data from Yahoo Finance.")
+
+
+if st.sidebar.checkbox("News"):
+    stock_symbol = selected_stock
+    news_url = f"https://finance.yahoo.com/quote/{stock_symbol}"
+
+    # Send a GET request to the news URL
+    response = requests.get(news_url)
+    
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        # Parse the HTML content of the page
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Extract and print the news headlines
+        headline_elements = soup.find_all("h3", class_="Mb(5px)")
+        
+        for index, headline_element in enumerate(headline_elements, start=1):
+            headline_text = headline_element.get_text()
+            # Print the headline text
+            # st.write(f"{selected_stock}: {index}. {headline_text}")
+
+            # Create a hyperlink for each headline
+            article_link_html = f'<a href="{news_url}" target="_blank">Read more here.</a>'
+
+            # Append the hyperlink to the list
+            article_links.append(f"{selected_stock}: {index}. {headline_text} ({article_link_html})")
+
+        # Display the news headlines with hyperlinks
+        st.markdown("\n\n".join(article_links), unsafe_allow_html=True)
+    else:
+        # Print an error message if the request fails
         st.markdown("Failed to retrieve data from Yahoo Finance.")
 
 
