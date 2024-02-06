@@ -558,6 +558,7 @@ if st.sidebar.checkbox("News & Articles"):
     
 # Checkbox to add Prophet forecast plot
 if st.sidebar.checkbox('Add Pricing Forecast', value=False):
+    st.title(f'Forecast for {selected_stock_prophet}')
     #selected_stock_prophet = st.sidebar.selectbox("Select a Stock for Predicted Forecast", tickers)
     selected_stock_prophet = selected_stock
 
@@ -569,7 +570,7 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
     st.write("Forecast Days: ", num_runs)
     
     if selected_stock_prophet:
-        st.title(f'Prophet Forecast for {selected_stock_prophet}')
+        st.subheader(f'Prophet Forecast for {selected_stock_prophet}')
         start_date_prophet = st.sidebar.date_input("Start Date for Forecast", pd.to_datetime("2019-01-01"))
         end_date_prophet = st.sidebar.date_input("End Date for Forecast", default_end_date)
         
