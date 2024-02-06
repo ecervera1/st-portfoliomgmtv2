@@ -540,25 +540,7 @@ if st.sidebar.checkbox("News"):
 if st.sidebar.checkbox("News & Articles"):
     st.subheader('News & Articles', divider='rainbow')
     #st.markdown(f"{selected_stock}: ")
-    st.subheader('Headlines for blue[{selected_stock}:] :newspaper:')
-    stock_symbol = selected_stock
-
-    # Fetch news headlines using yfinance
-    ticker_data = yf.Ticker(stock_symbol)
-    news = ticker_data.news
-    index = 1
-    # Display the news headlines with links
-    for article in news:
-        article_link = article['link']
-        headline_text = article['title']
-        
-        st.markdown(f"{index}. - [{headline_text}]({article_link})")
-        index += 1
-    else:
-        # Print an error message if the request fails
-        st.markdown("Failed to retrieve data from Yahoo Finance.")
-
-if st.sidebar.checkbox("Newsb2.0"):
+    st.subheader(f"Headlines for blue[{selected_stock}:] :newspaper:")
     stock_symbol = selected_stock
     news_url = f"https://finance.yahoo.com/quote/{stock_symbol}"
 
@@ -584,6 +566,8 @@ if st.sidebar.checkbox("Newsb2.0"):
     else:
         # Print an error message if the request fails
         st.markdown("Failed to retrieve data from Yahoo Finance.")
+
+
 
 
 
