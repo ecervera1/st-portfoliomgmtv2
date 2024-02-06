@@ -650,7 +650,7 @@ if st.sidebar.checkbox('Portflio', value=False):
     df.rename(columns=new_column_names, inplace=True)
     
     df=df.reset_index(drop=True)
-    df=df.iloc[:, [0,1, 3,4,5,6]]
+    df=df.iloc[:, [0,2,3,4,5,6]]
 
     st.dataframe(df)
     
