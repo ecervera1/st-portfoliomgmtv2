@@ -182,7 +182,7 @@ st.title('Portfolio Management - Stock Comparative Analysis')
 st.sidebar.title('Input Parameters')
 
 # Input for stock tickers
-user_input = st.sidebar.text_input("Enter stock tickers separated by commas", "LLY, ABT, MRNA, JNJ, BIIB, BMY, PFE, AMGN, WBA")
+user_input = st.sidebar.text_input("Enter stock tickers separated by commas", "LLY, ABT, MRNA, JNJ, BIIB, BMY, PFE, NVO, UNH")
 tickers = [ticker.strip() for ticker in user_input.split(',')]
 
 selected_stock = st.sidebar.selectbox("Select a Stock", tickers)
