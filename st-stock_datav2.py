@@ -636,7 +636,7 @@ if st.sidebar.checkbox('Portflio', value=False):
         
         # Load data with industry information
         df = load_data()
-        selected_columns = ['Symbol', 'Current Value % of Account', 'Quantity', 'Industry']
+        selected_columns = ['Symbol', 'Description', 'Current Value', 'Percent of Account', 'Quantity', 'Cost Basis Total', 'Industry']
         #df = df[selected_columns]
         #df = df.iloc[1::2, :][selected_columns]
     
@@ -654,12 +654,12 @@ if st.sidebar.checkbox('Portflio', value=False):
                 return None, None, None
     
         # Apply the function to split the column into three columns
-        df[['Middle Part', 'Dollar Amount', 'Percentage']] = df['Current Value % of Account'].apply(split_current_value).apply(pd.Series)
-        new_column_names = {'Middle Part': 'Current Value', 'Dollar Amount': 'Cost', 'Percentage': 'Percentage of Portfolio'}
-        df.rename(columns=new_column_names, inplace=True)
+        #df[['Middle Part', 'Dollar Amount', 'Percentage']] = df['Current Value % of Account'].apply(split_current_value).apply(pd.Series)
+        #new_column_names = {'Middle Part': 'Current Value', 'Dollar Amount': 'Cost', 'Percentage': 'Percentage of Portfolio'}
+        #df.rename(columns=new_column_names, inplace=True)
         
-        df=df.reset_index(drop=True)
-        df=df.iloc[:, [0,2,3,4,5,6]]
+        #df=df.reset_index(drop=True)
+        #df=df.iloc[:, [0,2,3,4,5,6]]
         #df['Percentage of Portfolio'] = df['Percentage of Portfolio'].apply(lambda x: "{:.0%}".format(x))
     
         st.dataframe(df)
