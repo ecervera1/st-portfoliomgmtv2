@@ -612,20 +612,20 @@ if st.sidebar.checkbox('Portflio', value=False):
     
     # Check if the password is correct
     if password_input == correct_password:
-        def get_industry(symbol):
+        def get_industry(Symbol):
             try:
-                stock_info = yf.Ticker(symbol).info
+                stock_info = yf.Ticker(Symbol).info
                 industry = stock_info.get("sector", "Treasury")
                 return industry
             except Exception as e:
-                print(f"Error fetching industry for {symbol}: {str(e)}")
+                print(f"Error fetching industry for {Symbol}: {str(e)}")
                 return "Error"
     
         # Function to load the data and add industry information
         def load_data():
             # Load your data here
-            #df = pd.read_csv('Portfolio Positions_02092024.xlsx')
-            df = pd.read_csv('Portfolio Positions_02092024.xlsx', usecols=lambda col: col != 'Unnamed: 0')
+            df = pd.read_csv('Portfolio Positions_02092024.xlsx')
+            #df = pd.read_csv('Portfolio Positions_02092024.xlsx', usecols=lambda col: col != 'Unnamed: 0')
         
             # Fetch the industry for each symbol and add it as a column
             df['Industry'] = df['Symbol'].apply(get_industry)
@@ -642,6 +642,7 @@ if st.sidebar.checkbox('Portflio', value=False):
     
         condition = df['Quantity'].notnull()
         df = df.loc[condition, selected_columns]
+        st.dataframe(df)
     
         def split_current_value(value):
             match = re.search(r'\$(.*?)\$(.*?) (\d+\.\d+)%', value)
