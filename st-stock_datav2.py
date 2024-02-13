@@ -604,7 +604,7 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
 
 
 def load_data():
-    df = pd.read_excel('Portfolio Positions_02092024.xlsx')
+    df = pd.read_csv('Portfolio Positions_02092024.csv')
     return df
 
 if st.sidebar.checkbox('Portfolio', value=False):
