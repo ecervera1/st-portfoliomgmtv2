@@ -668,7 +668,8 @@ if st.sidebar.checkbox('Portflio', value=False):
         # Displaying filtered data
         #st.dataframe(filtered_data)
 
-        df['Percent Of Account'] = pd.to_numeric(df['Percent Of Account'], errors='coerce')
+        #df['Percent Of Account'] = pd.to_numeric(df['Percent Of Account'], errors='coerce')
+        df['Percent Of Account'] = df['Percent Of Account'].str.replace('%', '').astype(float)
         industry_percentages = df['Percent Of Account'].groupby(df['Industry']).sum() / df['Percent Of Account'].sum()
         symbol_percentages = df['Percent Of Account'].groupby(df['Symbol']).sum() / df['Percent Of Account'].sum()
         
