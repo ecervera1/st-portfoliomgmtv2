@@ -602,27 +602,58 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
         # Display the histogram plot
         #st.pyplot()
 
-
-def load_data():
-    df = pd.read_csv('Portfolio Positions_02092024.csv')
-    return df
-
-if st.sidebar.checkbox('Portfolio', value=False):
+if st.sidebar.checkbox('Portflio', value=False):
+    # Password for access
     correct_password = "ud"
+    # Create a checkbox to toggle password visibility
     show_password = st.checkbox("Show Password")
+    # Create an input box for the password
     password_input = st.text_input("Enter Password", type="password")
     
+    # Check if the password is correct
     if password_input == correct_password:
+        def get_industry(symbol):
+            try:
+                stock_info = yf.Ticker(symbol).info
+                industry = stock_info.get("sector", "Treasury")
+                return industry
+            except Exception as e:
+                print(f"Error fetching industry for {symbol}: {str(e)}")
+                return "Error"
+    
+        # Function to load the data and add industry information
+        def load_data():
+            # Load your data here
+            df = pd.read_csv('Portfolio Positions_02092024.csv')
+            #df = pd.read_csv('Portfolio Positions_02092024.xlsx', usecols=lambda col: col != 'Unnamed: 0')
+        
+            # Fetch the industry for each symbol and add it as a column
+            df['Industry'] = df['Symbol'].apply(get_industry)
+            return df
+        
+        # Streamlit script starts here
+        st.title('Portfolio')
+        
+        # Load data with industry information
         df = load_data()
-        df['Date'] = pd.to_datetime(df['Date'])
-        df.set_index('Date', inplace=True)
-        monthly_returns = df.groupby('Symbol').resample('M').last().pct_change()
-        combined_data = pd.concat([df['Adj Close'], monthly_returns], axis=1)
-        combined_data.columns = [f"{col} - {ticker}" for col in combined_data.columns for ticker in combined_data.columns.levels[0]]
-        combined_data.reset_index(inplace=True)
-        st.dataframe(combined_data)
-
-
+        selected_columns = ['Symbol', 'Description', 'Current Value', 'Percent of Account', 'Quantity', 'Cost Basis Total', 'Industry']
+        #df = df[selected_columns]
+        #df = df.iloc[1::2, :][selected_columns]
+    
+        condition = df['Quantity'].notnull()
+        df = df.loc[condition, selected_columns]
+    
+    
+        # Apply the function to split the column into three columns
+        #df[['Middle Part', 'Dollar Amount', 'Percentage']] = df['Current Value % of Account'].apply(split_current_value).apply(pd.Series)
+        #new_column_names = {'Middle Part': 'Current Value', 'Dollar Amount': 'Cost', 'Percentage': 'Percentage of Portfolio'}
+        #df.rename(columns=new_column_names, inplace=True)
+        
+        #df=df.reset_index(drop=True)
+        #df=df.iloc[:, [0,2,3,4,5,6]]
+        #df['Percentage of Portfolio'] = df['Percentage of Portfolio'].apply(lambda x: "{:.0%}".format(x))
+    
+        st.dataframe(df)
         
         # Filter UI
         #industries = df['Industry'].unique()
