@@ -636,7 +636,7 @@ if st.sidebar.checkbox('Portflio', value=False):
         
         # Load data with industry information
         df = load_data()
-        selected_columns = ['Symbol', 'Description', 'Current Value', 'Percent of Account', 'Quantity', 'Cost Basis Total', 'Industry']
+        selected_columns = ['Symbol', 'Description', 'Current Value', 'Percent Of Account', 'Quantity', 'Cost Basis Total', 'Industry']
         #df = df[selected_columns]
         #df = df.iloc[1::2, :][selected_columns]
     
@@ -668,8 +668,8 @@ if st.sidebar.checkbox('Portflio', value=False):
         # Displaying filtered data
         #st.dataframe(filtered_data)
     
-        industry_percentages = df['Percentage of Portfolio'].groupby(df['Industry']).sum() / df['Percentage of Portfolio'].sum()
-        symbol_percentages = df['Percentage of Portfolio'].groupby(df['Symbol']).sum() / df['Percentage of Portfolio'].sum()
+        industry_percentages = df['Percent Of Account'].groupby(df['Industry']).sum() / df['Percent Of Account'].sum()
+        symbol_percentages = df['Percent Of Account'].groupby(df['Symbol']).sum() / df['Percent Of Account'].sum()
         
         # Create a pie chart for industries
         plt.figure(figsize=(8, 8))
