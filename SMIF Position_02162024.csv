@@ -1,0 +1,51 @@
+Account Number,Account Name,Symbol,Description,Quantity,Last Price,Last Price Change,Current Value,Today's Gain/Loss Dollar,Today's Gain/Loss Percent,Total Gain/Loss Dollar,Total Gain/Loss Percent,Percent Of Account,Cost Basis Total,Average Cost Basis,Type
+Z49970450,Corporation,SPAXX**,HELD IN MONEY MARKET,,,,"$35,332.58 ",,,,,18.58%,,,Cash
+Z49970450,Corporation,NVDA,NVIDIA CORPORATION COM,15,$725.92 ,($0.67),"$10,888.72 ",($9.98),-0.10%,"$7,900.14 ",264.34%,5.73%,"$2,988.58 ",$199.24 ,Cash
+Z49970450,Corporation,MSFT,MICROSOFT CORP,20,$403.81 ,($2.75),"$8,076.20 ",($55.00),-0.68%,"$5,584.00 ",224.05%,4.25%,"$2,492.20 ",$124.61 ,Cash
+Z49970450,Corporation,AAPL,APPLE INC,40,$182.19 ,($1.67),"$7,287.60 ",($66.80),-0.91%,"$5,144.28 ",240.01%,3.83%,"$2,143.32 ",$53.58 ,Cash
+Z49970450,Corporation,META,META PLATFORMS INC CLASS A COMMON STOCK,20,$473.34 ,($10.69),"$9,466.80 ",($213.80),-2.21%,"$5,110.80 ",117.32%,4.98%,"$4,356.00 ",$217.80 ,Cash
+Z49970450,Corporation,LLY,ELI LILLY &CO COM,10,$781.69 ,$23.91 ,"$7,816.90 ",$239.10 ,3.15%,"$4,365.90 ",126.51%,4.11%,"$3,451.00 ",$345.10 ,Cash
+Z49970450,Corporation,MA,MASTERCARD INCORPORATED CL A,10,$467.90 ,($3.38),"$4,679.00 ",($33.80),-0.72%,"$1,903.00 ",68.55%,2.46%,"$2,776.00 ",$277.60 ,Cash
+Z49970450,Corporation,WMT,WALMART INC COM,35,$170.35 ,$1.06 ,"$5,962.25 ",$37.10 ,0.62%,"$1,368.31 ",29.78%,3.14%,"$4,593.94 ",$131.26 ,Cash
+Z49970450,Corporation,AMZN,AMAZON.COM INC,43,$169.36 ,($0.44),"$7,282.48 ",($18.92),-0.26%,"$1,280.73 ",21.33%,3.83%,"$6,001.75 ",$139.58 ,Cash
+Z49970450,Corporation,ASML,ASML HOLDING NV EUR0.09 NY REGISTRY SHS 2012,3,$928.80 ,($1.04),"$2,786.40 ",($3.12),-0.12%,$985.86 ,54.75%,1.47%,"$1,800.54 ",$600.18 ,Cash
+Z49970450,Corporation,SHEL,SHELL PLC SPON ADS EA REP 2 ORD SHS,70,$63.59 ,$0.01 ,"$4,450.95 ",$0.35 ,0.00%,$913.92 ,25.83%,2.34%,"$3,537.03 ",$50.53 ,Cash
+Z49970450,Corporation,XOM,EXXON MOBIL CORP,20,$103.73 ,($0.01),"$2,074.50 ",($0.10),-0.01%,$855.32 ,70.15%,1.09%,"$1,219.18 ",$60.96 ,Cash
+Z49970450,Corporation,ABT,ABBOTT LABORATORIES,20,$113.99 ,$0.35 ,"$2,279.80 ",$7.00 ,0.30%,$800.77 ,54.14%,1.20%,"$1,479.03 ",$73.95 ,Cash
+Z49970450,Corporation,COST,COSTCO WHOLESALE CORP COM USD0.01,3,$723.75 ,($0.76),"$2,171.25 ",($2.28),-0.11%,$791.25 ,57.33%,1.14%,"$1,380.00 ",$460.00 ,Cash
+Z49970450,Corporation,GLD,SPDR GOLD TR GOLD SHS,20,$186.37 ,$0.71 ,"$3,727.40 ",$14.20 ,0.38%,$725.89 ,24.18%,1.96%,"$3,001.51 ",$150.08 ,Cash
+Z49970450,Corporation,JPM,JPMORGAN CHASE & CO,15,$179.03 ,($0.84),"$2,685.45 ",($12.60),-0.47%,$684.55 ,34.21%,1.41%,"$2,000.90 ",$133.39 ,Cash
+Z49970450,Corporation,V,VISA INC,10,$278.17 ,($2.81),"$2,781.70 ",($28.10),-1.01%,$596.90 ,27.32%,1.46%,"$2,184.80 ",$218.48 ,Cash
+Z49970450,Corporation,EMR,EMERSON ELECTRIC CO,20,$106.12 ,$0.41 ,"$2,122.40 ",$8.20 ,0.38%,$572.80 ,36.96%,1.12%,"$1,549.60 ",$77.48 ,Cash
+Z49970450,Corporation,UNP,UNION PAC CORP COM,10,$246.44 ,($4.11),"$2,464.40 ",($41.10),-1.65%,$562.60 ,29.58%,1.30%,"$1,901.80 ",$190.18 ,Cash
+Z49970450,Corporation,TRV,TRAVELERS COMPANIES INC COM STK NPV,10,$217.38 ,($1.65),"$2,173.75 ",($16.45),-0.76%,$495.85 ,29.55%,1.14%,"$1,677.90 ",$167.79 ,Cash
+Z49970450,Corporation,URA,GLOBAL X FDS GLOBAL X URANIUM,50,$29.00 ,($0.21),"$1,449.75 ",($10.25),-0.71%,$449.75 ,44.97%,0.76%,"$1,000.00 ",$20.00 ,Cash
+Z49970450,Corporation,PLTR,PALANTIR TECHNOLOGIES INC CL A,50,$24.48 ,($0.93),"$1,224.00 ",($46.50),-3.66%,$411.50 ,50.64%,0.64%,$812.50 ,$16.25 ,Cash
+Z49970450,Corporation,BA,BOEING CO,8,$203.74 ,($1.59),"$1,629.92 ",($12.72),-0.78%,$395.74 ,32.06%,0.86%,"$1,234.18 ",$154.27 ,Cash
+Z49970450,Corporation,JNJ,JOHNSON &JOHNSON COM USD1.00,35,$156.43 ,($0.30),"$5,475.01 ",($10.54),-0.20%,$387.41 ,7.61%,2.88%,"$5,087.60 ",$145.36 ,Cash
+Z49970450,Corporation,CVX,CHEVRON CORP NEW COM,15,$154.58 ,$0.12 ,"$2,318.70 ",$1.80 ,0.07%,$354.95 ,18.07%,1.22%,"$1,963.75 ",$130.92 ,Cash
+Z49970450,Corporation,SPGI,S&P GLOBAL INC COM,5,$423.64 ,($0.85),"$2,118.20 ",($4.25),-0.21%,$352.79 ,19.98%,1.11%,"$1,765.41 ",$353.08 ,Cash
+Z49970450,Corporation,ADBE,ADOBE INC COM,3,$546.99 ,($43.45),"$1,640.97 ",($130.35),-7.36%,$287.48 ,21.23%,0.86%,"$1,353.49 ",$451.16 ,Cash
+Z49970450,Corporation,ICE,INTERCONTINENTAL EXCHANGE INC COM USD0.01,10,$137.25 ,$0.36 ,"$1,372.50 ",$3.60 ,0.26%,$281.70 ,25.82%,0.72%,"$1,090.80 ",$109.08 ,Cash
+Z49970450,Corporation,BLK,BLACKROCK INC COM USD0.01,5,$793.58 ,($4.47),"$3,967.90 ",($22.35),-0.57%,$217.90 ,5.81%,2.09%,"$3,750.00 ",$750.00 ,Cash
+Z49970450,Corporation,UNH,UNITEDHEALTH GROUP INC,5,$521.36 ,$0.48 ,"$2,606.80 ",$2.40 ,0.09%,$206.80 ,8.61%,1.37%,"$2,400.00 ",$480.00 ,Cash
+Z49970450,Corporation,GOOG,ALPHABET INC CAP STK CL C,15,$141.74 ,($2.20),"$2,126.10 ",($33.00),-1.53%,$174.70 ,8.95%,1.12%,"$1,951.40 ",$130.09 ,Cash
+Z49970450,Corporation,912797GQ4,UNITED STATES TREAS BILLS ZERO CPN 0.00000% 03/07/2024,10000,$99.71 ,$0.02 ,"$9,970.80 ",$1.50 ,0.01%,$155.20 ,1.58%,5.24%,"$9,815.60 ",--,Cash
+Z49970450,Corporation,NVO,NOVO NORDISK A/S ADR-EACH CNV INTO 1 CLASS B DKK1,10,$124.00 ,$2.25 ,"$1,240.00 ",$22.50 ,1.84%,$112.90 ,10.01%,0.65%,"$1,127.10 ",$112.71 ,Cash
+Z49970450,Corporation,MRNA,MODERNA INC COM,25,$88.40 ,($2.74),"$2,210.00 ",($68.50),-3.01%,$78.68 ,3.69%,1.16%,"$2,131.32 ",$85.25 ,Cash
+Z49970450,Corporation,FDX,FEDEX CORP COM USD0.10,4,$237.56 ,$1.04 ,$950.24 ,$4.16 ,0.43%,$32.95 ,3.59%,0.50%,$917.29 ,$229.32 ,Cash
+Z49970450,Corporation,LMT,LOCKHEED MARTIN CORP COM USD1.00,10,$424.00 ,$0.88 ,"$4,240.00 ",$2.65 ,0.06%,($19.43),-0.46%,2.23%,"$4,259.43 ",$425.94 ,Cash
+Z49970450,Corporation,SCHW,SCHWAB CHARLES CORP COM,60,$64.39 ,($0.25),"$3,863.10 ",($14.70),-0.38%,($29.00),-0.75%,2.03%,"$3,892.10 ",$64.87 ,Cash
+Z49970450,Corporation,LUV,SOUTHWEST AIRLINES CO,50,$33.95 ,($0.26),"$1,697.50 ",($13.00),-0.77%,($152.50),-8.25%,0.89%,"$1,850.00 ",$37.00 ,Cash
+Z49970450,Corporation,DE,DEERE & CO,5,$360.99 ,($3.67),"$1,804.95 ",($18.35),-1.01%,($185.05),-9.30%,0.95%,"$1,990.00 ",$398.00 ,Cash
+Z49970450,Corporation,BMY,BRISTOL-MYERS SQUIBB CO COM,50,$49.84 ,$0.40 ,"$2,492.00 ",$20.00 ,0.80%,($188.79),-7.05%,1.31%,"$2,680.79 ",$53.62 ,Cash
+Z49970450,Corporation,OXY,OCCIDENTAL PETE CORP COM,30,$60.53 ,$0.42 ,"$1,815.90 ",$12.60 ,0.69%,($315.30),-14.80%,0.96%,"$2,131.20 ",$71.04 ,Cash
+Z49970450,Corporation,BIIB,BIOGEN INC COM USD0.0005,15,$219.05 ,($4.30),"$3,285.75 ",($64.50),-1.93%,($349.80),-9.63%,1.73%,"$3,635.55 ",$242.37 ,Cash
+Z49970450,Corporation,PFE,PFIZER INC,95,$27.63 ,$0.12 ,"$2,624.37 ",$10.92 ,0.41%,($693.38),-20.90%,1.38%,"$3,317.75 ",$34.92 ,Cash
+Z49970450,Corporation,Pending Activity,,,,"$1,502.97 ",,,,,,,,,
+,,,,,,,,,,,,,,,
+"The data and information in this spreadsheet is provided to you solely for your use and is not for distribution. The spreadsheet is provided for informational purposes only, and is not intended to provide advice, nor should it be construed as an offer to sell, a solicitation of an offer to buy or a recommendation for any security by Fidelity or any third party. Data and information shown is based on information known to Fidelity as of the date it was exported and is subject to change. It should not be used in place of your account statements or trade confirmations and is not intended for tax reporting purposes. For more information on the data included in this spreadsheet, including any limitations thereof, go to Fidelity.com.",,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+"Brokerage services are provided by Fidelity Brokerage Services LLC, 900 Salem Street, Smithfield, RI 02917. Custody and other services provided by National Financial Services LLC. Both are Fidelity Investment companies and members SIPC, NYSE.",,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+Date downloaded 02/16/2024 3:59 PM ET,,,,,,,,,,,,,,,
