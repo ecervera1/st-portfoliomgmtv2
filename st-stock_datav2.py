@@ -800,17 +800,16 @@ def run_analysis(tickers, start_date, end_date):
 
 if st.sidebar.checkbox('Portflio Optimizer', value=False):
     st.title("Portfolio Optimization")
-    run_button = st.checkbox("Run Analysis")
-
-    if run_button:
         st.header("Input Parameters")
         tickers = st.text_input("Enter tickers separated by commas", "AAPL,MSFT,TSLA")
         start_date = st.text_input("Start Date (YYYY-MM-DD)", "2014-01-01")
         end_date = st.text_input("End Date (YYYY-MM-DD)", "2024-02-12")
         execute_button = st.button("Execute Analysis")
+    run_button = st.button("Run Analysis")
 
-        if execute_button:
-            run_analysis(tickers.split(','), start_date, end_date)
+    if run_button:
+        #if execute_button:
+        run_analysis(tickers.split(','), start_date, end_date)
     
         
     
