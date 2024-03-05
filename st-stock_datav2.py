@@ -705,11 +705,20 @@ if st.sidebar.checkbox('Portflio', value=False):
             st.pyplot(fig)
             
         else:
+            #The following commented lines are to show as a pie chart, then the uncommented are as a bar chart
+            #st.title('Symbols as % of Portfolio')
+            #fig, ax = plt.subplots(figsize=(8, 8))
+            #ax.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
+            #ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
+            #st.pyplot(fig)
+
             st.title('Symbols as % of Portfolio')
-            fig, ax = plt.subplots(figsize=(8, 8))
-            ax.pie(symbol_percentages, labels=df['Symbol'], autopct='%1.1f%%', startangle=140)
-            ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
-            st.pyplot(fig)
+            plt.figure(figsize=(10, 6))
+            sns.barplot(x=symbol_percentages.values, y=symbol_percentages.index, palette='viridis')
+            plt.xlabel('Percentage of Portfolio')
+            plt.ylabel('Symbol')
+            plt.title('Symbols as % of Portfolio')
+            st.pyplot()
     else:
         st.error("Wrong password. Please try again.")
         
