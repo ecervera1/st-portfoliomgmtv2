@@ -798,7 +798,7 @@ def run_analysis(tickers, start_date, end_date):
     plt.title('Efficient Frontier')
     st.pyplot(plt)
 
-def main():
+if st.sidebar.checkbox('Portflio Optimizer', value=False):
     st.title("Portfolio Optimization")
     run_button = st.checkbox("Run Analysis")
 
