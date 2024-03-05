@@ -711,6 +711,106 @@ if st.sidebar.checkbox('Portflio', value=False):
             st.pyplot(fig)
     else:
         st.error("Wrong password. Please try again.")
+        
+# Portfolio Optimizer
+
+def run_analysis(tickers, start_date, end_date):
+    # Initialize data as an empty DataFrame
+    data = pd.DataFrame()
+
+    # Fetch historical closing prices for valid tickers
+    valid_tickers = []
+    for ticker in tickers:
+        try:
+            df = yf.download(ticker, start=start_date, end=end_date)['Adj Close']
+            if not df.empty:
+                data = pd.concat([data, df], axis=1)
+                valid_tickers.append(ticker)
+            else:
+                st.warning(f"No data available for {ticker}. Skipping...")
+        except Exception as e:
+            st.error(f"Failed to fetch data for {ticker}: {e}")
+
+    if data.empty:
+        st.error("No valid data found for any ticker symbols.")
+        return
+
+    # Calculate daily returns
+    daily_returns = data.pct_change().dropna()
+
+    # Covariance matrix
+    cov_matrix = daily_returns.cov()
+
+    # Define the function to be minimized (negative Sharpe ratio)
+    def negative_sharpe(weights):
+        portfolio_return = np.dot(weights, daily_returns.mean()) * 252
+        portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
+        sharpe_ratio = portfolio_return / portfolio_volatility
+        return -sharpe_ratio
+
+    # Define the bounds for the weights
+    bounds = [(0, 1) for _ in range(len(valid_tickers))]
+
+    # Define the constraints for the weights (sum of weights equals 1)
+    constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
+
+    # Calculate the optimal weights
+    initial_guess = [1. / len(valid_tickers) for _ in range(len(valid_tickers))]
+    optimal_weights = minimize(negative_sharpe, initial_guess, method='SLSQP', bounds=bounds, constraints=constraints)
+
+    # Display ticker weights
+    ticker_weights = dict(zip(valid_tickers, optimal_weights.x))
+    st.write("### Suggested Ticker Weights")
+    st.table(pd.DataFrame.from_dict(ticker_weights, orient='index', columns=['Weight']))
+
+    # Portfolio Statistics
+    optimal_portfolio_return = np.dot(optimal_weights.x, daily_returns.mean()) * 252
+    optimal_portfolio_volatility = np.sqrt(np.dot(optimal_weights.x.T, np.dot(cov_matrix, optimal_weights.x))) * np.sqrt(252)
+    sharpe_ratio = optimal_portfolio_return / optimal_portfolio_volatility
+
+    # Display portfolio statistics
+    st.write(f'**Annual Return:** {optimal_portfolio_return:.2f}')
+    st.write(f'**Daily Return:** {np.dot(optimal_weights.x, daily_returns.mean()):.4f}')
+    st.write(f'**Risk (Standard Deviation):** {optimal_portfolio_volatility:.2f}')
+    st.write(f'**Sharpe Ratio:** {sharpe_ratio:.2f}')
+
+    # Plotting the efficient frontier
+    port_returns = []
+    port_volatility = []
+
+    num_assets = len(valid_tickers)
+    num_portfolios = 5000
+
+    for _ in range(num_portfolios):
+        weights = np.random.random(num_assets)
+        weights /= np.sum(weights)
+        returns = np.dot(daily_returns.mean(), weights) * 252
+        volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
+        port_returns.append(returns)
+        port_volatility.append(volatility)
+
+    # Plotting the efficient frontier
+    plt.figure(figsize=(10, 8))
+    plt.scatter(port_volatility, port_returns, c=np.array(port_returns) / np.array(port_volatility), cmap='YlGnBu')
+    plt.colorbar(label='Sharpe Ratio')
+    plt.xlabel('Volatility')
+    plt.ylabel('Expected Returns')
+    plt.title('Efficient Frontier')
+    st.pyplot(plt)
+
+def main():
+    st.title("Portfolio Optimization")
+    run_button = st.checkbox("Run Analysis")
+
+    if run_button:
+        st.header("Input Parameters")
+        tickers = st.text_input("Enter tickers separated by commas", "AAPL,MSFT,TSLA")
+        start_date = st.text_input("Start Date (YYYY-MM-DD)", "2014-01-01")
+        end_date = st.text_input("End Date (YYYY-MM-DD)", "2024-02-12")
+        execute_button = st.button("Execute Analysis")
+
+        if execute_button:
+            run_analysis(tickers.split(','), start_date, end_date)
     
         
     
