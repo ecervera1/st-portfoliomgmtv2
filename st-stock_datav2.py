@@ -712,7 +712,8 @@ if st.sidebar.checkbox('Portflio', value=False):
     else:
         st.error("Wrong password. Please try again.")
         
-# Portfolio Optimizer
+# Portfolio Optimizer ---------------------------------
+from scipy.optimize import minimize
 
 def run_analysis(tickers, start_date, end_date):
     # Initialize data as an empty DataFrame
@@ -804,11 +805,10 @@ if st.sidebar.checkbox('Portflio Optimizer', value=False):
     tickers = st.text_input("Enter tickers separated by commas", "AAPL,MSFT,TSLA")
     start_date = st.text_input("Start Date (YYYY-MM-DD)", "2014-01-01")
     end_date = st.text_input("End Date (YYYY-MM-DD)", "2024-02-12")
-    execute_button = st.button("Execute Analysis")
+    #execute_button = st.button("Execute Analysis")
     run_button = st.button("Run Analysis")
 
     if run_button:
-        #if execute_button:
         run_analysis(tickers.split(','), start_date, end_date)
     
         
