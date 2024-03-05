@@ -794,6 +794,7 @@ def run_analysis(tickers, start_date, end_date):
     # Plotting the efficient frontier
     plt.figure(figsize=(10, 8))
     plt.scatter(port_volatility, port_returns, c=np.array(port_returns) / np.array(port_volatility), cmap='YlGnBu')
+    plt.scatter(optimal_portfolio_volatility, optimal_portfolio_return, color='red', label='Optimal Portfolio')
     plt.colorbar(label='Sharpe Ratio')
     plt.xlabel('Volatility')
     plt.ylabel('Expected Returns')
