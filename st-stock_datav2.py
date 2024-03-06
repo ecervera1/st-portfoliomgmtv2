@@ -843,7 +843,7 @@ def load_data(file):
         return pd.DataFrame()
 
 # Streamlit script starts here
-if st.sidebar.checkbox('Portfolio', value=False):
+if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
     # Password for access
     correct_password = "ud"
     # Create an input box for the password
@@ -919,7 +919,7 @@ if st.sidebar.checkbox('Portfolio', value=False):
                 # Call the portfolio optimizer function with selected ticker symbols
                 run_analysis(selected_tickers, start_date, end_date)
 
-            st.sidebar.title('Portfolio Analysis')
+            #st.sidebar.title('Portfolio Analysis')
             selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Ticker'])
 
             # Display the selected chart
