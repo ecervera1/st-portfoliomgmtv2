@@ -866,43 +866,43 @@ if st.sidebar.checkbox('Portflio', value=False):
                     else:
                         return pd.DataFrame()
             
-            df = load_data(uploaded_file)
-            selected_columns = ['Symbol', 'Description', 'Current Value', 'Percent Of Account', 'Quantity', 'Cost Basis Total', 'Industry']
-            condition = df['Quantity'].notnull()
-            df = df.loc[condition, selected_columns]
-            
-            st.dataframe(df)
-    
-            df['Percent Of Account'] = df['Percent Of Account'].str.replace('%', '').astype(float)
-            industry_percentages = df['Percent Of Account'].groupby(df['Industry']).sum() / df['Percent Of Account'].sum()
-            symbol_percentages = df['Percent Of Account'].groupby(df['Symbol']).sum() / df['Percent Of Account'].sum()
-    
-            # Run analysis for portfolio optimizer
-            selected_tickers = st.multiselect('Select Ticker Symbols', df['Symbol'].unique())
-            st.write('Selected Ticker Symbols:', selected_tickers)
-            if st.button('Optimize Portfolio'):
-                # Call the portfolio optimizer function with selected ticker symbols
-                run_analysis(selected_tickers, start_date, end_date)
-    
-            st.sidebar.title('Portfolio Analysis')
-            selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Ticker'])
-    
-            # Display the selected chart
-            if selected_chart == 'Industries':
-                st.title('Industries as % of Portfolio')
-                fig, ax = plt.subplots(figsize=(8, 8))
-                ax.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
-                ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
-                st.pyplot(fig)
+                df = load_data(uploaded_file)
+                selected_columns = ['Symbol', 'Description', 'Current Value', 'Percent Of Account', 'Quantity', 'Cost Basis Total', 'Industry']
+                condition = df['Quantity'].notnull()
+                df = df.loc[condition, selected_columns]
                 
-            else:
-                st.title('Symbols as % of Portfolio')
-                plt.figure(figsize=(10, 14))
-                sns.barplot(x=symbol_percentages.values, y=symbol_percentages.index, palette='viridis')
-                plt.xlabel('Percentage of Portfolio')
-                plt.ylabel('Symbol')
-                plt.title('Symbols as % of Portfolio')
-                st.pyplot()
+                st.dataframe(df)
+        
+                df['Percent Of Account'] = df['Percent Of Account'].str.replace('%', '').astype(float)
+                industry_percentages = df['Percent Of Account'].groupby(df['Industry']).sum() / df['Percent Of Account'].sum()
+                symbol_percentages = df['Percent Of Account'].groupby(df['Symbol']).sum() / df['Percent Of Account'].sum()
+        
+                # Run analysis for portfolio optimizer
+                selected_tickers = st.multiselect('Select Ticker Symbols', df['Symbol'].unique())
+                st.write('Selected Ticker Symbols:', selected_tickers)
+                if st.button('Optimize Portfolio'):
+                    # Call the portfolio optimizer function with selected ticker symbols
+                    run_analysis(selected_tickers, start_date, end_date)
+        
+                st.sidebar.title('Portfolio Analysis')
+                selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Ticker'])
+        
+                # Display the selected chart
+                if selected_chart == 'Industries':
+                    st.title('Industries as % of Portfolio')
+                    fig, ax = plt.subplots(figsize=(8, 8))
+                    ax.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
+                    ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
+                    st.pyplot(fig)
+                    
+                else:
+                    st.title('Symbols as % of Portfolio')
+                    plt.figure(figsize=(10, 14))
+                    sns.barplot(x=symbol_percentages.values, y=symbol_percentages.index, palette='viridis')
+                    plt.xlabel('Percentage of Portfolio')
+                    plt.ylabel('Symbol')
+                    plt.title('Symbols as % of Portfolio')
+                    st.pyplot()
 
 
     
