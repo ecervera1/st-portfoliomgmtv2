@@ -607,10 +607,119 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
 
 
 
+# PORTFOLIO OPTIMIZER V2 - WITH RFR  -----------------------
+from scipy.optimize import minimize
+
+def fetch_historical_data(ticker, start_date, end_date):
+    try:
+        df = yf.download(ticker, start=start_date, end=end_date)['Adj Close']
+        if not df.empty:
+            return df
+        else:
+            st.warning(f"No data available for {ticker}. Skipping...")
+            return None
+    except Exception as e:
+        st.error(f"Failed to fetch data for {ticker}: {e}")
+        return None
+
+def run_analysis(tickers, start_date, end_date, risk_free_rate):
+    # Initialize data as an empty DataFrame
+    data = pd.DataFrame()
+
+    # Fetch historical closing prices for valid tickers
+    valid_tickers = []
+    for ticker in tickers:
+        df = fetch_historical_data(ticker, start_date, end_date)
+        if df is not None:
+            data = pd.concat([data, df], axis=1)
+            valid_tickers.append(ticker)
+
+    if data.empty:
+        st.error("No valid data found for any ticker symbols.")
+        return
+
+    # Calculate daily returns
+    daily_returns = data.pct_change().dropna()
+
+    # Covariance matrix
+    cov_matrix = daily_returns.cov()
+
+    # Define the function to be minimized (negative Sharpe ratio)
+    def negative_sharpe(weights, risk_free_rate):
+        portfolio_return = np.dot(weights, daily_returns.mean()) * 252
+        portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
+        sharpe_ratio = (portfolio_return - risk_free_rate) / portfolio_volatility
+        return -sharpe_ratio
+
+    # Define the bounds for the weights
+    bounds = [(0, 1) for _ in range(len(valid_tickers))]
+
+    # Define the constraints for the weights (sum of weights equals 1)
+    constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
+
+    # Calculate the optimal weights
+    initial_guess = [1. / len(valid_tickers) for _ in range(len(valid_tickers))]
+    optimal_weights = minimize(negative_sharpe, initial_guess, args=(risk_free_rate,), method='SLSQP', bounds=bounds, constraints=constraints)
+
+    # Display ticker weights
+    ticker_weights = dict(zip(valid_tickers, optimal_weights.x))
+    st.write("### Suggested Ticker Weights")
+    st.table(pd.DataFrame.from_dict(ticker_weights, orient='index', columns=['Weight']))
+
+    # Portfolio Statistics
+    optimal_portfolio_return = np.dot(optimal_weights.x, daily_returns.mean()) * 252
+    optimal_portfolio_volatility = np.sqrt(np.dot(optimal_weights.x.T, np.dot(cov_matrix, optimal_weights.x))) * np.sqrt(252)
+    sharpe_ratio = (optimal_portfolio_return - risk_free_rate) / optimal_portfolio_volatility
+
+    # Display portfolio statistics
+    st.write(f'**Annual Return:** {optimal_portfolio_return:.2f}')
+    st.write(f'**Daily Return:** {np.dot(optimal_weights.x, daily_returns.mean()):.4f}')
+    st.write(f'**Risk (Standard Deviation):** {optimal_portfolio_volatility:.2f}')
+    st.write(f'**Sharpe Ratio:** {sharpe_ratio:.2f}')
+
+    # Plotting the efficient frontier
+    port_returns = []
+    port_volatility = []
+
+    num_assets = len(valid_tickers)
+    num_portfolios = 5000
+
+    for _ in range(num_portfolios):
+        weights = np.random.random(num_assets)
+        weights /= np.sum(weights)
+        returns = np.dot(daily_returns.mean(), weights) * 252
+        volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
+        port_returns.append(returns)
+        port_volatility.append(volatility)
+
+    # Plotting the efficient frontier
+    plt.figure(figsize=(10, 8))
+    plt.scatter(port_volatility, port_returns, c=np.array(port_returns) / np.array(port_volatility), cmap='YlGnBu')
+    plt.scatter(optimal_portfolio_volatility, optimal_portfolio_return, color='red', label='Optimal Portfolio')
+    plt.colorbar(label='Sharpe Ratio')
+    plt.xlabel('Volatility')
+    plt.ylabel('Expected Returns')
+    plt.title('Efficient Frontier')
+    st.pyplot(plt)
+
+if st.sidebar.checkbox('Portfolio Optimizer with Risk-free rate', value=False):
+    st.title("Portfolio Optimization")
+    st.header("Input Parameters")
+    tickers = st.text_input("Enter tickers separated by commas", "AAPL,MSFT,TSLA")
+    start_date = st.text_input("Start Date (YYYY-MM-DD)", "2014-01-01")
+    #default_end_date = datetime.today().date()
+    end_date = st.text.input("End Date (YYYY-MM-DD)", "2024-03-05")
+    risk_free_rate = st.number_input("Risk-Free Rate (%)", value=0.5, step=0.1)
+    run_button = st.button("Run Analysis")
+
+    if run_button:
+        run_analysis(tickers.split(','), start_date, end_date, risk_free_rate)
+
+
 
         
 # Portfolio Optimizer ---------------------------------
-from scipy.optimize import minimize
+
 
 def run_analysis(tickers, start_date, end_date):
     # Initialize data as an empty DataFrame
@@ -833,111 +942,7 @@ if st.sidebar.checkbox('Portfolio', value=False):
 
 
 
-# PORTFOLIO OPTIMIZER V2 - WITH RFR  -----------------------
-def fetch_historical_data(ticker, start_date, end_date):
-    try:
-        df = yf.download(ticker, start=start_date, end=end_date)['Adj Close']
-        if not df.empty:
-            return df
-        else:
-            st.warning(f"No data available for {ticker}. Skipping...")
-            return None
-    except Exception as e:
-        st.error(f"Failed to fetch data for {ticker}: {e}")
-        return None
 
-def run_analysis(tickers, start_date, end_date, risk_free_rate):
-    # Initialize data as an empty DataFrame
-    data = pd.DataFrame()
-
-    # Fetch historical closing prices for valid tickers
-    valid_tickers = []
-    for ticker in tickers:
-        df = fetch_historical_data(ticker, start_date, end_date)
-        if df is not None:
-            data = pd.concat([data, df], axis=1)
-            valid_tickers.append(ticker)
-
-    if data.empty:
-        st.error("No valid data found for any ticker symbols.")
-        return
-
-    # Calculate daily returns
-    daily_returns = data.pct_change().dropna()
-
-    # Covariance matrix
-    cov_matrix = daily_returns.cov()
-
-    # Define the function to be minimized (negative Sharpe ratio)
-    def negative_sharpe(weights, risk_free_rate):
-        portfolio_return = np.dot(weights, daily_returns.mean()) * 252
-        portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
-        sharpe_ratio = (portfolio_return - risk_free_rate) / portfolio_volatility
-        return -sharpe_ratio
-
-    # Define the bounds for the weights
-    bounds = [(0, 1) for _ in range(len(valid_tickers))]
-
-    # Define the constraints for the weights (sum of weights equals 1)
-    constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
-
-    # Calculate the optimal weights
-    initial_guess = [1. / len(valid_tickers) for _ in range(len(valid_tickers))]
-    optimal_weights = minimize(negative_sharpe, initial_guess, args=(risk_free_rate,), method='SLSQP', bounds=bounds, constraints=constraints)
-
-    # Display ticker weights
-    ticker_weights = dict(zip(valid_tickers, optimal_weights.x))
-    st.write("### Suggested Ticker Weights")
-    st.table(pd.DataFrame.from_dict(ticker_weights, orient='index', columns=['Weight']))
-
-    # Portfolio Statistics
-    optimal_portfolio_return = np.dot(optimal_weights.x, daily_returns.mean()) * 252
-    optimal_portfolio_volatility = np.sqrt(np.dot(optimal_weights.x.T, np.dot(cov_matrix, optimal_weights.x))) * np.sqrt(252)
-    sharpe_ratio = (optimal_portfolio_return - risk_free_rate) / optimal_portfolio_volatility
-
-    # Display portfolio statistics
-    st.write(f'**Annual Return:** {optimal_portfolio_return:.2f}')
-    st.write(f'**Daily Return:** {np.dot(optimal_weights.x, daily_returns.mean()):.4f}')
-    st.write(f'**Risk (Standard Deviation):** {optimal_portfolio_volatility:.2f}')
-    st.write(f'**Sharpe Ratio:** {sharpe_ratio:.2f}')
-
-    # Plotting the efficient frontier
-    port_returns = []
-    port_volatility = []
-
-    num_assets = len(valid_tickers)
-    num_portfolios = 5000
-
-    for _ in range(num_portfolios):
-        weights = np.random.random(num_assets)
-        weights /= np.sum(weights)
-        returns = np.dot(daily_returns.mean(), weights) * 252
-        volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
-        port_returns.append(returns)
-        port_volatility.append(volatility)
-
-    # Plotting the efficient frontier
-    plt.figure(figsize=(10, 8))
-    plt.scatter(port_volatility, port_returns, c=np.array(port_returns) / np.array(port_volatility), cmap='YlGnBu')
-    plt.scatter(optimal_portfolio_volatility, optimal_portfolio_return, color='red', label='Optimal Portfolio')
-    plt.colorbar(label='Sharpe Ratio')
-    plt.xlabel('Volatility')
-    plt.ylabel('Expected Returns')
-    plt.title('Efficient Frontier')
-    st.pyplot(plt)
-
-if st.sidebar.checkbox('Portfolio Optimizer with Risk-free rate', value=False):
-    st.title("Portfolio Optimization")
-    st.header("Input Parameters")
-    tickers = st.text_input("Enter tickers separated by commas", "AAPL,MSFT,TSLA")
-    start_date = st.text_input("Start Date (YYYY-MM-DD)", "2014-01-01")
-    #default_end_date = datetime.today().date()
-    end_date = st.text.input("End Date (YYYY-MM-DD)", "2024-03-05")
-    risk_free_rate = st.number_input("Risk-Free Rate (%)", value=0.5, step=0.1)
-    run_button = st.button("Run Analysis")
-
-    if run_button:
-        run_analysis(tickers.split(','), start_date, end_date, risk_free_rate)
     
         
 
