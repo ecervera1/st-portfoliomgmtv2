@@ -723,22 +723,22 @@ if st.sidebar.checkbox('Portflio', value=False):
 
     #THE FOLLOWING MUST BE CLEANED UP TO AVOID REPETETIVENESS BASED ON BEST PRACTICES:
     def get_industry(symbol):
-    try:
-        stock_info = yf.Ticker(symbol).info
-        industry = stock_info.get("sector", "Treasury")
-        return industry
-    except Exception as e:
-        print(f"Error fetching industry for {symbol}: {str(e)}")
-        return "Error"
-
-    # Function to load the data and add industry information
-    def load_data(file):
-        if file is not None:
-            df = pd.read_csv(file)
-            df['Industry'] = df['Symbol'].apply(get_industry)
-            return df
-        else:
-            return pd.DataFrame()
+        try:
+            stock_info = yf.Ticker(symbol).info
+            industry = stock_info.get("sector", "Treasury")
+            return industry
+        except Exception as e:
+            print(f"Error fetching industry for {symbol}: {str(e)}")
+            return "Error"
+    
+        # Function to load the data and add industry information
+        def load_data(file):
+            if file is not None:
+                df = pd.read_csv(file)
+                df['Industry'] = df['Symbol'].apply(get_industry)
+                return df
+            else:
+                return pd.DataFrame()
 
     
     # Check if the password is correct
