@@ -840,6 +840,42 @@ if st.sidebar.checkbox('Portflio', value=False):
     else:
         st.error("Wrong password. Please try again.")
 
+        # Uploaded portfolio section
+    def uploaded_portfolio_section(file):
+        st.title('Uploaded Portfolio')
+    
+        # Load data with industry information
+        df = load_data(file)
+        if df is not None:
+            selected_columns = ['Symbol', 'Description', 'Current Value', 'Percent Of Account', 'Quantity', 'Cost Basis Total', 'Industry']
+            condition = df['Quantity'].notnull()
+            df = df.loc[condition, selected_columns]
+    
+            st.dataframe(df)
+    
+            df['Percent Of Account'] = df['Percent Of Account'].str.replace('%', '').astype(float)
+            industry_percentages = df['Percent Of Account'].groupby(df['Industry']).sum() / df['Percent Of Account'].sum()
+            symbol_percentages = df['Percent Of Account'].groupby(df['Symbol']).sum() / df['Percent Of Account'].sum()
+    
+            plt.figure(figsize=(8, 8))
+            plt.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
+            plt.title('Industries as % of Portfolio')
+            plt.axis('equal')
+            st.pyplot()
+    
+            plt.figure(figsize=(8, 8))
+            plt.title('Symbols as % of Portfolio')
+            plt.axis('equal')
+            st.pyplot()
+        
+        # Allow users to upload their own CSV file
+        uploaded_file = st.file_uploader("Upload your own CSV file", type=["csv"])
+        if uploaded_file is not None:
+            # Call the uploaded portfolio section
+            uploaded_portfolio_section(uploaded_file)
+
+    
+
 
 
 
