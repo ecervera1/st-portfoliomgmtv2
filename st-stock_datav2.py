@@ -714,7 +714,7 @@ if st.sidebar.checkbox('Portflio', value=False):
             #st.pyplot(fig)
 
             st.title('Symbols as % of Portfolio')
-            plt.figure(figsize=(10, 6))
+            plt.figure(figsize=(10, 14))
             sns.barplot(x=symbol_percentages.values, y=symbol_percentages.index, palette='viridis')
             plt.xlabel('Percentage of Portfolio')
             plt.ylabel('Symbol')
