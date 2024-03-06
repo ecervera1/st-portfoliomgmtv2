@@ -178,7 +178,8 @@ def get_financial_statements(ticker):
 
 
 # Streamlit app layout
-st.title('Portfolio Management - Stock Comparative Analysis')
+st.title('Portfolio Management')
+st.subheader('Stock Comparative Analysis')
 
 # Sidebar for user inputs
 st.sidebar.title('Input Parameters')
