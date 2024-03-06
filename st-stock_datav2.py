@@ -692,7 +692,14 @@ if st.sidebar.checkbox('Portflio', value=False):
         
         # Display the pie chart for symbols
         plt.show()
-    
+
+        selected_tickers = st.multiselect('Select Ticker Symbols', df['Symbol'].unique())
+        st.write('Selected Ticker Symbols:', selected_tickers)
+        if st.button('Optimize Portfolio'):
+        # Call the portfolio optimizer function with selected ticker symbols
+        run_analysis(selected_tickers, start_date, end_date)
+        
+        
         #---------------
         st.sidebar.title('Portfolio Analysis')
         selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Ticker'])
