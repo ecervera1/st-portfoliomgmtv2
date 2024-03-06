@@ -693,11 +693,12 @@ if st.sidebar.checkbox('Portflio', value=False):
         # Display the pie chart for symbols
         plt.show()
 
+        #Run analysis for portfolio optimizer ---------------------
         selected_tickers = st.multiselect('Select Ticker Symbols', df['Symbol'].unique())
         st.write('Selected Ticker Symbols:', selected_tickers)
         if st.button('Optimize Portfolio'):
         # Call the portfolio optimizer function with selected ticker symbols
-        run_analysis(selected_tickers, start_date, end_date)
+            run_analysis(selected_tickers, start_date, end_date)
         
         
         #---------------
@@ -729,6 +730,9 @@ if st.sidebar.checkbox('Portflio', value=False):
             st.pyplot()
     else:
         st.error("Wrong password. Please try again.")
+
+
+
         
 # Portfolio Optimizer ---------------------------------
 from scipy.optimize import minimize
