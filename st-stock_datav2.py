@@ -606,6 +606,7 @@ if st.sidebar.checkbox('Add Pricing Forecast', value=False):
 
 
 
+st.sidebar.title('Portfolio Analysis')
 
 # PORTFOLIO OPTIMIZER V2 - WITH RFR  -----------------------
 from scipy.optimize import minimize
@@ -872,7 +873,7 @@ if st.sidebar.checkbox('Portfolio', value=False):
             # Call the portfolio optimizer function with selected ticker symbols
             run_analysis(selected_tickers, start_date, end_date)
 
-        st.sidebar.title('Portfolio Analysis')
+        #st.sidebar.title('Portfolio Analysis')
         selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Ticker'])
 
         # Display the selected chart
