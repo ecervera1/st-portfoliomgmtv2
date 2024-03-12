@@ -185,7 +185,7 @@ st.subheader('Stock Comparative Analysis')
 st.sidebar.title('Input Parameters')
 
 # Input for stock tickers
-user_input = st.sidebar.text_input("Enter stock tickers separated by commas", "LLY, ABT, MRNA, JNJ, BIIB, BMY, PFE, NVO, UNH")
+user_input = st.sidebar.text_input("Enter stock tickers separated by commas", "LLY, ABT, MRNA, JNJ, BIIB, BMY, PFE, NVO, UNH, ISRG, GEHC")
 tickers = [ticker.strip() for ticker in user_input.split(',')]
 
 selected_stock = st.sidebar.selectbox("Select a Stock", tickers)
@@ -855,7 +855,7 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
         st.title('Portfolio')
         
         # Load data with industry information
-        df = load_data('SMIF Portfolio Positions_03042024.csv')  # Default file
+        df = load_data('SMIF Portfolio Positions_03082024.csv')  # Default file
         
         selected_columns = ['Symbol', 'Description', 'Current Value', 'Percent Of Account', 'Quantity', 'Cost Basis Total', 'Industry']
         condition = df['Quantity'].notnull()
