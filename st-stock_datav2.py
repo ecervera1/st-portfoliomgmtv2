@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 import scipy
 import seaborn as sns
 
-
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
 custom_css = """
 <style>
