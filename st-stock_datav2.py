@@ -835,6 +835,30 @@ def get_industry(symbol):
         print(f"Error fetching industry for {symbol}: {str(e)}")
         return "Error"
 
+
+# Function to fetch historical data for a single ticker
+def fetch_historical_data(ticker, start_date, end_date):
+    try:
+        stock_data = yf.download(ticker, start=start_date, end=end_date)
+        if not stock_data.empty:
+            return stock_data['Close']
+        else:
+            return pd.Series()  # Return an empty Series if no data is available
+    except Exception as e:
+        print(f"Error fetching historical data for {ticker}: {str(e)}")
+        return pd.Series()  # Return an empty Series on error
+
+# Function to fetch historical data for all tickers in the DataFrame
+def portfolio_ts(df, start_date, end_date):
+    historical_data = pd.DataFrame()
+    for _, row in df.iterrows():
+        ticker = row['Symbol']
+        industry = row['Industry']
+        stock_data = fetch_historical_data(ticker, start_date, end_date)
+        if not stock_data.empty:
+            historical_data[ticker] = stock_data
+    return historical_data
+
 # Function to load the data and add industry information
 def load_data(file):
     if file is not None:
@@ -842,40 +866,6 @@ def load_data(file):
         df['Industry'] = df['Symbol'].apply(get_industry)
         return df
     else:
-        return pd.DataFrame()
-
-def portfolio_ts(df, start_date, end_date):
-    """
-    Fetch historical data for tickers from a DataFrame and aggregate them into a single DataFrame.
-
-    Parameters:
-        df (pd.DataFrame): DataFrame containing a 'Symbol' column with stock tickers.
-        start_date (str or datetime): Start date for historical data retrieval.
-        end_date (str or datetime): End date for historical data retrieval.
-
-    Returns:
-        pd.DataFrame: DataFrame containing historical data for all tickers.
-    """
-    # Extract tickers from the 'Symbol' column of the DataFrame
-    tickers = df['Symbol'].unique()
-
-    # Initialize an empty DataFrame to store historical data
-    historical_data = pd.DataFrame()
-
-    try:
-        # Loop through each ticker and fetch historical data
-        for ticker in tickers:
-            # Fetch historical data using yfinance
-            stock_data = yf.download(ticker, start=start_date, end=end_date)
-            
-            # Append the data to the DataFrame, setting the ticker as a column name
-            if not stock_data.empty:
-                historical_data[ticker] = stock_data['Close']
-
-        return historical_data
-
-    except Exception as e:
-        print(f"Error fetching historical data: {str(e)}")
         return pd.DataFrame()
 
 # Streamlit script starts here
@@ -903,17 +893,24 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
         symbol_percentages = df['Percent Of Account'].groupby(df['Symbol']).sum() / df['Percent Of Account'].sum()
         #industry_data = df.pivot_table(values='Percent Of Account', index='Date', columns='Industry', aggfunc='mean')
 
-        #Creating new dataframe for the industry performance ----------------
-        selected_columns = ['Symbol', 'Industry']
-        df = df[selected_columns].dropna()
-
-        # Get unique tickers and their corresponding industries
-        tickers = df_industry_performance['Symbol'].unique()
+        # Fetch historical data for all tickers in the DataFrame -----------------------------------------------------
+        start_date = datetime.today() - timedelta(days=2*365)  # Past two years
         end_date = datetime.today()
-        start_date = end_date - timedelta(days=2*365)  # Past two years
+        industry_historical_data = portfolio_ts(df, start_date, end_date)
+
+        if not industry_historical_data.empty:
+            # Plotting the closing prices for each ticker
+            st.title("Closing Prices for Each Ticker")
+            st.line_chart(industry_historical_data)
+
+            # Aggregating by industry
+            st.title("Aggregated Industry Closing Prices")
+            industry_aggregated = industry_historical_data.mean(axis=1)  # Average closing price for all tickers
+            st.line_chart(industry_aggregated)
 
         # Fetch historical data for tickers
-        industry_historical_data = portfolio_ts(tickers, start_date, end_date)
+        industry_historical_data = df['portfolio_ts'] = df['Symbol'].apply(portfolio_ts)
+        #portfolio_ts(tickers, start_date, end_date)
 
         if not industry_historical_data.empty:
             # Plotting the closing prices for each ticker
