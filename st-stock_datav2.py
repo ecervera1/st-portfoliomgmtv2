@@ -896,7 +896,9 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
         # Fetch historical data for all tickers in the DataFrame -----------------------------------------------------
         start_date = datetime.today() - timedelta(days=2*365)  # Past two years
         end_date = datetime.today()
-        industry_historical_data = portfolio_ts(df, start_date, end_date)
+        #industry_historical_data = portfolio_ts(df, start_date, end_date)
+        industry_historical_data = df['Symbol'].apply(lambda symbol: portfolio_ts(df, start_date, end_date))
+
 
         if not industry_historical_data.empty:
             # Plotting the closing prices for each ticker
