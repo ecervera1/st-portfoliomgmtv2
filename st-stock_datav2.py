@@ -881,7 +881,7 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
         # Fetch historical data for tickers
         industry_historical_data = run_analysis(tickers, start_date, end_date)
 
-        if not historical_data.empty:
+        if not industry_historical_data.empty:
             # Plotting the closing prices for each ticker
             st.title("Closing Prices for Each Ticker")
             st.line_chart(industry_historical_data)
