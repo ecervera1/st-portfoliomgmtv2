@@ -844,6 +844,40 @@ def load_data(file):
     else:
         return pd.DataFrame()
 
+def portfolio_ts(df, start_date, end_date):
+    """
+    Fetch historical data for tickers from a DataFrame and aggregate them into a single DataFrame.
+
+    Parameters:
+        df (pd.DataFrame): DataFrame containing a 'Symbol' column with stock tickers.
+        start_date (str or datetime): Start date for historical data retrieval.
+        end_date (str or datetime): End date for historical data retrieval.
+
+    Returns:
+        pd.DataFrame: DataFrame containing historical data for all tickers.
+    """
+    # Extract tickers from the 'Symbol' column of the DataFrame
+    tickers = df['Symbol'].unique()
+
+    # Initialize an empty DataFrame to store historical data
+    historical_data = pd.DataFrame()
+
+    try:
+        # Loop through each ticker and fetch historical data
+        for ticker in tickers:
+            # Fetch historical data using yfinance
+            stock_data = yf.download(ticker, start=start_date, end=end_date)
+            
+            # Append the data to the DataFrame, setting the ticker as a column name
+            if not stock_data.empty:
+                historical_data[ticker] = stock_data['Close']
+
+        return historical_data
+
+    except Exception as e:
+        print(f"Error fetching historical data: {str(e)}")
+        return pd.DataFrame()
+
 # Streamlit script starts here
 if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
     # Password for access
@@ -879,7 +913,7 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
         start_date = end_date - timedelta(days=2*365)  # Past two years
 
         # Fetch historical data for tickers
-        industry_historical_data = run_analysis(tickers, start_date, end_date)
+        industry_historical_data = portfolio_ts(tickers, start_date, end_date)
 
         if not industry_historical_data.empty:
             # Plotting the closing prices for each ticker
