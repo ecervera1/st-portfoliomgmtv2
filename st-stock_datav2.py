@@ -905,7 +905,7 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
 
         #Creating new dataframe for the industry performance ----------------
         selected_columns = ['Symbol', 'Industry']
-        df_industry_performance = df[selected_columns].dropna()
+        df = df[selected_columns].dropna()
 
         # Get unique tickers and their corresponding industries
         tickers = df_industry_performance['Symbol'].unique()
