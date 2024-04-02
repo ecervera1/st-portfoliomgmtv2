@@ -4,7 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patheffects as path_effects
 from datetime import datetime
-from datetime import timedelta
 import re
 from prophet import Prophet
 import numpy as np
@@ -835,30 +834,6 @@ def get_industry(symbol):
         print(f"Error fetching industry for {symbol}: {str(e)}")
         return "Error"
 
-
-# Function to fetch historical data for a single ticker
-def fetch_historical_data(ticker, start_date, end_date):
-    try:
-        stock_data = yf.download(ticker, start=start_date, end=end_date)
-        if not stock_data.empty:
-            return stock_data['Close']
-        else:
-            return pd.Series()  # Return an empty Series if no data is available
-    except Exception as e:
-        print(f"Error fetching historical data for {ticker}: {str(e)}")
-        return pd.Series()  # Return an empty Series on error
-
-# Function to fetch historical data for all tickers in the DataFrame
-def portfolio_ts(df, start_date, end_date):
-    historical_data = pd.DataFrame()
-    for _, row in df.iterrows():
-        ticker = row['Symbol']
-        industry = row['Industry']
-        stock_data = fetch_historical_data(ticker, start_date, end_date)
-        if not stock_data.empty:
-            historical_data[ticker] = stock_data
-    return historical_data
-
 # Function to load the data and add industry information
 def load_data(file):
     if file is not None:
@@ -880,7 +855,7 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
         st.title('Portfolio')
         
         # Load data with industry information
-        df = load_data('Portfolio_Positions_Mar-26-2024.csv')  # Default file
+        df = load_data('SMIF Position_03192024.csv')  # Default file
         
         selected_columns = ['Symbol', 'Description', 'Current Value', 'Percent Of Account', 'Quantity', 'Cost Basis Total', 'Industry']
         condition = df['Quantity'].notnull()
@@ -893,28 +868,19 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
         symbol_percentages = df['Percent Of Account'].groupby(df['Symbol']).sum() / df['Percent Of Account'].sum()
         #industry_data = df.pivot_table(values='Percent Of Account', index='Date', columns='Industry', aggfunc='mean')
 
-        # Fetch historical data for all tickers in the DataFrame -----------------------------------------------------
-        start_date = datetime.today() - timedelta(days=2*365)  # Past two years
+        #Creating new dataframe for the industry performance ----------------
+        selected_columns = ['Symbol', 'Industry']
+        df_industry_performance = df[selected_columns].dropna()
+
+        # Get unique tickers and their corresponding industries
+        tickers = df_industry_performance['Symbol'].unique()
         end_date = datetime.today()
-        #industry_historical_data = portfolio_ts(df, start_date, end_date)
-        industry_historical_data = df['Symbol'].apply(lambda symbol: portfolio_ts(df, start_date, end_date))
-
-        """
-        if not industry_historical_data.empty:
-            # Plotting the closing prices for each ticker
-            st.title("Closing Prices for Each Ticker")
-            st.line_chart(industry_historical_data)
-
-            # Aggregating by industry
-            st.title("Aggregated Industry Closing Prices")
-            industry_aggregated = industry_historical_data.mean(axis=1)  # Average closing price for all tickers
-            st.line_chart(industry_aggregated)
+        start_date = end_date - timedelta(days=2*365)  # Past two years
 
         # Fetch historical data for tickers
-        industry_historical_data = df['portfolio_ts'] = df['Symbol'].apply(portfolio_ts)
-        #portfolio_ts(tickers, start_date, end_date)
-        
-        if not industry_historical_data.empty:
+        industry_historical_data = run_analysis(tickers, start_date, end_date)
+
+        if not historical_data.empty:
             # Plotting the closing prices for each ticker
             st.title("Closing Prices for Each Ticker")
             st.line_chart(industry_historical_data)
@@ -928,7 +894,7 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
                 industry_aggregated[industry] = industry_data
 
             # Plotting aggregated industry data
-            #st.line_chart(industry_aggregated[df['Industry'].unique()])
+            st.line_chart(industry_aggregated[df['Industry'].unique()])
         
         # Run analysis for portfolio optimizer
         selected_tickers = st.multiselect('Select Ticker Symbols', df['Symbol'].unique())
@@ -939,23 +905,23 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
 
         #st.sidebar.title('Portfolio Analysis')
         selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Ticker'])
-        
+
         # Display the selected chart
-        #if selected_chart == 'Industries':
+        if selected_chart == 'Industries':
             st.title('Industries as % of Portfolio')
             fig, ax = plt.subplots(figsize=(8, 8))
             ax.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
             ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
             st.pyplot(fig)
-        """    
-        #else:
-        st.title('Symbols as % of Portfolio')
-        plt.figure(figsize=(10, 14))
-        sns.barplot(x=symbol_percentages.values, y=symbol_percentages.index, palette='viridis')
-        plt.xlabel('Percentage of Portfolio')
-        plt.ylabel('Symbol')
-        plt.title('Symbols as % of Portfolio')
-        st.pyplot()
+            
+        else:
+            st.title('Symbols as % of Portfolio')
+            plt.figure(figsize=(10, 14))
+            sns.barplot(x=symbol_percentages.values, y=symbol_percentages.index, palette='viridis')
+            plt.xlabel('Percentage of Portfolio')
+            plt.ylabel('Symbol')
+            plt.title('Symbols as % of Portfolio')
+            st.pyplot()
     else:
         st.error("Wrong password. Please try again.")
         st.write("Alternatively, you can upload a CSV file:")
