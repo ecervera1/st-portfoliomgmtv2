@@ -899,7 +899,7 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
         #industry_historical_data = portfolio_ts(df, start_date, end_date)
         industry_historical_data = df['Symbol'].apply(lambda symbol: portfolio_ts(df, start_date, end_date))
 
-
+        """
         if not industry_historical_data.empty:
             # Plotting the closing prices for each ticker
             st.title("Closing Prices for Each Ticker")
@@ -913,7 +913,7 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
         # Fetch historical data for tickers
         industry_historical_data = df['portfolio_ts'] = df['Symbol'].apply(portfolio_ts)
         #portfolio_ts(tickers, start_date, end_date)
-
+        
         if not industry_historical_data.empty:
             # Plotting the closing prices for each ticker
             st.title("Closing Prices for Each Ticker")
@@ -939,23 +939,23 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
 
         #st.sidebar.title('Portfolio Analysis')
         selected_chart = st.sidebar.radio('Select Chart:', ['Industries', 'Ticker'])
-
+        
         # Display the selected chart
-        if selected_chart == 'Industries':
+        #if selected_chart == 'Industries':
             st.title('Industries as % of Portfolio')
             fig, ax = plt.subplots(figsize=(8, 8))
             ax.pie(industry_percentages, labels=industry_percentages.index, autopct='%1.1f%%', startangle=140)
             ax.axis('equal')  # Equal aspect ratio ensures that the pie chart is circular
             st.pyplot(fig)
-            
-        else:
-            st.title('Symbols as % of Portfolio')
-            plt.figure(figsize=(10, 14))
-            sns.barplot(x=symbol_percentages.values, y=symbol_percentages.index, palette='viridis')
-            plt.xlabel('Percentage of Portfolio')
-            plt.ylabel('Symbol')
-            plt.title('Symbols as % of Portfolio')
-            st.pyplot()
+        """    
+        #else:
+        st.title('Symbols as % of Portfolio')
+        plt.figure(figsize=(10, 14))
+        sns.barplot(x=symbol_percentages.values, y=symbol_percentages.index, palette='viridis')
+        plt.xlabel('Percentage of Portfolio')
+        plt.ylabel('Symbol')
+        plt.title('Symbols as % of Portfolio')
+        st.pyplot()
     else:
         st.error("Wrong password. Please try again.")
         st.write("Alternatively, you can upload a CSV file:")
