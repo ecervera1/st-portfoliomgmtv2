@@ -880,7 +880,7 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
         st.title('Portfolio')
         
         # Load data with industry information
-        df = load_data('SMIF Position_03192024.csv')  # Default file
+        df = load_data('Portfolio_Positions_Mar-26-2024.csv')  # Default file
         
         selected_columns = ['Symbol', 'Description', 'Current Value', 'Percent Of Account', 'Quantity', 'Cost Basis Total', 'Industry']
         condition = df['Quantity'].notnull()
