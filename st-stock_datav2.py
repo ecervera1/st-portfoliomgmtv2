@@ -928,7 +928,7 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
                 industry_aggregated[industry] = industry_data
 
             # Plotting aggregated industry data
-            st.line_chart(industry_aggregated[df['Industry'].unique()])
+            #st.line_chart(industry_aggregated[df['Industry'].unique()])
         
         # Run analysis for portfolio optimizer
         selected_tickers = st.multiselect('Select Ticker Symbols', df['Symbol'].unique())
