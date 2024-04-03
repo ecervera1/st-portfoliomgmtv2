@@ -866,36 +866,7 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
         df['Percent Of Account'] = df['Percent Of Account'].str.replace('%', '').astype(float)
         industry_percentages = df['Percent Of Account'].groupby(df['Industry']).sum() / df['Percent Of Account'].sum()
         symbol_percentages = df['Percent Of Account'].groupby(df['Symbol']).sum() / df['Percent Of Account'].sum()
-        #industry_data = df.pivot_table(values='Percent Of Account', index='Date', columns='Industry', aggfunc='mean')
 
-        #Creating new dataframe for the industry performance ----------------
-        selected_columns = ['Symbol', 'Industry']
-        df_industry_performance = df[selected_columns].dropna()
-
-        # Get unique tickers and their corresponding industries
-        tickers = df_industry_performance['Symbol'].unique()
-        end_date = datetime.today()
-        start_date = end_date - timedelta(days=2*365)  # Past two years
-
-        # Fetch historical data for tickers
-        industry_historical_data = run_analysis(tickers, start_date, end_date)
-
-        if not historical_data.empty:
-            # Plotting the closing prices for each ticker
-            st.title("Closing Prices for Each Ticker")
-            st.line_chart(industry_historical_data)
-
-            # Aggregating by industry
-            st.title("Aggregated Industry Closing Prices")
-            industry_aggregated = industry_historical_data.copy()
-            for industry in df['Industry'].unique():
-                industry_tickers = df[df['Industry'] == industry]['Symbol'].unique()
-                industry_data = industry_historical_data[industry_tickers].mean(axis=1)  # Average closing price for the industry
-                industry_aggregated[industry] = industry_data
-
-            # Plotting aggregated industry data
-            st.line_chart(industry_aggregated[df['Industry'].unique()])
-        
         # Run analysis for portfolio optimizer
         selected_tickers = st.multiselect('Select Ticker Symbols', df['Symbol'].unique())
         st.write('Selected Ticker Symbols:', selected_tickers)
@@ -941,7 +912,6 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
             df['Percent Of Account'] = df['Percent Of Account'].str.replace('%', '').astype(float)
             industry_percentages = df['Percent Of Account'].groupby(df['Industry']).sum() / df['Percent Of Account'].sum()
             symbol_percentages = df['Percent Of Account'].groupby(df['Symbol']).sum() / df['Percent Of Account'].sum()
-
 
             # Run analysis for portfolio optimizer
             selected_tickers = st.multiselect('Select Ticker Symbols', df['Symbol'].unique())
