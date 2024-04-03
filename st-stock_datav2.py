@@ -124,8 +124,8 @@ def scrape_stock_data(ticker):
         "Beta": info.get("beta"),
         "Forward Annual Dividend Yield": info.get("dividendYield") or "-",
         "EPS per Year": info.get("trailingEps"),
-        "Revenue Growth": f"{info.get('revenueGrowth')
-        "Earnings Growth": f"{info.get('earningsGrowth') 
+        "Revenue Growth": info.get('revenueGrowth'),
+        "Earnings Growth": info.get('earningsGrowth'), 
         "Target Low": info.get("targetLowPrice"),
         "Target Mean": info.get("targetMeanPrice"),
         "Target Median": info.get("targetMedianPrice"),
