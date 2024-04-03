@@ -125,7 +125,7 @@ def scrape_stock_data(ticker):
         "Beta": info.get("beta"),
         "Forward Annual Dividend Yield": info.get("dividendYield") or "-",
         "Trailing EPS": info.get("trailingEps"),
-        "Forward EPS": ifno.get("forwardEps"),
+        "Forward EPS": info.get("forwardEps"),
         "Revenue Growth": info.get('revenueGrowth'),
         "Earnings Growth": info.get('earningsGrowth'), 
         "Earnings Quarterly Growth" :info.get('earningsQuarterlyGrowth'),
