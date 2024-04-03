@@ -126,7 +126,7 @@ def scrape_stock_data(ticker):
         "EPS per Year": info.get("trailingEps"),
         "Revenue Growth": info.get('revenueGrowth'),
         "Earnings Growth": info.get('earningsGrowth'), 
-        "Earnings Quarterly Growth" :info.get('earningsQuarterlyGrowth')
+        "Earnings Quarterly Growth" :info.get('earningsQuarterlyGrowth'),
         "Target Low": info.get("targetLowPrice"),
         "Target Mean": info.get("targetMeanPrice"),
         "Target Median": info.get("targetMedianPrice"),
