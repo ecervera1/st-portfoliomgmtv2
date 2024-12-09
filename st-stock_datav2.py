@@ -1128,14 +1128,14 @@ if st.sidebar.checkbox("FinViz"):
                 st.write("#### Income Statement")
                 st.dataframe(result["income_statement"])
     
-        # Fetch Metrics Button
-        if st.button("Fetch Metrics"):
-            async def run_fetch_all():
-                return await fetch_all_quote_data(tickers, selected_data_types)
-    
-            with st.spinner("Fetching metrics..."):
-                results = asyncio.run(run_fetch_all())  # Use asyncio.run to execute the async function
-                display_data(results)
+    # Fetch Metrics Button
+    if st.button("Fetch FinViz Metrics"):
+        async def run_fetch_all():
+            return await fetch_all_quote_data(tickers, selected_data_types)
+
+        with st.spinner("Fetching metrics..."):
+            results = asyncio.run(run_fetch_all())  # Use asyncio.run to execute the async function
+            display_data(results)
 
 
     
