@@ -1069,40 +1069,34 @@ if st.sidebar.checkbox("FinViz"):
         if not results:
             st.warning("No data available.")
             return
-    
-        # Get the list of tickers from results
-        fetched_tickers = [result["ticker"] for result in results if result]
-    
-        # Add a filter pane for tickers
-        selected_tickers = st.multiselect(
-            "Filter by Ticker:",
-            options=fetched_tickers,
-            default=fetched_tickers,  # Show all tickers by default
-        )
-    
-        # Filter results based on selected tickers
-        results = [result for result in results if result and result["ticker"] in selected_tickers]
-    
+
         for result in results:
             if not result:
                 continue
-    
+
             ticker = result["ticker"]
             st.subheader(f"{ticker}:")
-            
+    
             # Display Fundamental Data
             if "fundamental_data" in result:
                 st.write("#### Fundamental Data")
                 st.dataframe(result["fundamental_data"])
-            
+    
+            # Display News
+            # if "outer_news" in result:
+            #     st.write("#### Latest News")
+            #     st.dataframe(result["outer_news"])
             # Display News
             if "outer_news" in result:
                 st.write("#### Latest News")
+                
                 news_df = result["outer_news"]
                 if not news_df.empty:
+                    # Iterate through the DataFrame and display headlines with hyperlinks
                     for index, row in news_df.iterrows():
                         headline = row["Headline"]
                         url = row["URL"]
+                        # Display the headline as a hyperlink
                         st.markdown(f"{index + 1}. - [{headline}]({url})")
                 else:
                     st.markdown("No news available for this ticker.")
