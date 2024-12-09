@@ -1064,7 +1064,6 @@ if st.sidebar.checkbox("FinViz"):
             return await asyncio.gather(*tasks, return_exceptions=True)
     
     # Function to Process and Display Data
-
     def display_data(results):
         if not results:
             st.warning("No data available.")
@@ -1100,25 +1099,6 @@ if st.sidebar.checkbox("FinViz"):
                         st.markdown(f"{index + 1}. - [{headline}]({url})")
                 else:
                     st.markdown("No news available for this ticker.")
-            
-            # Display Insider Trading
-            if "insider_trading" in result:
-                st.write("#### Insider Trading")
-                insider_df = result["insider_trading"]
-                if insider_df.empty:
-                    st.write("No insider trading data available.")
-                else:
-                    st.dataframe(insider_df)
-            
-            # Display Outer Ratings
-            if "outer_ratings" in result:
-                st.write("#### Outer Ratings")
-                st.dataframe(result["outer_ratings"])
-            
-            # Display Income Statement
-            if "income_statement" in result:
-                st.write("#### Income Statement")
-                st.dataframe(result["income_statement"])
 
 
     
