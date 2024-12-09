@@ -8,3 +8,5 @@ prophet
 numpy
 scipy
 seaborn
+aiohttp_retry
+pyfinviz
