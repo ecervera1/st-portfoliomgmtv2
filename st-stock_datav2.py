@@ -1020,9 +1020,9 @@ import asyncio
 st.sidebar.title('FinViz')
 
 if st.sidebar.checkbox("FinViz"):
-    # user_input = st.sidebar.text_input("Enter stock tickers (comma-separated):", tickers)
-    ticker_string = ", ".join(tickers)
-    user_input = st.sidebar.text_input("Enter stock tickers (comma-separated):", ticker_string)
+    user_input = st.sidebar.text_input("Enter stock tickers (comma-separated):",  "AAPL,MSFT,GOOGL")
+    # ticker_string = ", ".join(tickers)
+    # user_input = st.sidebar.text_input("Enter stock tickers (comma-separated):", ticker_string)
     tickers = [ticker.strip() for ticker in user_input.split(",") if ticker.strip()]
     
     # Data Selection
