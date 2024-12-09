@@ -1076,7 +1076,7 @@ if st.sidebar.checkbox("FinViz"):
     
             # Display Fundamental Data
             if "fundamental_data" in result:
-                st.write("### Fundamental Data")
+                st.write("#### Fundamental Data")
                 st.dataframe(result["fundamental_data"])
     
             # Display News
@@ -1085,7 +1085,7 @@ if st.sidebar.checkbox("FinViz"):
             #     st.dataframe(result["outer_news"])
             # Display News
             if "outer_news" in result:
-                st.write("### Latest News")
+                st.write("#### Latest News")
                 
                 news_df = result["outer_news"]
                 if not news_df.empty:
