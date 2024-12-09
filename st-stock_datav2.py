@@ -13,6 +13,11 @@ from bs4 import BeautifulSoup
 import scipy
 import seaborn as sns
 
+from aiohttp_retry import RetryClient, ExponentialRetry
+from pyfinviz.news import News
+from pyfinviz.insider import Insider
+from pyfinviz.quote import Quote
+
 #st.set_option('deprecation.showPyplotGlobalUse', False)
 
 custom_css = """
@@ -1008,8 +1013,101 @@ if st.sidebar.checkbox('My Portfolio Anlysis', value=False):
                 st.pyplot()
     
 
+#12.09.2024
+import asyncio
 
+# FinViz Integration
+st.sidebar.title('FinViz')
 
+if st.sidebar.checkbox("FinViz"):
+    user_input = st.sidebar.text_input("Enter stock tickers (comma-separated):", "AAPL,MSFT,GOOGL")
+    tickers = [ticker.strip() for ticker in user_input.split(",") if ticker.strip()]
+    
+    # Data Selection
+    selected_data_types = st.sidebar.multiselect(
+        "Select Data Types to Fetch:",
+        ["Fundamental Data", "News", "Insider Trading", "Outer Ratings", "Income Statement"],
+        default=["Fundamental Data", "News"]
+    )
+    
+    # Asynchronous Fetch Functions
+    async def fetch_quote_data(ticker, data_types, session):
+        try:
+            quote = Quote(ticker=ticker)
+            if not quote.exists:
+                logging.warning(f"No data found for ticker {ticker}")
+                return None
+    
+            result = {}
+            if "Fundamental Data" in data_types:
+                result["fundamental_data"] = quote.fundamental_df.head(1)  # Show only the latest row
+            if "News" in data_types:
+                result["outer_news"] = quote.outer_news_df.head(5)  # Limit to top 5 news items
+            if "Insider Trading" in data_types:
+                result["insider_trading"] = quote.insider_trading_df  # Show all insider data
+            if "Outer Ratings" in data_types:
+                result["outer_ratings"] = quote.outer_ratings_df
+            if "Income Statement" in data_types:
+                result["income_statement"] = quote.income_statement_df
+    
+            return {"ticker": ticker, **result}
+        except Exception as e:
+            logging.error(f"Error fetching data for {ticker}: {e}")
+            return None
+    
+    async def fetch_all_quote_data(tickers, data_types):
+        retry_options = ExponentialRetry(attempts=2)  # Retry on failure
+        async with RetryClient(raise_for_status=False, retry_options=retry_options) as session:
+            tasks = [fetch_quote_data(ticker, data_types, session) for ticker in tickers]
+            return await asyncio.gather(*tasks, return_exceptions=True)
+    
+    # Function to Process and Display Data
+    def display_data(results):
+        if not results:
+            st.warning("No data available.")
+            return
+    
+        for result in results:
+            if not result:
+                continue
+    
+            ticker = result["ticker"]
+            st.subheader(f"Metrics for {ticker}")
+    
+            # Display Fundamental Data
+            if "fundamental_data" in result:
+                st.write("### Fundamental Data")
+                st.dataframe(result["fundamental_data"])
+    
+            # Display News
+            if "outer_news" in result:
+                st.write("### Latest News")
+                st.dataframe(result["outer_news"])
+    
+            # Display Insider Trading
+            if "insider_trading" in result:
+                st.write("### Insider Trading")
+                insider_summary = result["insider_trading"].groupby("Type")["Shares"].sum()
+                st.bar_chart(insider_summary)
+    
+            # Display Outer Ratings
+            if "outer_ratings" in result:
+                st.write("### Outer Ratings")
+                st.dataframe(result["outer_ratings"])
+    
+            # Display Income Statement
+            if "income_statement" in result:
+                st.write("### Income Statement")
+                st.dataframe(result["income_statement"])
+    
+    # Fetch Metrics Button
+    if st.button("Fetch Metrics"):
+        async def run_fetch_all():
+            return await fetch_all_quote_data(tickers, selected_data_types)
+
+        with st.spinner("Fetching metrics..."):
+            results = asyncio.run(run_fetch_all())  # Use asyncio.run to execute the async function
+            display_data(results)
 
 
     
