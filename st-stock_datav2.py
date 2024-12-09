@@ -1083,21 +1083,21 @@ if st.sidebar.checkbox("FinViz"):
             # if "outer_news" in result:
             #     st.write("### Latest News")
             #     st.dataframe(result["outer_news"])
+            # Display News
             if "outer_news" in result:
                 st.write("### Latest News")
                 
-                # Add a new column with clickable headlines
-                def make_hyperlink(row):
-                    return f"[{row['Headline']}]({row['URL']})"
-                
                 news_df = result["outer_news"]
                 if not news_df.empty:
-                    news_df["Clickable Headline"] = news_df.apply(make_hyperlink, axis=1)
-                    # Display only the new clickable headline column
-                    st.write(
-                        news_df[["Clickable Headline"]].to_markdown(index=False),
-                        unsafe_allow_html=True,
-                    )
+                    # Iterate through the DataFrame and display headlines with hyperlinks
+                    for index, row in news_df.iterrows():
+                        headline = row["Headline"]
+                        url = row["URL"]
+                        # Display the headline as a hyperlink
+                        st.markdown(f"{index + 1}. - [{headline}]({url})")
+                else:
+                    st.markdown("No news available for this ticker.")
+
     
             # Display Insider Trading
             if "insider_trading" in result:
