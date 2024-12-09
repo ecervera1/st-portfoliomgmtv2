@@ -1110,11 +1110,10 @@ if st.sidebar.checkbox("FinViz"):
                 insider_df = result["insider_trading"]
                 if insider_df.empty:
                     st.write("No insider trading data available.")
-                elif not {"Type", "Shares"}.issubset(insider_df.columns):
-                    st.write("Required columns ('Type' and 'Shares') are missing from the data.")
                 else:
-                    insider_summary = insider_df.groupby("Type")["Shares"].sum()
-                    st.bar_chart(insider_summary)
+                    # Display the insider trading data as a table
+                    st.dataframe(insider_df)
+
 
     
             # Display Outer Ratings
