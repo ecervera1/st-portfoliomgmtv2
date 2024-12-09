@@ -1068,11 +1068,11 @@ if st.sidebar.checkbox("FinViz"):
         if not results:
             st.warning("No data available.")
             return
-
+    
         for result in results:
             if not result:
                 continue
-
+    
             ticker = result["ticker"]
             st.subheader(f"{ticker}:")
     
@@ -1099,7 +1099,6 @@ if st.sidebar.checkbox("FinViz"):
                         st.markdown(f"{index + 1}. - [{headline}]({url})")
                 else:
                     st.markdown("No news available for this ticker.")
-
 
     
             # Display Insider Trading
