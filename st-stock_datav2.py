@@ -1081,7 +1081,7 @@ if st.sidebar.checkbox("FinViz"):
     
             # Display News
             # if "outer_news" in result:
-            #     st.write("### Latest News")
+            #     st.write("#### Latest News")
             #     st.dataframe(result["outer_news"])
             # Display News
             if "outer_news" in result:
@@ -1101,18 +1101,18 @@ if st.sidebar.checkbox("FinViz"):
     
             # Display Insider Trading
             if "insider_trading" in result:
-                st.write("### Insider Trading")
+                st.write("#### Insider Trading")
                 insider_summary = result["insider_trading"].groupby("Type")["Shares"].sum()
                 st.bar_chart(insider_summary)
     
             # Display Outer Ratings
             if "outer_ratings" in result:
-                st.write("### Outer Ratings")
+                st.write("#### Outer Ratings")
                 st.dataframe(result["outer_ratings"])
     
             # Display Income Statement
             if "income_statement" in result:
-                st.write("### Income Statement")
+                st.write("#### Income Statement")
                 st.dataframe(result["income_statement"])
     
     # Fetch Metrics Button
