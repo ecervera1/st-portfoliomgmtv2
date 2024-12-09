@@ -1072,7 +1072,7 @@ if st.sidebar.checkbox("FinViz"):
                 continue
     
             ticker = result["ticker"]
-            st.subheader(f"Metrics for {ticker}")
+            st.subheader(f"{ticker}:")
     
             # Display Fundamental Data
             if "fundamental_data" in result:
