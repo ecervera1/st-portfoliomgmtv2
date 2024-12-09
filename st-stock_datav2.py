@@ -713,7 +713,7 @@ if st.sidebar.checkbox('Portfolio Optimizer with Risk-free rate', value=False):
     st.header("Input Parameters")
     tickers = st.text_input("Enter tickers separated by commas", "AAPL,MSFT,TSLA")
     start_date = st.text_input("Start Date (YYYY-MM-DD)", "2014-01-01")
-    #default_end_date = datetime.today().date()
+    default_end_date = datetime.today().date()
     end_date = st.text.input("End Date (YYYY-MM-DD)", default_end_date)
     risk_free_rate = st.number_input("Risk-Free Rate (%)", value=0.5, step=0.1)
     run_button = st.button("Run Analysis")
